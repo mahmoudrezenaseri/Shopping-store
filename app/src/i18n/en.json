@@ -1,0 +1,12 @@
+{
+  "tabs": {
+    "to-do": "To-do",
+    "groceries": "Groceries",
+    "learning": "Learning",
+    "reading": "Reading"
+  },
+  "login_screen": {
+    "login_text": "Enter your mobile number or e-mail to login or register in DigiKala",
+    "login_copy_right": "By entering or registering at Digitala you agree to the Terms and Conditions of Use of the ServiceYou accept the Digitala site and its privacy policy."
+  }
+}
