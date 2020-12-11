@@ -26,7 +26,6 @@ API<!-- TABLE OF CONTENTS -->
 | :---------------------------------------------------: | :-------------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------: |
 | ![](https://nanashop.ir/digikala_files/main-page.gif) | ![](https://nanashop.ir/digikala_files/category-page.gif) | ![](https://nanashop.ir/digikala_files/cart-page.gif) | ![](https://nanashop.ir/digikala_files/login-page.gif) |
 
-This is mobile application project.
 It is written in JavaScript ES6.
 
 ### Built With
@@ -47,7 +46,7 @@ Follow the steps below to run this project.
    ```
 2. Install NPM packages
 
-   Redirect to the API folder and run this command.
+   Redirect to the APP folder and run this command.
 
    ```sh
    npm install
