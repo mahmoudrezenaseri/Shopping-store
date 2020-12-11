@@ -7,7 +7,7 @@ class Content extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text>hello</Text>
+        {/* <Text>hello</Text> */}
       </View>
     );
   }

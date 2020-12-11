@@ -22,6 +22,10 @@ API<!-- TABLE OF CONTENTS -->
 
 ## About The Project
 
+|                         Main                          |                         Category                          |                         Cart                          |                         Login                          |
+| :---------------------------------------------------: | :-------------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------: |
+| ![](https://nanashop.ir/digikala_files/main-page.gif) | ![](https://nanashop.ir/digikala_files/category-page.gif) | ![](https://nanashop.ir/digikala_files/cart-page.gif) | ![](https://nanashop.ir/digikala_files/login-page.gif) |
+
 This is mobile application project.
 It is written in JavaScript ES6.
 
