@@ -1,7 +1,6 @@
 const User = require("src/models/users");
 const bcrypt = require("bcryptjs");
 const { userValidator } = require('src/graphql/validators/index.js');
-const { handleErrors } = require("src/functions/errors.js");
 
 const resolvers = {
     Query: {

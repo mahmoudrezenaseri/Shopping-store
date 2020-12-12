@@ -21,7 +21,7 @@ function saveImage({ stream, filename }) {
     })
 }
 
-async function CheckIfAdmin(req, secretId) {
+async function checkIfAdmin(req, secretId) {
 
     const check = await User.CheckToken(req, secretId)
     if (check) {
@@ -34,4 +34,4 @@ async function CheckIfAdmin(req, secretId) {
     return false;
 }
 
-module.exports = { saveImage, CheckIfAdmin }
+module.exports = { saveImage, checkIfAdmin }

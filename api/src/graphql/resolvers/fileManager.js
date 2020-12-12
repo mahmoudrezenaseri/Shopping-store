@@ -4,15 +4,13 @@ const path = require('path');
 const ImageSize = require('image-size');
 const FileType = require('file-type');
 
-const { handleErrors } = require("src/functions/errors.js");
-const { saveImage } = require("src/functions/common.js");
-
 var resolvers = {
     Query: {
-        getAllFiles: async (param, args, { level, check }) => {
-
-            if (!check || level !== 1) { // check if user has logged in and is administrator
-                handleErrors(null, 401, "امکان استفاده از این بخش وجود ندارد");
+        getAllFiles: async (param, args, { req }) => {
+            
+            // check if user has logged in and is administrator
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
                 return;
             }
 
@@ -31,7 +29,7 @@ var resolvers = {
                 try {
                     const { createReadStream, filename } = await args.image;
                     const stream = createReadStream();
-                    const { filePath } = await saveImage({ stream, filename });
+                    const { filePath } = await common.saveImage({ stream, filename });
                     let file = await FileManager.create({
                         name: filename,
                         dir: filePath

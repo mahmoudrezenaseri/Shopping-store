@@ -1,9 +1,6 @@
 const Category = require("src/models/category");
-const User = require("src/models/users");
 
-const { CheckIfAdmin } = require("src/functions/common.js");
 const { categoryValidator } = require('src/graphql/validators/index.js');
-const { handleErrors } = require("src/functions/errors.js");
 
 const resolvers = {
     Query: {
@@ -20,7 +17,7 @@ const resolvers = {
         createCategory: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await CheckIfAdmin(req, config.secretId)) {
+            if (!await common.checkIfAdmin(req, config.secretId)) {
                 handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد")
                 return;
             }

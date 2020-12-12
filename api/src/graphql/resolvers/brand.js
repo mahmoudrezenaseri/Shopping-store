@@ -1,18 +1,10 @@
 const Brand = require("src/models/users");
 const validator = require("validator")
 const { brandValidator } = require('src/graphql/validators/index.js');
-const { handleErrors } = require("src/functions/errors.js");
-const { saveImage } = require("src/functions/common.js");
 
 const resolvers = {
     Query: {
         getAllBrand: async (param, args, { req, res }) => {
-
-            // check if user has logged in and is administrator
-            if (!await CheckIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
-                return;
-            }
 
             const { brand } = await getAllBrandHandler(args)
                 .catch((error) => {
@@ -26,7 +18,7 @@ const resolvers = {
         createBrand: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await CheckIfAdmin(req, config.secretId)) {
+            if (!await common.checkIfAdmin(req, config.secretId)) {
                 handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
                 return;
             }
@@ -63,7 +55,7 @@ async function createBrandHandler(args) {
 
     const { createReadStream, filename } = await args.input.image;
     const stream = createReadStream();
-    const { filePath } = await saveImage({ stream, filename });
+    const { filePath } = await common.saveImage({ stream, filename });
 
     if (validator.isEmpty(filePath)) {
         throw Error("تصویری انتخاب نشده است.");

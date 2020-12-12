@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server-express");
 const typeDefs = require("src/graphql/typeDefs");
 const resolvers = require("src/graphql/resolvers");
-const { success, error, validation } = require("../responseApi");
 
 // Initalize the App
 const app = express();
