@@ -4,14 +4,14 @@ const typeDefs = gql`
     type Query {
         _: String
     }
+
     type Mutation {
         _: String
     }
-
+    
     type Result {
         status: Int,
-        message: String,
-        model: Category
+        message: String
     }
 
     type Files {
@@ -37,6 +37,13 @@ const typeDefs = gql`
         name: String,
         label: String,
         image: String,
+    }    
+
+    type Survey{
+        _id: ID,
+        name: String,
+        label: String,
+        category: Category,
     }
 
     scalar Number

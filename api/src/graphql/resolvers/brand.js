@@ -1,4 +1,4 @@
-const Brand = require("src/models/users");
+const Brand = require("src/models/brand");
 const validator = require("validator")
 const { brandValidator } = require('src/graphql/validators/index.js');
 
@@ -31,7 +31,6 @@ const resolvers = {
             return {
                 status: 200,
                 message: "اطلاعات با موفقیت ثبت شد",
-                model: brand
             };
         }
     }
