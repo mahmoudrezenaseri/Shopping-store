@@ -70,7 +70,7 @@ Follow the steps below to run this project.
 
 ## Contact
 
-mahmoudreza naser - mahmoudreza.naser@gmail.com
+mahmoudreza naseri - mahmoudreza.naseri@gmail.com
 
 Project Link: [https://github.com/mahmoudrezenaseri/digikala](https://github.com/mahmoudrezenaseri/digikala)
 

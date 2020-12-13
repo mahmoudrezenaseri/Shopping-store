@@ -22,6 +22,7 @@
 ## About The Project
 
 This repository contains three projects :
+
 <ol>
 <li>
 <a href="https://github.com/mahmoudrezenaseri/digikala/tree/main/api">Api</a>
@@ -60,7 +61,7 @@ For more explanation you can checkout each project's README.ME file
 
 ## Contact
 
-mahmoudreza naser - mahmoudreza.naser@gmail.com
+mahmoudreza naseri - mahmoudreza.naser@gmail.com
 
 Project Link: [https://github.com/mahmoudrezenaseri/digikala](https://github.com/mahmoudrezenaseri/digikala)
 
