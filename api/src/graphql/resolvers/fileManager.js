@@ -38,7 +38,7 @@ var resolvers = {
                     return {
                         status: 200,
                         message: "اطلاعات با موفقیت ثبت شد",
-                        model: file
+                        data: file
                     };
                 } catch {
                     handleErrors(error, 401, "امکان ذخیره سازی فایل وجود ندارد")

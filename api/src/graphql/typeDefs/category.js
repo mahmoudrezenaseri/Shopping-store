@@ -6,7 +6,21 @@ const typeDefs = gql`
 
     }
     extend type Mutation {
-        createCategory(input: InputCategory): Result!
+        createCategory(input: InputCategory): ResultCategory!
+    }    
+
+    type Category {
+        _id: ID,
+        name: String,
+        label: String,
+        parent: CategoryParent,
+        image: Files
+    }
+
+    type ResultCategory {
+        status: Int,
+        message: String,
+        data: Category
     }
 
     input InputGetCategory{

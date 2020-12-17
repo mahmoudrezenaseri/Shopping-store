@@ -61,7 +61,7 @@ For more explanation you can checkout each project's README.ME file
 
 ## Contact
 
-mahmoudreza naseri - mahmoudreza.naser@gmail.com
+mahmoudreza naseri - mahmoudreza.naseri@gmail.com
 
 Project Link: [https://github.com/mahmoudrezenaseri/digikala](https://github.com/mahmoudrezenaseri/digikala)
 

@@ -31,6 +31,7 @@ const resolvers = {
             return {
                 status: 200,
                 message: "اطلاعات با موفقیت ثبت شد",
+                data: brand
             };
         }
     }

@@ -5,7 +5,21 @@ const typeDefs = gql`
         getAllBrand(input:InputGetBrand):[Brand!]
     }
     extend type Mutation {
-        createBrand(input: InputBrand): Result!
+        createBrand(input: InputBrand): ResultBrand!
+    }
+    
+    type Brand{
+        _id: ID,
+        name: String,
+        label: String,
+        image: String,
+        category: [Category]
+    }    
+    
+    type ResultBrand {
+        status: Int,
+        message: String,
+        data: Brand
     }
    
     input InputBrand{

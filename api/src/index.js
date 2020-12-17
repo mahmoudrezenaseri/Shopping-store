@@ -45,7 +45,7 @@ module.exports = class Application {
     app.listen(config.port, () => {
       console.log(`server run on port ${config.port}`);
     });
-    
+
   }
 
   async DatabaseConfig() {

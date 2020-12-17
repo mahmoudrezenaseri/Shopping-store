@@ -5,7 +5,20 @@ const typeDefs = gql`
         getSurveyByCategoryId(categoryId: ID!): [Survey!]!
     }
     extend type Mutation {
-        createSurvey(input: InputSurvey): Result!
+        createSurvey(input: InputSurvey): ResultSurvey!
+    }
+
+    type Survey{
+        _id: ID,
+        name: String,
+        label: String,
+        category: Category,
+    }
+
+    type ResultSurvey {
+        status: Int,
+        message: String,
+        data: [Survey!]
     }
    
     input InputGetSurvey{
@@ -22,7 +35,7 @@ const typeDefs = gql`
         name: String!,
         label: String,
         category: ID!,
-    }
+    }    
 
 `;
 
