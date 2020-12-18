@@ -5,5 +5,6 @@ const category = require('./category.js');
 const brand = require('./brand.js');
 const fileManager = require('./fileManager.js');
 const survey = require('./survey.js');
+const productSpecs = require('./productSpecs.js');
 
-module.exports = [root, user, category, brand, fileManager, survey];
+module.exports = [root, user, category, brand, fileManager, survey, productSpecs];

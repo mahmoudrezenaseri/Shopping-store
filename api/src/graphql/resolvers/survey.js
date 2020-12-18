@@ -40,7 +40,6 @@ const resolvers = {
     }
 }
 
-
 async function getByCategoryIdHandler(args) {
 
     // validate user data
@@ -53,9 +52,7 @@ async function getByCategoryIdHandler(args) {
         handleErrors(null, 403, "برای دسته بندی معیار امتیازدهی ثبت نشده است");
     } else if (category.parent.parent == null) {
         survey = await Survey.find({ category: args.categoryId }).populate("category").exec();
-        if (survey.length === 0) {
-            handleErrors(null, 403, "برای دسته بندی معیار امتیازدهی ثبت نشده است");
-        }
+
     }
 
     return new Promise((resolve, reject) => {
