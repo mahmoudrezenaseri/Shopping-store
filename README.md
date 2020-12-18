@@ -31,7 +31,7 @@ This repository contains three projects :
 <a href="https://github.com/mahmoudrezenaseri/digikala/tree/main/app">Application</a>
 </li>
 <li>
-<a href="https://github.com/mahmoudrezenaseri/digikala/tree/main/website">Website</a>
+<a href="https://github.com/mahmoudrezenaseri/digikala/tree/main/adminpanel">Admin Panel</a>
 </li>
 </ol>
 
