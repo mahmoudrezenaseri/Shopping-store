@@ -27,3 +27,7 @@ const category = Joi.string().required()
 module.exports.create = Joi.object({
     name, label, category
 });
+
+module.exports.getByCategory = Joi.object({
+    category
+});

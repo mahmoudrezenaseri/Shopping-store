@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
     extend type Query {
-        getSurveyByCategoryId(categoryId: ID!): [Survey!]!
+        getSurveyByCategory(category: ID!): [Survey!]!
     }
     extend type Mutation {
         createSurvey(input: InputSurvey): ResultSurvey!

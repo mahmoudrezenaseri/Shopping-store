@@ -7,9 +7,9 @@ const Joi = require("joi");
 
 const resolvers = {
     Query: {
-        getSurveyByCategoryId: async (param, args, { req, res }) => {
+        getSurveyByCategory: async (param, args, { req, res }) => {
 
-            const { survey } = await getByCategoryIdHandler(args)
+            const { survey } = await getByCategoryHandler(args)
                 .catch((error) => {
                     handleErrors(error, error.code, error.message)
                 });
@@ -40,19 +40,18 @@ const resolvers = {
     }
 }
 
-async function getByCategoryIdHandler(args) {
+async function getByCategoryHandler(args) {
 
     // validate user data
-    await surveyValidator.getByCategory.validateAsync({ "category": args.categoryId })
+    await surveyValidator.getByCategory.validateAsync(args, { abortEarly: false });
 
-    const category = await Category.findById(args.categoryId).populate("parent").exec();
+    const category = await Category.findById(args.category).populate("parent").exec();
     let survey = [];
 
     if (category == null) {
         handleErrors(null, 403, "برای دسته بندی معیار امتیازدهی ثبت نشده است");
-    } else if (category.parent.parent == null) {
-        survey = await Survey.find({ category: args.categoryId }).populate("category").exec();
-
+    } else if (category.parent != null && category.parent.parent == null) {
+        survey = await Survey.find({ category: args.category }).populate("category").exec();
     }
 
     return new Promise((resolve, reject) => {

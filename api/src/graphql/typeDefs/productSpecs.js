@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
     extend type Query {
-        getAllProductSpecs(input:InputGetBrand):[PSpecs!]
+        getProductSpecsByCategory(category: ID!):[PSpecs!]!
     }
     extend type Mutation {
         createProductSpecs(input: InputPSpecs): ResultPSpecs!

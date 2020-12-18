@@ -5,8 +5,14 @@ const { productSpecsValidator } = require('src/graphql/validators/index.js');
 
 const resolvers = {
     Query: {
-        getAllProductSpecs: async (param, args, { req, res }) => {
+        getProductSpecsByCategory: async (param, args, { req, res }) => {
 
+            const { specs } = await getByCategoryHandler(args)
+                .catch((error) => {
+                    handleErrors(error, error.code, error.message)
+                });
+
+            return specs;
         }
     },
     Mutation: {
@@ -25,15 +31,29 @@ const resolvers = {
             return {
                 status: 200,
                 message: "اطلاعات با موفقیت ثبت شد",
-                data: pSpecs.populate('category')
+                data: pSpecs
             };
         }
     }
 }
 
-async function getAllBrandHandler(args) {
+async function getByCategoryHandler(args) {
 
+    // validate user data
+    await productSpecsValidator.getByCategory.validateAsync(args, { abortEarly: false });
 
+    const category = await Category.findById(args.category).populate("parent").exec();
+    let specs = [];
+
+    if (category == null) {
+        handleErrors(null, 403, "برای دسته بندی معیار امتیازدهی ثبت نشده است");
+    } else if (category.parent != null && category.parent.parent == null) {
+        specs = await ProductSpecs.find({ category: args.category }).populate("category").exec();
+    }
+
+    return new Promise((resolve, reject) => {
+        resolve({ specs })
+    });
 }
 
 async function createProductSpecsHandler(args) {
