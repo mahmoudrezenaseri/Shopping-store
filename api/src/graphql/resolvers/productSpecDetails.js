@@ -56,11 +56,11 @@ async function createProductSpecDetailsHandler(args) {
     await productSpecDetailsValidator.create.validateAsync(args.input, { abortEarly: false })
 
     if (!await ProductSpecs.findOne({ _id: args.input.specs })) {
-        handleErrors(null, 403, "مشخصات وارد شده ثبت نشده است");
+        throw Error("مشخصات وارد شده ثبت نشده است")
     }
 
     if (await ProductSpecDetails.findOne({ _id: args.input.specs } && { name: args.input.name })) {
-        handleErrors(null, 403, "نام با مشخصات وارد شده قبلا ثبت شده است");
+        throw Error("نام با مشخصات وارد شده قبلا ثبت شده است")
     }
 
     let pSpecDetails = await ProductSpecDetails.create(args.input);

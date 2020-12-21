@@ -19,8 +19,7 @@ const resolvers = {
 
             // check if user has logged in and is administrator
             if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد")
-                return;
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { seller } = await createSellerHandler(args)
@@ -55,16 +54,16 @@ const createSellerHandler = async (args) => {
     await sellerValidator.create.validateAsync(args.input, { abortEarly: false });
 
     if (!await Category.findOne({ _id: args.input.category })) {
-        handleErrors(null, 403, "دسته بندی در سیستم موجود نیست");
+        throw Error("دسته بندی در سیستم موجود نیست")
     }
 
     const category = await Category.findOne({ _id: args.input.category }).populate('parent').exec();
     if (category.parent != null) {
-        handleErrors(null, 403, "دسته بندی صحیح انتخاب نشده است");
+        throw Error("دسته بندی صحیح انتخاب نشده است")
     }
 
     if (await Seller.findOne({ name: args.input.name })) {
-        handleErrors(null, 403, "نام وارد شده در سیستم موجود است");
+        throw Error("نام وارد شده در سیستم موجود است")
     }
 
     let seller = await Seller.create(args.input);

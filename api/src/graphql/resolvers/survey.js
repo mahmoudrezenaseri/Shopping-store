@@ -69,13 +69,11 @@ async function createSurveyHandler(args) {
         await surveyValidator.create.validateAsync(element, { abortEarly: true })
 
         if (!await Category.findOne({ _id: element.category })) {
-            handleErrors(null, 403, "دسته بندی وارد شده در سیستم موجود نمی باشد");
-            return;
+            throw Error("دسته بندی وارد شده در سیستم موجود نمی باشد");
         }
 
         if (await Survey.findOne({ category: element.category, name: element.name })) {
-            handleErrors(null, 403, "اطلاعات وارد شده در سیستم موجود است");
-            return;
+            throw Error("اطلاعات وارد شده در سیستم موجود است")
         }
 
         let survey = await Survey.create(element)

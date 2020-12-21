@@ -46,7 +46,7 @@ async function getByCategoryHandler(args) {
     let specs = [];
 
     if (category == null) {
-        handleErrors(null, 403, "برای دسته بندی معیار امتیازدهی ثبت نشده است");
+        throw Error("برای دسته بندی معیار امتیازدهی ثبت نشده است");
     } else if (category.parent != null && category.parent.parent == null) {
         specs = await ProductSpecs.find({ category: args.category }).populate("category").exec();
     }
@@ -62,16 +62,16 @@ async function createProductSpecsHandler(args) {
     await productSpecsValidator.create.validateAsync(args.input, { abortEarly: false })
 
     if (!await Category.findOne({ _id: args.input.category })) {
-        handleErrors(null, 403, "دسته بندی در سیستم موجود نیست");
+        throw Error("دسته بندی در سیستم موجود نیست");
     }
 
     const category = await Category.findOne({ _id: args.input.category }).populate('parent').exec();
     if (category.parent == null || category.parent.parent != null) {
-        handleErrors(null, 403, "دسته بندی صحیح انتخاب نشده است");
+        throw Error("دسته بندی صحیح انتخاب نشده است");
     }
 
     if (await ProductSpecs.findOne({ _id: args.input.category } && { name: args.input.name })) {
-        handleErrors(null, 403, "نام با دسته بندی وارد شده قبلا ثبت شده است");
+        throw Error("نام با دسته بندی وارد شده قبلا ثبت شده است");
     }
 
     let pSpecs = await ProductSpecs.create(args.input);
