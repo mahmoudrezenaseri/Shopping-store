@@ -10,7 +10,7 @@ const resolvers = {
                     handleErrors(error, error.code, error.message)
                 })
 
-            return slider.docs;
+            return slider;
         }
     },
     Mutation: {
@@ -36,11 +36,9 @@ const resolvers = {
     }
 }
 
-async function getAllSliderHandler(args) {
+async function getAllSliderHandler() {
 
-    const page = args.page || 1;
-    const limit = args.limit || 10;
-    const slider = await Slider.paginate({}, { page, limit })
+    const slider = await Slider.find({}).populate("FileManager");
 
     return new Promise((resolve, reject) => {
         resolve({ slider });

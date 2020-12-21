@@ -10,7 +10,7 @@ const resolvers = {
                     handleErrors(error, error.code, error.message)
                 })
 
-            return warranty.docs;
+            return warranty;
         }
     },
     Mutation: {
@@ -38,9 +38,7 @@ const resolvers = {
 
 async function getAllWarrantyHandler(args) {
 
-    const page = args.input.page || 1;
-    const limit = args.input.limit || 10;
-    const warranty = await Warranty.paginate({}, { page, limit })
+    const warranty = await Warranty.find({})
 
     return new Promise((resolve, reject) => {
         resolve({ warranty });

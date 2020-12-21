@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
     extend type Query {
-        getAllSlider(page: Int, limit: Int): [Slider!]!
+        getAllSlider: [Slider!]!
     }
     extend type Mutation {
         createSlider(name: String, isDefault: Boolean, image: [ID!]!): ResultSlider!

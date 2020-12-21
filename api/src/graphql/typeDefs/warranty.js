@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
     extend type Query {
-        getAllWarranty(input:InputGetWarranty):[Warranty!]
+        getAllWarranty: [Warranty!]
     }
     extend type Mutation {
         createWarranty(name: String, label: String): ResultWarranty!
@@ -18,11 +18,6 @@ const typeDefs = gql`
         status: Int,
         message: String,
         data: Warranty
-    }
-
-    input InputGetWarranty{
-        page: Int,
-        limit: Int
     }
 
 `;
