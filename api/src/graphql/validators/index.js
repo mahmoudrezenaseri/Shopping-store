@@ -7,6 +7,7 @@ const productSpecDetailsValidator = require('./productSpecDetails');
 const sellerValidator = require('./seller');
 const warrantyValidator = require('./warranty');
 const sliderValidator = require('./slider');
+const bannerValidator = require('./banner');
 
 module.exports = {
     userValidator,
@@ -17,5 +18,6 @@ module.exports = {
     productSpecDetailsValidator,
     sellerValidator,
     warrantyValidator,
-    sliderValidator
+    sliderValidator,
+    bannerValidator
 }
