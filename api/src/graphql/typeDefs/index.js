@@ -9,6 +9,7 @@ const productSpecs = require('./productSpecs.js');
 const productSpecDetails = require('./productSpecDetails.js');
 const seller = require('./seller.js');
 const warranty = require('./warranty.js');
+const slider = require('./slider.js');
 
 module.exports = [
     root,
@@ -20,5 +21,6 @@ module.exports = [
     productSpecs,
     productSpecDetails,
     seller,
-    warranty
+    warranty,
+    slider
 ];
