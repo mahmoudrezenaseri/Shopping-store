@@ -6,13 +6,16 @@ const survey = require('./survey.js');
 const productSpecs = require('./productSpecs.js');
 const productSpecDetails = require('./productSpecDetails.js');
 const seller = require('./seller.js');
+const warranty = require('./warranty.js');
 
-module.exports = [user,
+module.exports = [
+    user,
     category,
     brand,
     fileManager,
     survey,
     productSpecs,
     productSpecDetails,
-    seller
+    seller,
+    warranty
 ]

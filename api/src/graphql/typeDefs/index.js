@@ -8,6 +8,7 @@ const survey = require('./survey.js');
 const productSpecs = require('./productSpecs.js');
 const productSpecDetails = require('./productSpecDetails.js');
 const seller = require('./seller.js');
+const warranty = require('./warranty.js');
 
 module.exports = [
     root,
@@ -18,5 +19,6 @@ module.exports = [
     survey,
     productSpecs,
     productSpecDetails,
-    seller
+    seller,
+    warranty
 ];
