@@ -40,7 +40,7 @@ const resolvers = {
 
 async function getAllBannerHandler() {
 
-    const banner = await Banner.find({}).populate("FileManager");
+    const banner = await Banner.find({}).populate("FileManager").populate("Category");
 
     return new Promise((resolve, reject) => {
         resolve({ banner });
@@ -54,6 +54,7 @@ async function createBannerHandler(args) {
 
     const category = await Category.findById(args.category);
 
+    // دسته بندی سطح اول نباید باشد
     if(category == null || category.parent == null){
         throw Error("دسته بندی انتخاب شده صحیح نیست")
     }
