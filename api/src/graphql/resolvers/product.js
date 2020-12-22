@@ -1,10 +1,13 @@
+const mongoose = require("mongoose");
+
 const Product = require("src/models/product");
+const ProductAttribute = require("src/models/productAttribute");
 const Category = require("src/models/category");
 const Brand = require("src/models/brand");
 const Warranty = require("src/models/warranty");
 const Seller = require("src/models/seller");
 
-const { productValidator } = require('src/graphql/validators');
+const { productValidator, productAttributeValidator } = require('src/graphql/validators');
 
 const resolvers = {
     Query: {
@@ -18,10 +21,13 @@ const resolvers = {
                 handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
-            const { product } = await createProductHandler(args)
-                .catch((error) => {
-                    handleErrors(error, error.code, error.message)
-                });
+            const session = mongoose.startSession();
+
+            Promise.all([validateData(args),
+                 createAttribute(args.input.attribute),
+                  p3, p4]).catch((error) => {
+                handleErrors(error, error.code, error.message)
+            });
 
             return {
                 status: 200,
@@ -32,39 +38,36 @@ const resolvers = {
     }
 }
 
-async function createProductHandler(args) {
+async function validateData(args) {
 
-    // validate user data
-    await productValidator.create.validateAsync(args.input, { abortEarly: false })
+    // validate data
+    await productValidator.create.validateAsync(args.input, { abortEarly: false });
+    await productAttributeValidator.create.validateAsync(args.input.attribute, { abortEarly: false });
+
+    if (await Product.findOne({ fname: args.input.fname } || { ename: args.input.ename })) {
+        throw Error('محصول با عنوان مشابه قبلا ثبت شده است');
+    }
 
     const category = await Category.findById(args.input.category);
     const brand = await Brand.findById(args.input.brand);
-    const warranty = await Warranty.findById(args.input.warranty);
-    const seller = await Seller.findById(args.input.seller);
 
     // دسته بندی سطح اول نباید باشد
     if (category == null || category.parent == null) {
         throw Error("دسته بندی انتخاب شده صحیح نیست");
     }
 
-    if(!brand){
+    if (!brand) {
         throw Error("برند وارد شده در سیستم موجود نمی باشد");
     }
-
-    if(!warranty){
-        throw Error("گارانتی وارد شده در سیستم موجود نمی باشد");
-    }
-
-    if(!seller){
-        throw Error("فروشنده وارد شده در سیستم موجود نمی باشد");
-    }
-
-
-    let product = await Product.create(args.input);
 
     return new Promise((resolve, reject) => {
         resolve({ product })
     })
+}
+
+async function createAttribute(attribute) {
+
+    let pAttribute = await ProductAttribute.create(attribute);
 }
 
 module.exports = resolvers;

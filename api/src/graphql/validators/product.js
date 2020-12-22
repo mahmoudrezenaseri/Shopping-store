@@ -32,7 +32,15 @@ const category = Joi.string().required()
         "any.required": "شناسه دسته بندی نباید خالی باشد",
     });
 
+const image = Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required()
+    .label('تصویر')
+    .messages({
+        "string.pattern.base": "شناسه تصویر وارد شده اشتباه هست",
+        "string.base": "شناسه تصویر اشتباه وارد شده است",
+        "string.empty": "شناسه تصویر نباید خالی باشد",
+        "any.required": "شناسه تصویر نباید خالی باشد",
+    });
 
 module.exports.create = Joi.object({
-    fname, ename, category, description
+    fname, ename, description, category, image
 });

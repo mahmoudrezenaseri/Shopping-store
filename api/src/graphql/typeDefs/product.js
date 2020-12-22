@@ -14,8 +14,8 @@ const typeDefs = gql`
         ename: String,
         category: Category,
         brand: Brand,
-        warranty: Warranty,
-        seller: Seller,
+        attribute : [InputAttribute!]!,
+        details : [InputDetails!]!,
     }
 
     type ResultProduct {
@@ -25,12 +25,28 @@ const typeDefs = gql`
     }  
     
     input InputProduct {
-        fname: String,
-        ename: String,
+        fname: String!,
+        ename: String!,
+        description: String,
         category: ID!,
         brand: ID!,
-        warranty: ID!,
-        seller: ID!
+        attribute : [InputAttribute!]!,
+        details : [InputDetails!]!,
+    }
+
+    input InputAttribute {
+        seller : ID!,
+        warranty : ID!,
+        color : String!,
+        stock : Int!,
+        price : Int!,
+        discount : Int = 0
+    }
+
+    input InputDetails {
+        specDetail : ID!,
+        value : String!
+        label : String
     }
 
     input InputGetProduct{

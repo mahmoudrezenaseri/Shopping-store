@@ -6,11 +6,13 @@ const Product = Schema(
     {
         fname: { type: String, required: true },
         ename: { type: String, required: true },
+        original: { type: String, required: true },
+        description: { type: String, required: false },
         category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
         brand: { type: Schema.Types.ObjectId, ref: 'Brand', required: true },
-        warranty: { type: Schema.Types.ObjectId, ref: 'Warranty', required: true },
-        seller: { type: Schema.Types.ObjectId, ref: 'Seller', required: true },
-        description: { type: String, required: false },
+        attribute: [{ type: Schema.Types.ObjectId, ref: 'ProductAttribute', required: true }],
+        detail: [{ type: Schema.Types.ObjectId, ref: 'ProductSpecDetailValue', required: true }],
+        image: [{ type: Schema.Types.ObjectId, ref: 'FileManager', required: true }],
     },
     {
         timestamps: true,
