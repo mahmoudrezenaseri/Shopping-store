@@ -6,7 +6,7 @@ const Product = Schema(
     {
         fname: { type: String, required: true },
         ename: { type: String, required: true },
-        original: { type: String, required: true },
+        original: { type: String, required: false },
         description: { type: String, required: false },
         category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
         brand: { type: Schema.Types.ObjectId, ref: 'Brand', required: true },

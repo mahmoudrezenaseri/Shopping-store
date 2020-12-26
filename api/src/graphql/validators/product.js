@@ -22,6 +22,16 @@ const description = Joi.string().max(1000).optional().allow(null).allow('').labe
     "string.max": "توضیح باید حداکثر { #limit} حرف داشته باشد",
 });
 
+const brand = Joi.string().required()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .label('برند')
+    .messages({
+        "string.pattern.base": "شناسه برند وارد شده اشتباه هست",
+        "string.base": "شناسه برند اشتباه وارد شده است",
+        "string.empty": "شناسه برند نباید خالی باشد",
+        "any.required": "شناسه برند نباید خالی باشد",
+    });
+
 const category = Joi.string().required()
     .regex(/^[0-9a-fA-F]{24}$/)
     .label('دسته بندی')
@@ -42,5 +52,5 @@ const image = Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).require
     });
 
 module.exports.create = Joi.object({
-    fname, ename, description, category, image
+    fname, ename, description, brand, category, image
 });

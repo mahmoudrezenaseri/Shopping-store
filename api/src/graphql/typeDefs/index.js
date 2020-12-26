@@ -26,6 +26,5 @@ module.exports = [
     warranty,
     slider,
     banner,
-    product,
-    productSpecDetailValue
+    product
 ];
