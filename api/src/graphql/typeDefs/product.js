@@ -15,7 +15,7 @@ const typeDefs = gql`
         category: Category,
         brand: Brand,
         attribute : [Attribute!]!,
-        details : [Details!]!,
+        detail : [Detail!]!,
     }
 
     type Attribute {
@@ -27,7 +27,7 @@ const typeDefs = gql`
         discount : Int
     }
 
-    type Details {
+    type Detail {
         specDetail : ID!,
         value : String!
         label : String
@@ -47,7 +47,7 @@ const typeDefs = gql`
         brand: ID!,
         original : Upload,
         attribute : [InputAttribute!]!,
-        details : [InputDetails!]!,
+        detail : [InputDetails!]!,
         image : [ID!]!,
     }
 

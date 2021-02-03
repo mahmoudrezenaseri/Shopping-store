@@ -8,12 +8,12 @@ const color = Joi.string().max(50).required().label('رنگ').messages({
     "string.max": "رنگ باید حداکثر { #limit} حرف داشته باشد",
 });
 
-const stock = Joi.string().max(23).required().label('قیگی').messages({
-    "string.base": "قیگی اشتباه وارد شده است",
-    "string.empty": "لطفا قیگی را وارد کنید",
-    "any.required": "لطفا قیگی را وارد کنید",
-    "string.min": "قیگی باید حداقل { #limit} حرف داشته باشد",
-    "string.max": "قیگی باید حداکثر { #limit} حرف داشته باشد",
+const stock = Joi.number().max(1000).required().label('موجودی').messages({
+    "string.base": "موجودی اشتباه وارد شده است",
+    "string.empty": "لطفا موجودی را وارد کنید",
+    "any.required": "لطفا موجودی را وارد کنید",
+    "string.min": "موجودی باید حداقل { #limit} حرف داشته باشد",
+    "string.max": "موجودی باید حداکثر { #limit} حرف داشته باشد",
 });
 
 const price = Joi.string().max(23).required().label('قیمت ویژگی').messages({
@@ -24,7 +24,7 @@ const price = Joi.string().max(23).required().label('قیمت ویژگی').messa
     "string.max": "قیمت ویژگی باید حداکثر { #limit} حرف داشته باشد",
 });
 
-const discount = Joi.string().max(23).required().label('تخفیف').messages({
+const discount = Joi.number().min(0).max(100).required().label('تخفیف').messages({
     "string.base": "تخفیف اشتباه وارد شده است",
     "string.empty": "لطفا تخفیف را وارد کنید",
     "any.required": "لطفا تخفیف را وارد کنید",

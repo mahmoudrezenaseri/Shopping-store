@@ -10,8 +10,19 @@ const Product = Schema(
         description: { type: String, required: false },
         category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
         brand: { type: Schema.Types.ObjectId, ref: 'Brand', required: true },
-        attribute: [{ type: Schema.Types.ObjectId, ref: 'ProductAttribute', required: true }],
-        detail: [{ type: Schema.Types.ObjectId, ref: 'ProductSpecDetailValue', required: true }],
+        attribute: [{
+            color: { type: String, required: true },
+            price: { type: String, required: true },
+            stock: { type: Number, required: true },
+            discount: { type: Number, required: true },
+            seller: { type: Schema.Types.ObjectId, ref: 'Seller', required: true },
+            warranty: { type: Schema.Types.ObjectId, ref: 'Warranty', required: true }
+        }],
+        detail: [{
+            value: { type: String, required: true },
+            label: { type: String, required: false },
+            specDetail: { type: Schema.Types.ObjectId, ref: 'ProductSpecDetails', required: true }
+        }],
         image: [{ type: Schema.Types.ObjectId, ref: 'FileManager', required: true }],
     },
     {

@@ -10,6 +10,7 @@ const sliderValidator = require('./slider');
 const bannerValidator = require('./banner');
 const productValidator = require('./product');
 const productAttributeValidator = require('./productAttribute');
+const productSpecDetailValueValidator = require('./productSpecDetailValue');
 
 module.exports = {
     userValidator,
@@ -23,5 +24,6 @@ module.exports = {
     sliderValidator,
     bannerValidator,
     productValidator,
-    productAttributeValidator
+    productAttributeValidator,
+    productSpecDetailValueValidator
 }
