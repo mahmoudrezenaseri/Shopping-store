@@ -1,0 +1,32 @@
+# Write your query or mutation here
+query{
+   login(mobile: "09214235323",password:"kaveh123" ){
+ 		token,
+   }
+} 
+mutation addProduct($fname: String,$ename: String!,$description: String,
+$category: ID!,$brand: ID!,$original: Upload,$attribute: [InputAttribute!]!,
+$detail: [InputDetails!]!,$image: [ID!]!){
+  createProduct(input:{fname:$fname,ename:$ename,description:$description,category:$category,
+    brand:$brand,original:$original,attribute:$attribute,detail:$detail,image:$image})
+  {
+    status,
+		message,
+		 data{
+      _id,
+      fname,  
+  	}
+  }
+}
+mutation addAttribute($productId:ID, $attribute:InputAttribute){
+  addProductAttribute(input:{productId:$productId,attribute:$attribute}){
+    status,
+    message
+  }
+}
+mutation updateAttribute($productId:ID!,$attributeId:ID!, $attribute: InputAttribute!) {
+  updateProductAttribute(input:{productId:$productId, attributeId:$attributeId, attribute:$attribute}) {
+    status,
+    message
+  }
+}

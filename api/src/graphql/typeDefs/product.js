@@ -2,10 +2,13 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
     extend type Query {        
-        getAllProduct(input: InputGetProduct): [Product]!
+        getByProductId(productId: Int): Product,
+        getByCategoryId(page: Int, limit: Int, categoryId: Int): [Product!]!,
     }
     extend type Mutation {
-        createProduct(input: InputProduct): ResultProduct!
+        createProduct(input: InputProduct): ResultProduct!,
+        addProductAttribute(input: InputAddProductAttribute):Result,
+        updateProductAttribute(input: InputUpdateProductAttribute):Result
     }
 
     type Product {
@@ -68,7 +71,19 @@ const typeDefs = gql`
 
     input InputGetProduct{
         page: Int,
-        limit: Int
+        limit: Int,
+        categoryId: Int
+    }
+
+    input InputAddProductAttribute {
+        productId : ID!,
+        attribute: InputAttribute!
+    }
+
+    input InputUpdateProductAttribute {
+        productId : ID!,
+        attributeId : ID!,
+        attribute: InputAttribute!
     }
 `;
 

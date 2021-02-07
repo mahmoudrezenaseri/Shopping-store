@@ -1,5 +1,15 @@
 const Joi = require('joi');
 
+const _id = Joi.string().required()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .label('شناسه محصول')
+    .messages({
+        "string.pattern.base": "شناسه محصول وارد شده اشتباه هست",
+        "string.base": "شناسه محصول اشتباه وارد شده است",
+        "string.empty": "شناسه محصول نباید خالی باشد  ",
+        "any.required": "شناسه محصول نباید خالی باشد",
+    });
+
 const color = Joi.string().max(50).required().label('رنگ').messages({
     "string.base": "رنگ اشتباه وارد شده است",
     "string.empty": "لطفا رنگ را وارد کنید",
@@ -8,15 +18,15 @@ const color = Joi.string().max(50).required().label('رنگ').messages({
     "string.max": "رنگ باید حداکثر { #limit} حرف داشته باشد",
 });
 
-const stock = Joi.number().max(1000).required().label('موجودی').messages({
-    "string.base": "موجودی اشتباه وارد شده است",
-    "string.empty": "لطفا موجودی را وارد کنید",
+const stock = Joi.number().min(0).max(1000).required().label('موجودی').messages({
+    "number.base": "موجودی اشتباه وارد شده است",
+    "number.empty": "لطفا موجودی را وارد کنید",
     "any.required": "لطفا موجودی را وارد کنید",
-    "string.min": "موجودی باید حداقل { #limit} حرف داشته باشد",
-    "string.max": "موجودی باید حداکثر { #limit} حرف داشته باشد",
+    "number.min": "حداقل مقدار موجودی { #limit} می باشد",
+    "number.max": "حداکثر مقدار موجودی { #limit} می باشد",
 });
 
-const price = Joi.string().max(23).required().label('قیمت ویژگی').messages({
+const price = Joi.string().min(3).max(23).required().label('قیمت ویژگی').messages({
     "string.base": "قیمت ویژگی اشتباه وارد شده است",
     "string.empty": "لطفا قیمت ویژگی را وارد کنید",
     "any.required": "لطفا قیمت ویژگی را وارد کنید",
@@ -28,8 +38,8 @@ const discount = Joi.number().min(0).max(100).required().label('تخفیف').mes
     "string.base": "تخفیف اشتباه وارد شده است",
     "string.empty": "لطفا تخفیف را وارد کنید",
     "any.required": "لطفا تخفیف را وارد کنید",
-    "string.min": "تخفیف باید حداقل { #limit} حرف داشته باشد",
-    "string.max": "تخفیف باید حداکثر { #limit} حرف داشته باشد",
+    "number.min": "حداقل مقدار موجودی { #limit} می باشد",
+    "number.max": "حداکثر مقدار موجودی { #limit} می باشد",
 });
 
 const seller = Joi.string().required()
@@ -54,4 +64,12 @@ const warranty = Joi.string().required()
 
 module.exports.create = Joi.object({
     seller, warranty, color, stock, price, discount
+});
+
+module.exports.update = Joi.object({
+    seller, warranty, color, stock, price, discount
+});
+
+module.exports.checkId = Joi.object({
+    _id
 });

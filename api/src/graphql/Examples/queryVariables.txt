@@ -1,0 +1,48 @@
+━━━━━━━━━━┓ Product Section ┏━━━━━━━━━━━━
+
+╓═══════ createProduct ═══════╖
+{
+  "fname": "farsi title",
+  "ename": "english title",
+  "description": "this is description",
+  "category": "5fbbdc3633ae96356caa1007",
+  "brand": "5fbaa19898e56c3efc8edb2f",
+  "attribute": [
+    {
+      "seller": "5fdf4764957f1839ececfc53",
+      "warranty": "5fe05d689efaca22dcc9d9e7",
+      "color": "red",
+      "stock": "40",
+      "price": "2,000,000",
+      "discount":"10"
+    }
+  ],
+  "detail": [
+    {
+      "specDetail":"5fe846fae4afcb272818b682",
+      "value": "big",
+      "label": ""
+    }
+  ],
+  "image": [    
+      "5fdf4764957f1839ececfc53",
+      "5fdf4764957f1839ececfc53"    
+  ]
+}
+╙═════════════☆═════════════╜
+╓═══════ addAttribute ═══════╖
+{
+  "productId": "601efca5e4bb894398ad59cc",
+	"attributeId": "602046c44d556d1ee8ea1b10",
+  "attribute": {
+      "seller": "5fdf4764957f1839ececfc53",
+      "warranty": "5fe05d689efaca22dcc9d9e7",
+      "color": "green",
+      "stock": "60",
+      "price": "2,500,000",
+      "discount":"20"
+    }  
+}
+╙═════════════☆═════════════╜
+
+━━━━━━━━━━━━━━━━┓ ✠ ┏━━━━━━━━━━━━━━━━━

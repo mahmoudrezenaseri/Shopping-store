@@ -1,5 +1,15 @@
 const Joi = require('joi');
 
+const _id = Joi.string().required()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .label('شناسه محصول')
+    .messages({
+        "string.pattern.base": "شناسه محصول وارد شده اشتباه هست",
+        "string.base": "شناسه محصول اشتباه وارد شده است",
+        "string.empty": "شناسه محصول نباید خالی باشد  ",
+        "any.required": "شناسه محصول نباید خالی باشد",
+    });
+
 const fname = Joi.string().max(150).required().label('عنوان (فارسی)').messages({
     "string.base": "عنوان (فارسی) اشتباه وارد شده است",
     "string.empty": "لطفا عنوان (فارسی) را وارد کنید",
@@ -53,4 +63,17 @@ const image = Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).require
 
 module.exports.create = Joi.object({
     fname, ename, description, brand, category, image
+});
+
+module.exports.getByProduct = Joi.object({
+    _id
+});
+
+module.exports.getByCategory = Joi.object({
+    category
+});
+
+
+module.exports.checkId = Joi.object({
+    _id
 });

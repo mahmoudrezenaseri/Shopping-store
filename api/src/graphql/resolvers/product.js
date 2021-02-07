@@ -1,9 +1,6 @@
-const mongoose = require("mongoose");
-
 const Product = require("src/models/product");
 const ProductSpecDetails = require("src/models/productSpecDetails");
 const Category = require("src/models/category");
-const Brand = require("src/models/brand");
 const Warranty = require("src/models/warranty");
 const Seller = require("src/models/seller");
 
@@ -11,7 +8,38 @@ const { productValidator, productAttributeValidator, productSpecDetailValueValid
 
 const resolvers = {
     Query: {
+        getByProductId: async (param, args, { req, res }) => {
 
+            // check if user has logged in and is administrator
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            }
+
+            const { product } = await getByProductIdHandler(args).catch(async (error) => {
+                handleErrors(error, error.code, error.message);
+            });
+
+            return {
+                status: 200,
+                data: product
+            };
+        },
+        getByProductId: async (param, args, { req, res }) => {
+
+            // check if user has logged in and is administrator
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            }
+
+            const { product } = await getByCategoryIdHandler(args).catch(async (error) => {
+                handleErrors(error, error.code, error.message);
+            });
+
+            return {
+                status: 200,
+                data: product
+            };
+        }
     },
     Mutation: {
         createProduct: async (param, args, { req, res }) => {
@@ -21,17 +49,46 @@ const resolvers = {
                 handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
-            // console.log("here error happend!")
-
             const { product } = await createProductHandler(args).catch(async (error) => {
-
                 handleErrors(error, error.code, error.message);
             });
 
             return {
                 status: 200,
                 message: "اطلاعات با موفقیت ثبت شد",
-                data: product
+                data: product.docs
+            };
+        },
+        updateProductAttribute: async (param, args, { req, res }) => {
+
+            // check if user has logged in and is administrator
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            }
+
+            await updateProductAttributeHandler(args).catch(async (error) => {
+                handleErrors(error, error.code, error.message);
+            });
+
+            return {
+                status: 200,
+                message: "اطلاعات با موفقیت ثبت شد",
+            };
+        },
+        addProductAttribute: async (param, args, { req, res }) => {
+
+            // check if user has logged in and is administrator
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            }
+
+            await addProductAttributeHandler(args).catch(async (error) => {
+                handleErrors(error, error.code, error.message);
+            });
+
+            return {
+                status: 200,
+                message: "اطلاعات با موفقیت ثبت شد",
             };
         }
     }
@@ -80,9 +137,8 @@ async function checkInputData(args) {
     // }
 }
 
-async function createAttribute(attributes) {
+async function checkAttribute(attributes) {
 
-    let arr = [];
     for (let index = 0; index < attributes.length; index++) {
         const element = attributes[index];
 
@@ -93,36 +149,29 @@ async function createAttribute(attributes) {
         if (!await Warranty.findById(element.warranty)) {
             throw Error('در قسمت ویژگی ها سطر ' + (index + 1) + ' گارانتی وارد شده وجود ندارد');
         }
-
-        // let attribute = await ProductAttribute.create([element]);
-        arr[index] = element;
     }
 
-    return arr;
+    return attributes;
 }
 
-async function createProductDetailsValue(details) {
+async function checkProductDetailsValue(details) {
 
-    let arr = [];
     for (let index = 0; index < details.length; index++) {
         const element = details[index];
 
         if (!await ProductSpecDetails.findById(element.specDetail)) {
             throw Error('مشخصات وارد شده در سیستم ثبت نشده است');
         }
-
-        // const model = await ProductSpecDetailValue.create([element]);
-        arr[index] = element;
     }
 
-    return arr;
+    return details;
 }
 
 async function createProductHandler(args) {
     await checkInputData(args);
 
-    const attribute = await createAttribute(args.input.attribute);
-    const detail = await createProductDetailsValue(args.input.detail);
+    const attribute = await checkAttribute(args.input.attribute);
+    const detail = await checkProductDetailsValue(args.input.detail);
 
     let product = await Product.create([{
         fname: args.input.fname,
@@ -139,5 +188,87 @@ async function createProductHandler(args) {
         resolve({ product })
     })
 }
+
+async function getByProductIdHandler(args) {
+
+    await productValidator.getByProduct.validateAsync(args, { abortEarly: false });
+
+    const product = await Product.findById(args.productId);
+
+    if (!product) {
+        throw Error('محصول مورد نظر یافت نشد');
+    }
+
+    return new Promise((resolve, reject) => {
+        resolve({ product })
+    })
+}
+
+async function getByCategoryIdHandler(args) {
+
+    await productValidator.getByCategory.validateAsync(args, { abortEarly: false });
+
+    const page = args.page || 1;
+    const limit = args.limit || 10;
+
+    const product = await Product.paginate({ category: args.categoryId }, { page, limit, populate: [{ path: 'category', path: 'brand', path: 'image' }] });
+
+    if (product.length == 0) {
+        throw Error('محصول مورد نظر یافت نشد');
+    }
+
+    return new Promise((resolve, reject) => {
+        resolve({ product })
+    })
+}
+
+async function addProductAttributeHandler(args) {
+
+    // check product id 
+    await productValidator.checkProductId.validateAsync({ _id: args.input.productId }, { abortEarly: false });
+
+    // product attribute validation
+    await productAttributeValidator.create.validateAsync(args.input.attribute, { abortEarly: false });
+
+    const product = await Product.findById(args.input.productId);
+    if (!product) {
+        throw Error('محصول مورد نظر یافت نشد');
+    }
+
+    await Product.findOneAndUpdate({ _id: args.input.productId },
+        { $addToSet: { attribute: args.input.attribute } },
+        function (err, doc) {
+            //console.log(doc);
+        });
+
+    return new Promise((resolve, reject) => {
+        resolve('ok')
+    })
+}
+
+async function updateProductAttributeHandler(args) {
+
+    // check product id 
+    await productValidator.checkId.validateAsync({ _id: args.input.productId }, { abortEarly: false });
+
+    // check attribute id 
+    await productAttributeValidator.checkId.validateAsync({ _id: args.input.attributeId }, { abortEarly: false });
+
+    // product attribute validation
+    await productAttributeValidator.update.validateAsync(args.input.attribute, { abortEarly: false });
+
+    const attribute = await Product.findOne({ "_id": args.input.productId, "attribute._id": args.input.attributeId }, { "attribute.$": 1 });
+    if (!attribute) {
+        throw Error('موردی یافت نشد');
+    }
+
+    await Product.findOneAndUpdate({ _id: args.input.productId, "attribute._id": args.input.attributeId },
+        { $set: { "attribute.$": args.input.attribute } });
+
+    return new Promise((resolve, reject) => {
+        resolve('ok')
+    })
+}
+
 
 module.exports = resolvers;
