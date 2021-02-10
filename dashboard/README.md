@@ -1,4 +1,5 @@
 Admin Panel<!-- TABLE OF CONTENTS -->
+
 <details open="open">
   <summary>Table of Contents</summary>
   <ol>
@@ -37,14 +38,16 @@ Follow the steps below to run this project.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/mahmoudrezenaseri/dashboard.git
+   git clone https://github.com/mahmoudrezenaseri/digikala.git
    ```
 2. Install NPM packages
 
    Redirect to the Dashboard folder and run this command.
-   ```sh   
+
+   ```sh
    npm install
    ```
+
 3. Run the project
    ```sh
    npm start
