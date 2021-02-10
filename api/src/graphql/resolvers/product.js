@@ -90,6 +90,22 @@ const resolvers = {
                 status: 200,
                 message: "اطلاعات با موفقیت ثبت شد",
             };
+        },
+        updateProductGallery: async (param, args, { req, res }) => {
+
+            // check if user has logged in and is administrator
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            }
+
+            await updateProductGalleryHandler(args).catch(async (error) => {
+                handleErrors(error, error.code, error.message);
+            });
+
+            return {
+                status: 200,
+                message: "اطلاعات با موفقیت ثبت شد",
+            };
         }
     }
 }
@@ -225,7 +241,7 @@ async function getByCategoryIdHandler(args) {
 async function addProductAttributeHandler(args) {
 
     // check product id 
-    await productValidator.checkProductId.validateAsync({ _id: args.input.productId }, { abortEarly: false });
+    await productValidator.checkId.validateAsync({ _id: args.input.productId }, { abortEarly: false });
 
     // product attribute validation
     await productAttributeValidator.create.validateAsync(args.input.attribute, { abortEarly: false });
@@ -235,11 +251,7 @@ async function addProductAttributeHandler(args) {
         throw Error('محصول مورد نظر یافت نشد');
     }
 
-    await Product.findOneAndUpdate({ _id: args.input.productId },
-        { $addToSet: { attribute: args.input.attribute } },
-        function (err, doc) {
-            //console.log(doc);
-        });
+    await product.updateOne({ $addToSet: { attribute: args.input.attribute } });
 
     return new Promise((resolve, reject) => {
         resolve('ok')
@@ -264,6 +276,27 @@ async function updateProductAttributeHandler(args) {
 
     await Product.findOneAndUpdate({ _id: args.input.productId, "attribute._id": args.input.attributeId },
         { $set: { "attribute.$": args.input.attribute } });
+
+    return new Promise((resolve, reject) => {
+        resolve('ok')
+    })
+}
+
+async function updateProductGalleryHandler(args) {
+
+    // check product id 
+    await productValidator.checkId.validateAsync({ _id: args.productId }, { abortEarly: false });
+
+    if (args.imageIds.length == 0) {
+        throw Error('تصویری به سرور ارسال نشد');
+    }
+
+    const product = await Product.findById(args.productId);
+    if (!product) {
+        throw Error('موردی یافت نشد');
+    }
+
+    await product.updateOne({ $addToSet: { image: args.imageIds } });
 
     return new Promise((resolve, reject) => {
         resolve('ok')

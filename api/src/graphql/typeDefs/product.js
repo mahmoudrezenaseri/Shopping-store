@@ -8,7 +8,8 @@ const typeDefs = gql`
     extend type Mutation {
         createProduct(input: InputProduct): ResultProduct!,
         addProductAttribute(input: InputAddProductAttribute):Result,
-        updateProductAttribute(input: InputUpdateProductAttribute):Result
+        updateProductAttribute(input: InputUpdateProductAttribute):Result,
+        updateProductGallery(productId: ID!, imageIds: [ID!]!):Result
     }
 
     type Product {

@@ -30,3 +30,11 @@ mutation updateAttribute($productId:ID!,$attributeId:ID!, $attribute: InputAttri
     message
   }
 }
+mutation {
+  updateProductGallery(productId:"601efca5e4bb894398ad59cc", imageIds:["9fe05d689efaca22dcc9d9e7",
+    "1fe05d689efaca22dcc9d9e7"])
+  {
+   status,
+   message
+  }  
+}
