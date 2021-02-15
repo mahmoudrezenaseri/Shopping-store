@@ -38,9 +38,12 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 
+// Added by me
+const AddMedia = React.lazy(() => import('./views/media/AddMedia'));
+
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/', exact: true, name: 'صفحه اصلی' },
+  { path: '/dashboard', name: 'داشبورد', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -77,8 +80,9 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/notifications/toaster', name: 'Toaster', component: Toaster },
   { path: '/widgets', name: 'Widgets', component: Widgets },
-  { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User }
+  { path: '/users', exact: true, name: 'Users', component: Users },
+  { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/media/add', name: 'افزودن پرونده چندرسانه ای', component: AddMedia }
 ];
 
 export default routes;

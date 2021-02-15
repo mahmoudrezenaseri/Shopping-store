@@ -7,7 +7,6 @@ global.handleErrors = error.handleErrors;
 global.config = require("src/config/index");
 global.common = require("src/functions/common");
 
-
 const App = require("src/index");
 new App();
 

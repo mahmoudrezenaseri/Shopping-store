@@ -51,5 +51,6 @@ module.exports = class Application {
   async DatabaseConfig() {
     mongoose.Promise = global.Promise;
     mongoose.connect(config.database.url, config.database.options);
+
   }
 };

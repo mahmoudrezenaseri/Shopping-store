@@ -1,16 +1,30 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 
-const _nav =  [
+const _nav = [
   {
     _tag: 'CSidebarNavItem',
-    name: 'Dashboard',
+    name: 'داشبورد',
     to: '/dashboard',
-    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    }
+    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'چند رسانه ای',
+    route: '/media',
+    icon: 'cil-image',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'افزودن',
+        to: '/media/add',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Brand buttons',
+        to: '/buttons/brand-buttons',
+      },
+    ],
   },
   {
     _tag: 'CSidebarNavTitle',
@@ -18,7 +32,7 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Colors',
+    name: 'رنگ ها',
     to: '/theme/colors',
     icon: 'cil-drop',
   },

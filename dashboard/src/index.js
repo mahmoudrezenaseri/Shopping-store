@@ -11,12 +11,16 @@ import { icons } from './assets/icons'
 
 import { Provider } from 'react-redux'
 import store from './store'
+import axios from 'axios';
+
+axios.defaults.baseURL = "https://mysite.iran.liara.run/graphql";
+axios.defaults.headers.post['accept'] = "application/json";
 
 React.icons = icons
 
 ReactDOM.render(
   <Provider store={store}>
-    <App/>
+    <App />
   </Provider>,
   document.getElementById('root')
 );
