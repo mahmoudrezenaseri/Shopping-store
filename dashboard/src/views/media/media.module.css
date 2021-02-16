@@ -37,12 +37,11 @@
   position: absolute;
   left: 10px;
   top: 10px;
-  color: white;
+  color: red;
   cursor: pointer;
 }
 
 .dragDropSection {
-  background-color: antiquewhite;
   width: "250px";
   margin: auto;
   display: flex;
