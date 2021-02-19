@@ -2,7 +2,7 @@
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
-  width: 90%;
+  width: 98%;
   margin: auto;
   border: 4px dashed #b4b9be;
   min-height: 400px;
@@ -63,4 +63,15 @@
 
 input[type="file"] {
   display: none;
+}
+
+.uploadText {
+  padding: 0px 10px;
+}
+.toastify {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI" !important;
+}
+
+.dragOver {
+  border: 4px dashed #e74529;
 }

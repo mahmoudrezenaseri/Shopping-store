@@ -5,14 +5,8 @@ import {
     CCardHeader,
     CCardBody,
     CCardFooter,
-    CCardGroup,
-    CCol,
-    CContainer,
     CForm,
     CInput,
-    CInputGroup,
-    CInputGroupPrepend,
-    CInputGroupText,
     CRow,
     CSpinner,
     CAlert,
@@ -25,6 +19,9 @@ import classes from './media.module.css';
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 
+import { checkType, maxSelectedFile, checkFileSize } from './funcs';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddMedia = (props) => {
     const { dispatch } = useContext(AuthContext);
@@ -35,7 +32,46 @@ const AddMedia = (props) => {
     }, []);
 
     const onFilesUpload = (event) => {
-        const files = event.target.files;
+        if (checkType(event) && maxSelectedFile(event) && checkFileSize(event)) {
+            const files = event.target.files;
+            fileHandler(files);
+        }
+    }
+
+    const removeLoadedFile = (file) => {
+        const newFiles = loadedFiles.filter(id => id !== file);
+        setLoadedFiles(newFiles);
+    }
+
+    const onDragOverHandler = (event) => {
+        event.preventDefault();
+
+        event.target.classList.add(classes.dragOver);
+    }
+
+    const onDragLeaveHandler = (event) => {
+        event.preventDefault();
+
+        event.target.classList.remove(classes.dragOver);
+    }
+
+    const onDropHandler = (event) => {
+        event.preventDefault();
+
+        event.target.classList.remove(classes.dragOver);
+
+        if (checkType(event) && maxSelectedFile(event) && checkFileSize(event)) {
+            const files = event.dataTransfer.files;
+            fileHandler(files);
+        }
+    }
+
+    const submitForm = () => {
+
+    }
+
+    // Gets new selected files and add it to the array
+    function fileHandler(files) {
         const newLoadedFiles = [...loadedFiles];
 
         for (let index = 0; index < files.length; index++) {
@@ -50,19 +86,23 @@ const AddMedia = (props) => {
         setLoadedFiles(newLoadedFiles.reverse());
     }
 
-    const removeLoadedFile = (file) => {
-        const newFiles = loadedFiles.filter(id => id !== file);
-        setLoadedFiles(newFiles);
-    }
-
     return (
         <div className="animated fadeIn">
+            <ToastContainer rtl={true} position="top-left" toastClassName={classes.toastify} />
+            <CAlert color="warning">
+                <h4 className="alert-heading">توجه!</h4>
+                <ul>
+                    <li>فرمت های قابل قبول برای آپلود <b>jpg, png, jpeg</b> می باشند.</li>
+                    <li>فایل ها باید کمتر از 3 مگابایت باشند.</li>
+                    <li>همزمان نمی توان بیش از 3 فایل را آپلود کرد.</li>
+                </ul>
+            </CAlert>
             <CCard>
                 <CCardHeader>
                     <h6>افزودن پرونده چندرسانه ای</h6>
                 </CCardHeader>
                 <CCardBody>
-                    <div className={classes.addMediaSection}>
+                    <div className={classes.addMediaSection} onDragOver={onDragOverHandler} onDragLeave={onDragLeaveHandler} onDrop={onDropHandler}>
                         <div className={classes.filePreview}>
                             {
                                 loadedFiles.map((file, index) => {
@@ -93,8 +133,9 @@ const AddMedia = (props) => {
                     </div>
                 </CCardBody>
                 <CCardFooter>
-                    <CButton type="submit" color="primary">
-                        <strong>آپلود</strong>
+                    <CButton type="submit" color="primary" onClick={submitForm}>
+                        <CIcon content={freeSet.cilCloudUpload} size={'lg'} />
+                        <strong className={classes.uploadText}>ذخیره</strong>
                     </CButton>
                 </CCardFooter>
             </CCard>
