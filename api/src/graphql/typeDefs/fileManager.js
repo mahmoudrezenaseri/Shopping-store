@@ -6,7 +6,7 @@ const typeDefs = gql`
   }
 
   extend type Mutation {
-    createFile(Image: Upload!): ResultFile!
+    createFile(image: Upload!): ResultFile!
   }
 
   type Files {

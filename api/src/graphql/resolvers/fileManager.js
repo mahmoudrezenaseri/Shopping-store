@@ -7,7 +7,7 @@ const FileType = require('file-type');
 var resolvers = {
     Query: {
         getAllFiles: async (param, args, { req }) => {
-            
+
             // check if user has logged in and is administrator
             if (!await common.checkIfAdmin(req, config.secretId)) {
                 handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
@@ -23,32 +23,43 @@ var resolvers = {
         }
     },
     Mutation: {
-        createFile: async (param, args, { level, check }) => {
+        createFile: async (param, args, { req, res }) => {
 
-            if (check && level == 1) { // admin
-                try {
-                    const { createReadStream, filename } = await args.image;
-                    const stream = createReadStream();
-                    const { filePath } = await common.saveImage({ stream, filename });
-                    let file = await FileManager.create({
-                        name: filename,
-                        dir: filePath
-                    })
-
-                    return {
-                        status: 200,
-                        message: "اطلاعات با موفقیت ثبت شد",
-                        data: file
-                    };
-                } catch {
-                    handleErrors(error, 401, "امکان ذخیره سازی فایل وجود ندارد")
-                }
-            } else {
-                handleErrors(null, 401, "امکان استفاده از این بخش وجود ندارد")
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+                return;
             }
+
+            const { file } = await fileUploadHandler(args)
+                .catch((error) => {
+                    handleErrors(error, error.code, error.message)
+                });
+
+            return {
+                status: 200,
+                message: "اطلاعات با موفقیت ثبت شد",
+                data: file
+            };
         }
     },
 };
+
+const fileUploadHandler = async (args) => {
+
+    const { createReadStream, filename } = await args.image;
+    const stream = createReadStream();
+    const { filePath } = await common.saveImage({ stream, filename });
+
+    let file = await FileManager.create({
+        name: filename,
+        dir: filePath
+    });
+
+    return new Promise((resolve, reject) => {
+        resolve({ file })
+    })
+}
+
 
 // queries
 const getAllFilesHandler = async (args) => {
