@@ -18,14 +18,16 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import classes from './media.module.css';
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-
+import GetToken from '../../context/auth/GetToken';
 import { checkType, maxSelectedFile, checkFileSize } from './funcs';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddMedia = (props) => {
+    const token = GetToken();
     const { dispatch } = useContext(AuthContext);
     const [loadedFiles, setLoadedFiles] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         dispatch({ type: 'check', payload: props })
@@ -66,8 +68,70 @@ const AddMedia = (props) => {
         }
     }
 
-    const submitForm = () => {
+    const submitForm = (event) => {
+        event.preventDefault();
 
+        setLoading(true);
+        const tempLoadedFiles = [...loadedFiles];
+
+        if (loadedFiles.length == 0) {
+            toast.error("فایلی انتخاب نشده است.");
+            setLoading(false);
+            return false;
+        }
+
+        for (let index = 0; index < loadedFiles.length; index++) {
+            const element = loadedFiles[index];
+            if (element.loaded !== 100) {
+                let data = {
+                    query: `
+                        mutation addImage($image: Upload!){
+                            createFile(image: $image){
+                                status,
+                                message,
+                                data {
+                                    name,
+                                    dir
+                                }                   
+                            }
+                        } `,
+                    variables: {
+                        "image": null,
+                    }
+                };
+
+                let map = { 0: ['variables.image'] }
+                const formD = new FormData();
+                formD.append('operations', JSON.stringify(data));
+                formD.append('map', JSON.stringify(map));
+                formD.append(0, element.file, element.file.name);
+
+                axios({
+                    url: "/",
+                    method: "post",
+                    headers: { 'token': token },
+                    data: formD,
+                    onUploadProgress: progressEvent => {
+                        tempLoadedFiles[index].loaded = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    }
+                }).then((response) => {
+                    if (response.data.errors) {
+                        const { message } = response.data.errors[0];
+                        toast.error(message);
+                        setLoading(false);
+                    }
+                    else { // success
+
+                        toast.success(global.config.message.success.fa);
+                        setLoadedFiles(tempLoadedFiles);
+                        setLoading(false);
+                    }
+                }).catch((error) => {
+                    toast.error(global.config.message.error.fa);
+                    setLoading(false);
+                });
+            }
+        }
     }
 
     // Gets new selected files and add it to the array
@@ -134,13 +198,23 @@ const AddMedia = (props) => {
                 </CCardBody>
                 <CCardFooter>
                     <CButton type="submit" color="primary" onClick={submitForm}>
-                        <CIcon content={freeSet.cilCloudUpload} size={'lg'} />
-                        <strong className={classes.uploadText}>ذخیره</strong>
+                        {
+                            loading ? <CSpinner size="sm" /> : submitButtonContent()
+                        }
+
                     </CButton>
                 </CCardFooter>
             </CCard>
         </div>
     )
+}
+
+const submitButtonContent = () => {
+    return (
+        <>
+            <CIcon content={freeSet.cilCloudUpload} size={'lg'} />
+            <strong className={classes.uploadText}>آپلود</strong>
+        </>)
 }
 
 export default AddMedia;

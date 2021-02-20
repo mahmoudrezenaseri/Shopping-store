@@ -12,8 +12,9 @@ import { icons } from './assets/icons'
 import { Provider } from 'react-redux'
 import store from './store'
 import axios from 'axios';
+import './config';
 
-axios.defaults.baseURL = "https://mysite.iran.liara.run/graphql";
+axios.defaults.baseURL = global.config.axios.liara;
 axios.defaults.headers.post['accept'] = "application/json";
 
 React.icons = icons

@@ -4,21 +4,23 @@ const path = require('path');
 const User = require("src/models/users");
 
 function saveImage({ stream, filename }) {
+    const goToRoot = "../..";
     const date = new Date();
-    let dir = `uploads/${date.getFullYear()}/${date.getMonth() + 1}`;
-    mkdirp.sync(path.join(__dirname, `/public/${dir}`))
+    let dir = `/uploads/${date.getFullYear()}/${date.getMonth() + 1}`;
+    mkdirp.sync(path.join(__dirname, `${goToRoot}/public/${dir}`))
 
     let filePath = `${dir}/${filename}`;
-    if (fs.existsSync(path.join(__dirname, `/public/${filePath}`))) {
+
+    if (fs.existsSync(path.join(__dirname, `${goToRoot}/public/${filePath}`))) {
         filePath = `${dir}/${Date.now()}-${filename}`;
     }
 
     return new Promise((resolve, reject) => {
         stream
-            .pipe(fs.createWriteStream(path.join(__dirname, `/public/${filePath}`)))
+            .pipe(fs.createWriteStream(path.join(__dirname, `${goToRoot}/public/${filePath}`)))
             .on('error', error => reject(error))
-            .on('finish', () => { resolve({ filePath }) })
-    })
+            .on('finish', () => resolve({ filePath }))
+    });
 }
 
 async function checkIfAdmin(req, secretId) {
