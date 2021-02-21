@@ -18,13 +18,11 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import classes from './media.module.css';
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import GetToken from '../../context/auth/GetToken';
 import { checkType, maxSelectedFile, checkFileSize } from './funcs';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddMedia = (props) => {
-    const token = GetToken();
     const { dispatch } = useContext(AuthContext);
     const [loadedFiles, setLoadedFiles] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -68,11 +66,8 @@ const AddMedia = (props) => {
         }
     }
 
-    const submitForm = (event) => {
-        event.preventDefault();
-
+    const submitForm = () => {
         setLoading(true);
-        const tempLoadedFiles = [...loadedFiles];
 
         if (loadedFiles.length == 0) {
             toast.error("فایلی انتخاب نشده است.");
@@ -82,56 +77,71 @@ const AddMedia = (props) => {
 
         for (let index = 0; index < loadedFiles.length; index++) {
             const element = loadedFiles[index];
-            if (element.loaded !== 100) {
-                let data = {
-                    query: `
-                        mutation addImage($image: Upload!){
-                            createFile(image: $image){
-                                status,
-                                message,
-                                data {
-                                    name,
-                                    dir
-                                }                   
-                            }
-                        } `,
-                    variables: {
-                        "image": null,
-                    }
-                };
-
-                let map = { 0: ['variables.image'] }
-                const formD = new FormData();
-                formD.append('operations', JSON.stringify(data));
-                formD.append('map', JSON.stringify(map));
-                formD.append(0, element.file, element.file.name);
-
-                axios({
-                    url: "/",
-                    method: "post",
-                    headers: { 'token': token },
-                    data: formD,
-                    onUploadProgress: progressEvent => {
-                        tempLoadedFiles[index].loaded = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    }
-                }).then((response) => {
-                    if (response.data.errors) {
-                        const { message } = response.data.errors[0];
-                        toast.error(message);
-                        setLoading(false);
-                    }
-                    else { // success
-
-                        toast.success(global.config.message.success.fa);
-                        setLoadedFiles(tempLoadedFiles);
-                        setLoading(false);
-                    }
-                }).catch((error) => {
-                    toast.error(global.config.message.error.fa);
-                    setLoading(false);
-                });
+            if (element.loaded === 100) {
+                setLoading(false);
+                continue;
             }
+
+            // prepare data and send it to the server
+            sendData(index, element);
         }
+    }
+
+    // prepate form data
+    function getFormData(element) {
+        let data = {
+            query: `
+                    mutation addImage($image: Upload!){
+                        createFile(image: $image){
+                            status,
+                            message,
+                            data {
+                                name,
+                                dir
+                            }                   
+                        }
+                    } `,
+            variables: {
+                "image": null,
+            }
+        };
+
+        let map = { 0: ['variables.image'] }
+        const formD = new FormData();
+        formD.append('operations', JSON.stringify(data));
+        formD.append('map', JSON.stringify(map));
+        formD.append(0, element.file, element.file.name);
+
+        return formD;
+    }
+
+    // send form to the server
+    function sendData(index, element) {
+        const formD = getFormData(element);
+
+        axios({
+            url: "/",
+            method: "post",
+            data: formD,
+            onUploadProgress: progressEvent => {
+                const { loaded, total } = progressEvent;
+                loadedFiles[index].loaded = Math.floor((loaded * 100) / total);
+            }
+        }).then((response) => {
+            if (response.data.errors) {
+                const { message } = response.data.errors[0];
+                toast.error(message);
+                setLoading(false);
+            }
+            else { // success
+                toast.success(global.config.message.success.fa);
+                setLoadedFiles(loadedFiles);
+                setLoading(false);
+            }
+        }).catch((error) => {
+            toast.error(global.config.message.error.fa);
+            setLoading(false);
+        });
     }
 
     // Gets new selected files and add it to the array
@@ -147,7 +157,7 @@ const AddMedia = (props) => {
             });
         }
 
-        setLoadedFiles(newLoadedFiles.reverse());
+        setLoadedFiles(newLoadedFiles);
     }
 
     return (
@@ -177,7 +187,7 @@ const AddMedia = (props) => {
                                                     : null
                                             }
                                             <img src={file.preview} />
-                                            <CProgress color="success" value={file.loaded} max={100} precision={2} showPercentage striped />
+                                            <CProgress color="success" value={file.loaded} max={100} showPercentage striped />
                                         </div>);
                                 })
                             }

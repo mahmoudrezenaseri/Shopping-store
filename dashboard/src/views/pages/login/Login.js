@@ -79,7 +79,8 @@ const Login = (props) => {
         setSubmitting(false);
       }
     }).catch((error) => {
-      console.log(error);
+      // console.log(error);
+      setMessage(global.config.message.error.fa);
       setLoading(false);
       setSubmitting(false);
     });
@@ -111,6 +112,7 @@ const Login = (props) => {
                       if (!isVerifed) {
                         setMessage('لطفا ریکپچا را تیک بزنید');
                         return false;
+
                       }
 
                       setMessage('');

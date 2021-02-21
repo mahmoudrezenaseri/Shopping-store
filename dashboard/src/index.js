@@ -13,9 +13,13 @@ import { Provider } from 'react-redux'
 import store from './store'
 import axios from 'axios';
 import './config';
+import GetToken from './context/auth/GetToken';
 
-axios.defaults.baseURL = global.config.axios.liara;
+const token = GetToken();
+
+axios.defaults.baseURL = global.config.axios.localhost;
 axios.defaults.headers.post['accept'] = "application/json";
+axios.defaults.headers.post['token'] = token;
 
 React.icons = icons
 

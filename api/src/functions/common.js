@@ -3,7 +3,7 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 const User = require("src/models/users");
 
-function saveImage({ stream, filename }) {
+async function saveImage({ stream, filename }) {
     const goToRoot = "../..";
     const date = new Date();
     let dir = `/uploads/${date.getFullYear()}/${date.getMonth() + 1}`;

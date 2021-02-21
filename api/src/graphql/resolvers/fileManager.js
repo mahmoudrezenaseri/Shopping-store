@@ -59,8 +59,6 @@ const fileUploadHandler = async (args) => {
         resolve({ file })
     })
 }
-
-
 // queries
 const getAllFilesHandler = async (args) => {
 

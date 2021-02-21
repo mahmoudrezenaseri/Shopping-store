@@ -1,0 +1,9 @@
+{
+    "port": 4000,
+    "disks": [
+      {
+        "name": "my-disk",
+        "mountTo": "public"
+      }
+    ]
+  }
