@@ -12,5 +12,9 @@ module.exports = global.config = {
     axios: {
         liara: "https://mysite.iran.liara.run/graphql",
         localhost: "http://localhost:4000/graphql"
+    },
+    file: {
+        localhost: "file:///D:/SourceControl/React/digikala/api/public",
+        liara: "https://mysite.iran.liara.run/public"
     }
 };

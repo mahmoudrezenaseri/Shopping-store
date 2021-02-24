@@ -66,27 +66,6 @@ const AddMedia = (props) => {
         }
     }
 
-    const submitForm = () => {
-        setLoading(true);
-
-        if (loadedFiles.length == 0) {
-            toast.error("فایلی انتخاب نشده است.");
-            setLoading(false);
-            return false;
-        }
-
-        for (let index = 0; index < loadedFiles.length; index++) {
-            const element = loadedFiles[index];
-            if (element.loaded === 100) {
-                setLoading(false);
-                continue;
-            }
-
-            // prepare data and send it to the server
-            sendData(index, element);
-        }
-    }
-
     // prepate form data
     function getFormData(element) {
         let data = {
@@ -160,9 +139,30 @@ const AddMedia = (props) => {
         setLoadedFiles(newLoadedFiles);
     }
 
+    const submitForm = () => {
+        setLoading(true);
+
+        if (loadedFiles.length == 0) {
+            toast.error("فایلی انتخاب نشده است.");
+            setLoading(false);
+            return false;
+        }
+
+        for (let index = 0; index < loadedFiles.length; index++) {
+            const element = loadedFiles[index];
+            if (element.loaded === 100) {
+                setLoading(false);
+                continue;
+            }
+
+            // prepare data and send it to the server
+            sendData(index, element);
+        }
+    }
+
     return (
         <div className="animated fadeIn">
-            <ToastContainer rtl={true} position="top-left" toastClassName={classes.toastify} />
+            <ToastContainer rtl={true} position="top-left" toastClassName="toastify" />
             <CAlert color="warning">
                 <h4 className="alert-heading">توجه!</h4>
                 <ul>

@@ -66,14 +66,14 @@ const getAllFilesHandler = async (args) => {
     const limit = args.limit || 10;
     const media = await FileManager.paginate({}, { page, limit });
 
-    for (let index = 0; index < media.doc.length; index++) {
-        const element = media.doc[index];
-        ImageSize(path.join(__dirname, `/public/${element.dir}`), async (err, dim) => {
+    for (let index = 0; index < media.docs.length; index++) {
+        const element = media.docs[index];
+        ImageSize(path.join(__dirname, `/../../../public/${element.dir}`), async (err, dim) => {
             element.dimWidth = await dim.width;
             element.dimheight = await dim.height;
         })
 
-        const type = await FileType.fromFile(path.join(__dirname, `/public/${element.dir}`));
+        const type = await FileType.fromFile(path.join(__dirname, `/../../../public/${element.dir}`));
         element.format = type.ext;
     }
 

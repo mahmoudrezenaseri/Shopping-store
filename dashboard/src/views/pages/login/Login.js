@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { AuthContext } from '../../../context/auth/AuthContext';
@@ -49,6 +49,10 @@ const Login = (props) => {
   const [loading, setLoading] = useState(false);
   const [isVerifed, setIsVerifed] = useState(false);
   const { dispatch } = useContext(AuthContext)
+
+  useEffect(() => {
+    dispatch({ type: 'check_login_page', payload: props })
+  }, [])
 
   const handleSubmiting = (values, setSubmitting) => {
     axios({
@@ -213,7 +217,5 @@ const Login = (props) => {
     </div >
   )
 }
-
-
 
 export default Login

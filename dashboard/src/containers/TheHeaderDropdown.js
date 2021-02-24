@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '../context/auth/AuthContext';
 import {
   CBadge,
   CDropdown,
@@ -8,8 +9,17 @@ import {
   CImg
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
-const TheHeaderDropdown = () => {
+const TheHeaderDropdown = (props) => {
+
+  const { dispatch } = useContext(AuthContext);
+
+  const signOut = () => {
+    console.log(props)
+    // dispatch({ type: 'sign_out', payload: props });
+  }
+
   return (
     <CDropdown
       inNav
@@ -44,16 +54,6 @@ const TheHeaderDropdown = () => {
           Messages
           <CBadge color="success" className="mfs-auto">42</CBadge>
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-task" className="mfe-2" />
-          Tasks
-          <CBadge color="danger" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-comment-square" className="mfe-2" />
-          Comments
-          <CBadge color="warning" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
         <CDropdownItem
           header
           tag="div"
@@ -69,20 +69,10 @@ const TheHeaderDropdown = () => {
           <CIcon name="cil-settings" className="mfe-2" />
           Settings
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-credit-card" className="mfe-2" />
-          Payments
-          <CBadge color="secondary" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-file" className="mfe-2" />
-          Projects
-          <CBadge color="primary" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
         <CDropdownItem divider />
-        <CDropdownItem>
-          <CIcon name="cil-lock-locked" className="mfe-2" />
-          Lock Account
+        <CDropdownItem onClick={signOut}>
+          <CIcon content={freeSet.cilPowerStandby} className="mfe-2" />
+          خروج
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

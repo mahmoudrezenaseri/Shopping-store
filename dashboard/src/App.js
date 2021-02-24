@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
 import AuthContextProvider from './context/auth/AuthContext'
+import './assets/css/main.css'
 
 const loading = (
   <div className="pt-3 text-center">

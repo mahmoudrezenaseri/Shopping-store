@@ -10,6 +10,7 @@ const typeDefs = gql`
   }
 
   type Files {
+    _id: String,
     name: String,
     dimWidth: String,
     dimHeight: String,

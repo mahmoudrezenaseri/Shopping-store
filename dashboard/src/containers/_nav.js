@@ -11,7 +11,7 @@ const _nav = [
   },
   {
     _tag: 'CSidebarNavDropdown',
-    name: 'چند رسانه ای',
+    name: 'رسانه',
     route: '/media',
     icon: <CIcon content={freeSet.cilImage} customClasses="c-sidebar-nav-icon" />,
     _children: [
@@ -23,7 +23,7 @@ const _nav = [
       {
         _tag: 'CSidebarNavItem',
         name: 'کتابخانه',
-        to: '/media/list',
+        to: '/media/all',
       },
     ],
   }
