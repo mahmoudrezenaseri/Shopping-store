@@ -17,7 +17,7 @@ import GetToken from './context/auth/GetToken';
 
 const token = GetToken();
 
-axios.defaults.baseURL = global.config.axios.liara;
+axios.defaults.baseURL = global.config.axios.baseURL;
 axios.defaults.headers.post['accept'] = "application/json";
 axios.defaults.headers.post['token'] = token;
 

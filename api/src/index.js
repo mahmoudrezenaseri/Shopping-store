@@ -46,7 +46,7 @@ module.exports = class Application {
       console.log(`server run on port ${config.port}`);
     });
 
-    app.use(express.static('api/public'));
+    app.use(express.static('public'));
   }
 
   async DatabaseConfig() {

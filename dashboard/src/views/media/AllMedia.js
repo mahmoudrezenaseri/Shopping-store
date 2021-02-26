@@ -11,7 +11,8 @@ import {
     CSpinner,
     CAlert,
     CProgress,
-    CFormGroup
+    CFormGroup,
+    CCol
 } from '@coreui/react';
 import axios from 'axios';
 import { AuthContext } from '../../context/auth/AuthContext';
@@ -21,17 +22,25 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const AllMedia = (props) => {
     const { dispatch } = useContext(AuthContext);
-    const [loading, setLoading] = useState(false);
+
+    const [loading, setLoading] = useState(true);
+    const [showMoreButton, setShowMoreButton] = useState(false);
+    const [searchInput, setSearchInput] = useState(false);
     const [files, setFiles] = useState([]);
+    const [searchText, setSearchText] = useState('');
+    const [pageNumber, setPageNumber] = useState(2);
+    const [lastFiles, setLastFiles] = useState([]);
 
     useEffect(() => {
         dispatch({ type: 'check', payload: props });
-        fetchData();
-    }, []);
 
-    const fetchData = () => {
         const page = 1;
         const limit = 10;
+
+        fetchData(page, limit);
+    }, []);
+
+    const fetchData = (page, limit) => {
 
         axios({
             url: "/",
@@ -58,15 +67,44 @@ const AllMedia = (props) => {
             }
             else { // success
                 const { getAllFiles } = response.data.data;
-                setFiles(getAllFiles);
+
                 setLoading(false);
-                console.log(getAllFiles)
+                setLastFiles(getAllFiles);
+
+                if (files.length > 0) {
+                    setFiles([...files, ...getAllFiles]);
+                } else {
+                    setFiles(getAllFiles);
+                    setShowMoreButton(true);
+                    setSearchInput(true);
+                }
             }
         }).catch((error) => {
             console.log(error)
             toast.error(global.config.message.error.fa);
             setLoading(false);
         });
+    }
+
+    const filterFiles = (event) => {
+        setSearchText(event.target.value)
+        if (searchText.length > 2) {
+
+        }
+    }
+
+    const fileClick = () => {
+        console.log("fileClick")
+    }
+
+    const loadMoreFiles = () => {
+        if (lastFiles.length < 10) {
+            setShowMoreButton(false);
+        } else {
+            const limit = 10;
+            fetchData(pageNumber, limit);
+            setPageNumber(pageNumber + 1);
+        }
     }
 
     return (
@@ -78,23 +116,44 @@ const AllMedia = (props) => {
                 </CCardHeader>
                 <CCardBody>
                     {
-                        (files.length > 0) ?
-                            <div className={classes.mediaSection}>
-                                {
-                                    files.map((file, index) => {
-                                        return (
-                                            <div key={index} className={classes.media}>
-                                                <img src={`${global.config.file.liara}${file.dir}`} />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div> :
-                            <CAlert color="primary" className="text-center">موردی یافت نشد!</CAlert>
+                        (searchInput === true) ?
+                            <CRow className="mb-3">
+                                <CCol sm="5" md="4">
+                                    <CInput value={searchText} onChange={filterFiles} placeholder="جستجو" />
+                                </CCol>
+                            </CRow> : null
                     }
+                    <CRow className="mb-5" className={classes.mediaSection}>
+                        {
+                            (loading === true) ?
+                                <CCol xs="12" className="text-center"> <CSpinner size="lg" /> </CCol> :
+                                (files.length > 0) ?
+                                    <CCol xs="12">
+                                        <CRow>
+                                            {
+                                                files.map((file, index) => {
+                                                    return (
+                                                        <CCol sm="3" key={index} className={classes.media}>
+                                                            <img src={`${global.config.fileDirectory}${file.dir}`} onClick={fileClick} />
+                                                        </CCol>
+                                                    )
+                                                })
+                                            }
+                                        </CRow>
+                                    </CCol> :
+                                    <CCol xs="12">  <CAlert color="primary" className="text-center">موردی یافت نشد!</CAlert></CCol>
+                        }
+
+                        {
+                            (showMoreButton === true) ?
+                                <CCol xs="12">
+                                    <CButton block color="info" onClick={loadMoreFiles}>بیشتر</CButton>
+                                </CCol> : null
+                        }
+                    </CRow>
                 </CCardBody>
             </CCard>
-        </div>
+        </div >
     )
 }
 

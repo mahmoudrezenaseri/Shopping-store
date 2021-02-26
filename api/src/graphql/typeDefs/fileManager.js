@@ -2,7 +2,8 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   extend type Query {
-    getAllFiles(page: Int, limit:Int): [Files]!
+    getAllFiles(page: Int, limit:Int): [Files]!,
+    filterFiles(page: Int, limit:Int,searchText: String): [Files]!
   }
 
   extend type Mutation {

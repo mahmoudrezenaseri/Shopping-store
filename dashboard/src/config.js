@@ -1,3 +1,9 @@
+const file_localhost = "http://localhost:4000"
+const file_liara = "https://mysite.iran.liara.run"
+
+const graphql_liara = "https://mysite.iran.liara.run/graphql"
+const graphql_localhost = "http://localhost:4000/graphql"
+
 module.exports = global.config = {
     message: {
         error: {
@@ -10,11 +16,7 @@ module.exports = global.config = {
         }
     },
     axios: {
-        liara: "https://mysite.iran.liara.run/graphql",
-        localhost: "http://localhost:4000/graphql"
+        baseURL: graphql_localhost
     },
-    file: {
-        localhost: "file:///D:/SourceControl/React/digikala/api/public",
-        liara: "https://mysite.iran.liara.run/public"
-    }
+    fileDirectory: file_localhost
 };

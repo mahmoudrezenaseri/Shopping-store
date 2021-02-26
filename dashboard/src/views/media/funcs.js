@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-//#region - functions - 
+//#region - helpers - 
 
 // get files from event
 function getFiles(event) {
