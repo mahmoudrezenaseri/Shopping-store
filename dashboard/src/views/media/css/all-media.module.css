@@ -1,0 +1,30 @@
+/* media section */
+
+.mediaSection {
+  width: 100%;
+  /* margin: auto; */
+}
+.media {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.media img {
+  width: 100%;
+  height: 136px;
+  cursor: pointer;
+}
+
+.centerIcon {
+  display: flex;
+  margin: auto;
+}
+
+.infoModal img {
+  width: 100%;
+}
+
+.infoModal table tr td {
+  padding: 5px;
+}
+
+/* end of media section */

@@ -4,22 +4,21 @@ import {
     CCard,
     CCardHeader,
     CCardBody,
-    CCardFooter,
-    CForm,
     CInput,
     CRow,
     CSpinner,
     CAlert,
-    CModal,
-    CModalBody,
-    CModalHeader,
     CCol
 } from '@coreui/react';
 import axios from 'axios';
 import { AuthContext } from '../../context/auth/AuthContext';
-import classes from './media.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import classes from './css/all-media.module.css';
+
+import FileList from './components/file-list.component'
+import FileInfo from './components/file-info.component'
 
 const AllMedia = (props) => {
     const { dispatch } = useContext(AuthContext);
@@ -130,17 +129,7 @@ const AllMedia = (props) => {
                                 <CCol xs="12" className="text-center"> <CSpinner size="lg" /> </CCol> :
                                 (files.length > 0) ?
                                     <CCol xs="12">
-                                        <CRow>
-                                            {
-                                                files.map((item, index) => {
-                                                    return (
-                                                        <CCol sm="3" md="2" key={index} className={classes.media}>
-                                                            <img src={`${global.config.fileDirectory}${item.dir}`} onClick={() => openInfoModal(item)} />
-                                                        </CCol>
-                                                    )
-                                                })
-                                            }
-                                        </CRow>
+                                        <FileList files={files} openInfoModal={openInfoModal} />
                                     </CCol> :
                                     <CCol xs="12">  <CAlert color="primary" className="text-center">موردی یافت نشد!</CAlert></CCol>
                         }
@@ -155,48 +144,8 @@ const AllMedia = (props) => {
 
                     {
                         selectedItem != null ?
-                            <CModal show={modal} onClose={() => setModal(false)} size="lg" className={classes.infoModal}>
-                                <CModalHeader>
-                                    <span>اطلاعات پرونده</span>
-                                </CModalHeader>
-                                <CModalBody>
-                                    <CRow>
-                                        <CCol sm="6">
-                                            <img src={`${global.config.fileDirectory}${selectedItem.dir}`} />
-                                        </CCol>
-                                        <CCol sm="6">
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <b>نام پرونده : </b>
-                                                        </td>
-                                                        <td> {selectedItem.name}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <b>نوع پرونده : </b>
-                                                        </td>
-                                                        <td> {selectedItem.format}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <b>ابعاد : </b>
-                                                        </td>
-                                                        <td>px {selectedItem.dimWidth} * {selectedItem.dimheight} </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <b>تاریخ ایجاد : </b>
-                                                        </td>
-                                                        <td>{new Date(selectedItem.createdAt).toLocaleDateString('fa-IR')}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </CCol>
-                                    </CRow>
-                                </CModalBody>
-                            </CModal> : null
+                            <FileInfo showModal={modal} closeModal={() => setModal(false)} selectedItem={selectedItem} />
+                            : null
                     }
                 </CCardBody>
             </CCard>

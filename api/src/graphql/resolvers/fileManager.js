@@ -72,7 +72,7 @@ const getAllFilesHandler = async (args) => {
 
     const page = args.page || 1;
     const limit = args.limit || 10;
-    console.log(args.searchText)
+
     const media = (args.searchText == null) ? await FileManager.paginate({}, { page, limit }) :
         await FileManager.paginate({ "name": { "$regex": args.searchText } }, { page, limit });
 
