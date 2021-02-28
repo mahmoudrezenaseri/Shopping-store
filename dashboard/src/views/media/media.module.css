@@ -96,4 +96,8 @@ input[type="file"] {
   display: flex;
   margin: auto;
 }
+
+.infoModal img {
+  width: 100%;
+}
 /* end of media section */
