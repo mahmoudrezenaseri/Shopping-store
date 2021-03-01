@@ -1,5 +1,5 @@
-const file_localhost = "http://localhost:4000"
-const file_liara = "https://mysite.iran.liara.run"
+const server_localhost = "http://localhost:4000"
+const server_liara = "https://mysite.iran.liara.run"
 
 const graphql_liara = "https://mysite.iran.liara.run/graphql"
 const graphql_localhost = "http://localhost:4000/graphql"
@@ -16,9 +16,9 @@ module.exports = global.config = {
         }
     },
     axios: {
-        baseURL: graphql_localhost
+        baseURL: graphql_liara
     },
-    fileDirectory: file_localhost,
+    fileDirectory: server_liara,
     google: {
         recaptcha: {
             siteKey: "6LcILlgaAAAAAGsmNA8LeKbC9xQ7kumIcIe9QJ5a"
