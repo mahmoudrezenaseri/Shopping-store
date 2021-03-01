@@ -18,5 +18,10 @@ module.exports = global.config = {
     axios: {
         baseURL: graphql_localhost
     },
-    fileDirectory: file_localhost
+    fileDirectory: file_localhost,
+    google: {
+        recaptcha: {
+            siteKey: "6LcILlgaAAAAAGsmNA8LeKbC9xQ7kumIcIe9QJ5a"
+        }
+    }
 };

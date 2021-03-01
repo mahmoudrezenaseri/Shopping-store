@@ -11,7 +11,6 @@ import {
     CCol
 } from '@coreui/react';
 import axios from 'axios';
-import { AuthContext } from '../../context/auth/AuthContext';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,7 +20,6 @@ import FileList from './components/file-list.component'
 import FileInfo from './components/file-info.component'
 
 const AllMedia = (props) => {
-    const { dispatch } = useContext(AuthContext);
 
     const [loading, setLoading] = useState(true);
     const [showMoreButton, setShowMoreButton] = useState(false);
@@ -45,7 +43,6 @@ const AllMedia = (props) => {
     }, [searchText]);
 
     useEffect(() => {
-        dispatch({ type: 'check', payload: props });
 
         fetchData(page, limit);
     }, []);

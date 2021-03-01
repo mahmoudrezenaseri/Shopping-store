@@ -1,22 +1,35 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import {
   TheContent,
   TheSidebar,
   TheFooter,
   TheHeader
 } from './index'
+import { AuthContext } from '../context/auth/AuthContext';
 
-const TheLayout = () => {
+const TheLayout = (props) => {
+
+  const { dispatch } = useContext(AuthContext);
+
+  useEffect(() => {
+    dispatch({ type: 'check', payload: props });
+  }, []);
+
+
+  const signOut = () => {
+    console.log("sign out")
+    dispatch({ type: 'sign_out', payload: props });
+  }
 
   return (
     <div className="c-app c-default-layout">
-      <TheSidebar/>
+      <TheSidebar />
       <div className="c-wrapper">
-        <TheHeader/>
+        <TheHeader onSignOut={signOut} />
         <div className="c-body">
-          <TheContent/>
+          <TheContent />
         </div>
-        <TheFooter/>
+        <TheFooter />
       </div>
     </div>
   )

@@ -14,16 +14,10 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
-import { AuthContext } from '../../context/auth/AuthContext';
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 
 const Dashboard = (props) => {
-  const { dispatch } = useContext(AuthContext);
-
-  useEffect(() => {
-    dispatch({ type: 'check', payload: props })
-  }, [])
 
   return (
     <>

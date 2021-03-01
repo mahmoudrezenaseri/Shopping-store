@@ -3,6 +3,6 @@ const GetToken = () => {
     if (user) {
         return user
     }
-    return false
+    return ''
 };
 export default GetToken;

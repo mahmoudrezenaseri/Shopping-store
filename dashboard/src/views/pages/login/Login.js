@@ -19,9 +19,10 @@ import {
   CSpinner,
   CAlert
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 import axios from 'axios';
-import Recaptcha from 'react-recaptcha';
+
+import InputWithIcon from '../../components/input-with-icon.component';
+import InputRecaptcha from '../../components/input-recaptcha.component';
 
 const loginSchema = yup.object().shape({
   mobile: yup.string().min(11, 'شماره همراه باید دارای 11 رقم باشد').max(11, 'شماره همراه باید دارای 11 رقم باشد').required('لطفا شماره همراه را وارد کنید'),
@@ -112,13 +113,10 @@ const Login = (props) => {
                     initialValues={{ mobile: '', password: '' }}
                     validationSchema={loginSchema}
                     onSubmit={(values, { setSubmitting }) => {
-
                       if (!isVerifed) {
                         setMessage('لطفا ریکپچا را تیک بزنید');
                         return false;
-
                       }
-
                       setMessage('');
                       setLoading(true);
                       handleSubmiting(values, setSubmitting);
@@ -134,47 +132,31 @@ const Login = (props) => {
                       /* and other goodies */
                     }) => (
                       <CForm onSubmit={handleSubmit}>
-                        <CInputGroup>
-                          <CInputGroupPrepend>
-                            <CInputGroupText>
-                              <CIcon name="cil-user" />
-                            </CInputGroupText>
-                          </CInputGroupPrepend>
-                          <CInput
-                            type="text"
-                            name="mobile"
-                            placeholder="شماره همراه"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.mobile} />
-                        </CInputGroup>
+                        <InputWithIcon
+                          className="mt-3"
+                          icon="cil-user"
+                          inputType="text"
+                          inputName="mobile"
+                          placeholder="شماره همراه"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.mobile} />
+
                         {errors.mobile && touched.mobile ? <div style={style.errorMessageStyle}>{errors.mobile}</div> : null}
 
-                        <CInputGroup className="mt-3">
-                          <CInputGroupPrepend>
-                            <CInputGroupText>
-                              <CIcon name="cil-lock-locked" />
-                            </CInputGroupText>
-                          </CInputGroupPrepend>
-                          <CInput
-                            type="password"
-                            name="password"
-                            placeholder="کلمه عبور"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.password} />
-                        </CInputGroup>
+                        <InputWithIcon
+                          className="mt-3"
+                          icon="cil-lock-locked"
+                          inputType="password"
+                          inputName="password"
+                          placeholder="کلمه عبور"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password} />
+
                         {errors.password && touched.password ? <div style={style.errorMessageStyle}>{errors.password}</div> : null}
 
-                        <CInputGroup className="mt-3">
-                          <Recaptcha
-                            sitekey="6LcILlgaAAAAAGsmNA8LeKbC9xQ7kumIcIe9QJ5a"
-                            render="explicit"
-                            hl="fa"
-                            verifyCallback={verifyCallback}
-                            expiredCallback={expiredCallback}
-                          />
-                        </CInputGroup>
+                        <InputRecaptcha className="mt-3" verifyCallback={verifyCallback} expiredCallback={expiredCallback} />
 
                         <CRow className="mt-4">
                           <CCol xs="6">

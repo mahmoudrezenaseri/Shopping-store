@@ -13,23 +13,17 @@ import {
     CProgress,
     CFormGroup
 } from '@coreui/react';
-import axios from 'axios';
-import { AuthContext } from '../../context/auth/AuthContext';
-import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { checkType, maxSelectedFile, checkFileSize } from './funcs';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import CIcon from '@coreui/icons-react'
 import classes from './css/add-media.module.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddMedia = (props) => {
-    const { dispatch } = useContext(AuthContext);
     const [loadedFiles, setLoadedFiles] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        dispatch({ type: 'check', payload: props })
-    }, []);
 
     const onFilesUpload = (event) => {
         if (checkType(event) && maxSelectedFile(event) && checkFileSize(event)) {

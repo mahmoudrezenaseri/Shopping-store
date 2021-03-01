@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AuthContext } from '../context/auth/AuthContext';
 import {
   CBadge,
@@ -12,13 +12,6 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 
 const TheHeaderDropdown = (props) => {
-
-  const { dispatch } = useContext(AuthContext);
-
-  const signOut = () => {
-    console.log(props)
-    // dispatch({ type: 'sign_out', payload: props });
-  }
 
   return (
     <CDropdown
@@ -70,7 +63,7 @@ const TheHeaderDropdown = (props) => {
           Settings
         </CDropdownItem>
         <CDropdownItem divider />
-        <CDropdownItem onClick={signOut}>
+        <CDropdownItem onClick={props.onSignOut}>
           <CIcon content={freeSet.cilPowerStandby} className="mfe-2" />
           خروج
         </CDropdownItem>
