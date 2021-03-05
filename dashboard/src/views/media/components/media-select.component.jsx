@@ -1,32 +1,30 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-    CButton,
-    CCard,
-    CCardHeader,
-    CCardBody,
-    CInput,
+    CCol,
     CRow,
+    CModal,
+    CModalBody,
+    CModalHeader,
+    CInput,
     CSpinner,
-    CAlert,
-    CCol
+    CButton,
+    CAlert
 } from '@coreui/react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import classes from '../css/select-media.module.css';
+import GetToken from '../../../context/auth/GetToken';
 
-import classes from './css/all-media.module.css';
+import MediaList from './media-list.component'
 
-import MediaList from './components/media-list.component'
-import MediaInfo from './components/media-info.component'
-
-const AllMedia = (props) => {
+const MediaSelect = (props) => {
+    const token = GetToken();
 
     const [loading, setLoading] = useState(true);
     const [showMoreButton, setShowMoreButton] = useState(false);
     const [files, setFiles] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const [modal, setModal] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [didMount, setDidMount] = useState(true);
 
@@ -43,6 +41,7 @@ const AllMedia = (props) => {
     }, [searchText]);
 
     useEffect(() => {
+        console.log("modal shown document")
 
         fetchData(page, limit);
     }, []);
@@ -50,7 +49,7 @@ const AllMedia = (props) => {
     const fetchData = (page, limit) => {
         axios({
             url: "/",
-            method: "post",
+            method: "post",    
             data: {
                 query: `
                     query{
@@ -91,11 +90,6 @@ const AllMedia = (props) => {
         });
     }
 
-    const openInfoModal = (item) => {
-        setModal(true);
-        setSelectedItem(item)
-    }
-
     const filterFiles = (event) => {
         setSearchText(event.target.value);
         setFiles([]);
@@ -107,14 +101,19 @@ const AllMedia = (props) => {
         setPageNumber(newPageNumber);
     }
 
+    const mediaSelectHandler = (item) => {     
+
+    }
+
+    const { showModal, closeModal } = props;
     return (
-        <div className="animated fadeIn">
+        <>
             <ToastContainer rtl={true} position="top-left" toastClassName="toastify" />
-            <CCard>
-                <CCardHeader>
-                    <h6>کتابخانه</h6>
-                </CCardHeader>
-                <CCardBody>
+            <CModal show={showModal} onClose={closeModal} size="lg">
+                <CModalHeader>
+                    <span>کتابخانه</span>
+                </CModalHeader>
+                <CModalBody>
                     <CRow className="mb-3">
                         <CCol sm="5" md="4">
                             <CInput value={searchText} onChange={filterFiles} placeholder="جستجو" />
@@ -123,12 +122,16 @@ const AllMedia = (props) => {
                     <CRow className="mb-5" className={classes.mediaSection}>
                         {
                             (loading === true) ?
-                                <CCol xs="12" className="text-center"> <CSpinner size="lg" /> </CCol> :
+                                <CCol xs="12" className="text-center">
+                                    <CSpinner size="lg" />
+                                </CCol> :
                                 (files.length > 0) ?
                                     <CCol xs="12">
-                                        <MediaList files={files} onClick={openInfoModal} />
+                                        <MediaList files={files} onClick={mediaSelectHandler} />
                                     </CCol> :
-                                    <CCol xs="12">  <CAlert color="primary" className="text-center">موردی یافت نشد!</CAlert></CCol>
+                                    <CCol xs="12"> 
+                                        <CAlert color="primary" className="text-center">موردی یافت نشد!</CAlert>
+                                    </CCol>
                         }
 
                         {
@@ -138,16 +141,10 @@ const AllMedia = (props) => {
                                 </CCol> : null
                         }
                     </CRow>
-
-                    {
-                        selectedItem != null ?
-                            <MediaInfo showModal={modal} closeModal={() => setModal(false)} selectedItem={selectedItem} />
-                            : null
-                    }
-                </CCardBody>
-            </CCard>
-        </div >
+                </CModalBody>
+            </CModal>
+        </>
     )
 }
 
-export default AllMedia;
+export default MediaSelect;

@@ -8,7 +8,7 @@ import {
 } from '@coreui/react';
 import classes from '../css/all-media.module.css';
 
-const FileInfo = ({selectedItem, showModal, closeModal}) => (
+const MediaInfo = ({selectedItem, showModal, closeModal}) => (
     <CModal show={showModal} onClose={closeModal} size="lg" className={classes.infoModal}>
     <CModalHeader>
         <span>اطلاعات پرونده</span>
@@ -16,7 +16,7 @@ const FileInfo = ({selectedItem, showModal, closeModal}) => (
     <CModalBody>
         <CRow>
             <CCol sm="6">
-                <img src={`${global.config.fileDirectory}${selectedItem.dir}`} />
+                <img src={`${global.config.server.baseURL}${selectedItem.dir}`} />
             </CCol>
             <CCol sm="6">
                 <table>
@@ -53,4 +53,4 @@ const FileInfo = ({selectedItem, showModal, closeModal}) => (
 </CModal> 
 );
 
-export default FileInfo;
+export default MediaInfo;

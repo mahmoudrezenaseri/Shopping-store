@@ -26,7 +26,39 @@ const _nav = [
         to: '/media/all',
       },
     ],
-  }
+  },
+  {
+    _tag: 'CSidebarNavTitle',
+    _children: ['فروشگاه']
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'دسته بندی',
+    to: '/category',
+    icon: <CIcon content={freeSet.cilApps} customClasses="c-sidebar-nav-icon" />
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'محصولات',
+    to: '/product',
+    icon: <CIcon content={freeSet.cil3d} customClasses="c-sidebar-nav-icon" />
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'نظرات',
+    to: '/comment',
+    icon: <CIcon content={freeSet.cilCommentBubble} customClasses="c-sidebar-nav-icon" />
+  },
+  {
+    _tag: 'CSidebarNavTitle',
+    _children: ['تنظیمات']
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'تنظیمات',
+    to: '/setting',
+    icon: <CIcon content={freeSet.cilSettings} customClasses="c-sidebar-nav-icon" />
+  },
 ]
 
 export default _nav

@@ -13,13 +13,15 @@ import {
     CProgress,
     CFormGroup
 } from '@coreui/react';
-import { freeSet } from '@coreui/icons'
 import { checkType, maxSelectedFile, checkFileSize } from './funcs';
 import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 import classes from './css/add-media.module.css';
 import 'react-toastify/dist/ReactToastify.css';
+
+import SubmitButton from '../../components/button/submit-button.component.jsx';
 
 const AddMedia = (props) => {
     const [loadedFiles, setLoadedFiles] = useState([]);
@@ -28,7 +30,7 @@ const AddMedia = (props) => {
     const onFilesUpload = (event) => {
         if (checkType(event) && maxSelectedFile(event) && checkFileSize(event)) {
             const files = event.target.files;
-            fileHandler(files);
+            prepareFiles(files);
         }
     }
 
@@ -56,7 +58,7 @@ const AddMedia = (props) => {
 
         if (checkType(event) && maxSelectedFile(event) && checkFileSize(event)) {
             const files = event.dataTransfer.files;
-            fileHandler(files);
+            prepareFiles(files);
         }
     }
 
@@ -118,7 +120,7 @@ const AddMedia = (props) => {
     }
 
     // Gets new selected files and add it to the array
-    function fileHandler(files) {
+    function prepareFiles(files) {
         const newLoadedFiles = [...loadedFiles];
 
         for (let index = 0; index < files.length; index++) {
@@ -133,7 +135,7 @@ const AddMedia = (props) => {
         setLoadedFiles(newLoadedFiles);
     }
 
-    const submitForm = () => {
+    const submitHandler = () => {
         setLoading(true);
 
         if (loadedFiles.length == 0) {
@@ -201,24 +203,12 @@ const AddMedia = (props) => {
                     </div>
                 </CCardBody>
                 <CCardFooter>
-                    <CButton type="submit" color="primary" onClick={submitForm}>
-                        {
-                            loading ? <CSpinner size="sm" /> : submitButtonContent()
-                        }
-
-                    </CButton>
+                    <SubmitButton onSubmit={submitHandler} loading={loading} icon={freeSet.cilCloudUpload} inputText="آپلود" />
                 </CCardFooter>
             </CCard>
         </div>
     )
 }
 
-const submitButtonContent = () => {
-    return (
-        <>
-            <CIcon content={freeSet.cilCloudUpload} size={'lg'} />
-            <strong className={classes.uploadText}>آپلود</strong>
-        </>)
-}
 
 export default AddMedia;

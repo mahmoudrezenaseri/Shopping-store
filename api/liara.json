@@ -4,6 +4,7 @@
       {
         "name": "my-disk",
         "mountTo": "public"
+        
       }
     ]
   }

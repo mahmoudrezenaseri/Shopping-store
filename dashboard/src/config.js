@@ -16,9 +16,11 @@ module.exports = global.config = {
         }
     },
     axios: {
-        baseURL: graphql_liara
+        baseURL: graphql_localhost
     },
-    fileDirectory: server_liara,
+    server: {
+        baseURL: server_localhost
+    },
     google: {
         recaptcha: {
             siteKey: "6LcILlgaAAAAAGsmNA8LeKbC9xQ7kumIcIe9QJ5a"

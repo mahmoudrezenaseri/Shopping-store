@@ -79,7 +79,7 @@ async function registerHandler(args) {
     args.password = bcrypt.hashSync(args.password, salt);
 
     let user = await User.create(args);
-    let token = await User.CreateToken(user.id, config.secretId, '10h');
+    let token = await User.CreateToken(user.id, config.secretId, '168h');
 
     return new Promise((resolve, reject) => {
         resolve({ user, token })

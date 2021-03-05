@@ -21,8 +21,8 @@ import {
 } from '@coreui/react'
 import axios from 'axios';
 
-import InputWithIcon from '../../components/input-with-icon.component';
-import InputRecaptcha from '../../components/input-recaptcha.component';
+import InputWithIcon from '../../../components/input/input-with-icon.component';
+import InputRecaptcha from '../../../components/input/input-recaptcha.component';
 
 const loginSchema = yup.object().shape({
   mobile: yup.string().min(11, 'شماره همراه باید دارای 11 رقم باشد').max(11, 'شماره همراه باید دارای 11 رقم باشد').required('لطفا شماره همراه را وارد کنید'),
@@ -50,10 +50,6 @@ const Login = (props) => {
   const [loading, setLoading] = useState(false);
   const [isVerifed, setIsVerifed] = useState(false);
   const { dispatch } = useContext(AuthContext)
-
-  useEffect(() => {
-    dispatch({ type: 'check_login_page', payload: props })
-  }, [])
 
   const handleSubmiting = (values, setSubmitting) => {
     axios({

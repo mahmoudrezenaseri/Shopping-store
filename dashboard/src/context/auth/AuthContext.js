@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react'
+import jwt_decode from "jwt-decode";
 
 export const AuthContext = React.createContext();
 
@@ -12,8 +13,18 @@ const authReducer = (state, action) => {
             localStorage.setItem('token', token)
             return { state: token }
         case 'check':
+            if (user) {
+                const { exp } = jwt_decode(user)
+                const expirationTime = (exp * 1000) - 60000;
+
+                if (Date.now() >= expirationTime) {
+                    localStorage.removeItem('token');
+                    action.payload.history.push('/login')
+                }
+            }
+
             if (!user) {
-                action.payload.history.push('/')
+                action.payload.history.push('/login')
             }
             break;
         case 'check_login_page':
@@ -23,7 +34,7 @@ const authReducer = (state, action) => {
             break;
         case 'sign_out':
             localStorage.removeItem('token');
-            action.payload.history.push('/');
+            action.payload.history.push('/login');
             break;
         default:
             return state
