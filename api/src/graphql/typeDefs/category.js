@@ -3,7 +3,6 @@ const { gql } = require("apollo-server-express");
 const typeDefs = gql`
     extend type Query {
         getAllCategory(input:InputGetCategory):[Category]
-
     }
     extend type Mutation {
         createCategory(input: InputCategory): ResultCategory!

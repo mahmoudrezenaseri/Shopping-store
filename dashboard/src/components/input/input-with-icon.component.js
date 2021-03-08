@@ -1,13 +1,14 @@
 import React from 'react'
 import {
-    CInput,
-    CInputGroup,
-    CInputGroupPrepend,
-    CInputGroupText
-  } from '@coreui/react'
+  CInput,
+  CInputGroup,
+  CInputGroupPrepend,
+  CInputGroupText
+} from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
-const InputWithIcon = ({className,icon,inputType,inputName,placeholder,onChange,onBlur,value}) => (
+const InputWithIcon = ({ className, icon, inputType, inputName, placeholder, onChange, onBlur, value, errorsInput, touchedInput }) => (
+  <>
     <CInputGroup className={className}>
       <CInputGroupPrepend>
         <CInputGroupText>
@@ -21,7 +22,10 @@ const InputWithIcon = ({className,icon,inputType,inputName,placeholder,onChange,
         onChange={onChange}
         onBlur={onBlur}
         value={value} />
-  </CInputGroup>
+    </CInputGroup>
+
+    {errorsInput && touchedInput ? <div className="error-message">{errorsInput}</div> : null}
+  </>
 )
 
 export default InputWithIcon

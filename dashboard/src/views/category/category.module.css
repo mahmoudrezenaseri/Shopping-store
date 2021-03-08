@@ -1,0 +1,58 @@
+.imagePreview {
+  width: 100%;
+}
+
+.imagePreviewSelect {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.imagePreviewRemove {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.imagePreviewWrapper {
+  position: relative;
+  border: 2px solid #ccc;
+  margin: auto;
+}
+
+@media (min-width: 320px) {
+  /* smartphones, iPhone, portrait 480x320 phones */
+  .imagePreviewWrapper {
+    width: 100%;
+  }
+}
+@media (min-width: 481px) {
+  /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+  .imagePreviewWrapper {
+    width: 90%;
+  }
+}
+@media (min-width: 641px) {
+  /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+  .imagePreviewWrapper {
+    width: 80%;
+  }
+}
+@media (min-width: 961px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .imagePreviewWrapper {
+    width: 70%;
+  }
+}
+@media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
+  .imagePreviewWrapper {
+    width: 60%;
+  }
+}
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
+  .imagePreviewWrapper {
+    width: 50%;
+  }
+}

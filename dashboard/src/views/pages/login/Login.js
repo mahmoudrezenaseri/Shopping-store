@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { AuthContext } from '../../../context/auth/AuthContext';
-import { Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -11,10 +10,6 @@ import {
   CCol,
   CContainer,
   CForm,
-  CInput,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText,
   CRow, CLink,
   CSpinner,
   CAlert
@@ -28,10 +23,6 @@ const loginSchema = yup.object().shape({
   mobile: yup.string().min(11, 'شماره همراه باید دارای 11 رقم باشد').max(11, 'شماره همراه باید دارای 11 رقم باشد').required('لطفا شماره همراه را وارد کنید'),
   password: yup.string().min(6, 'کلمه عبور باید حداقل دارای 6 حرف باشد').max(30, 'کلمه عبور باید حداکثر دارای 30 حرف باشد').required('لطفا کلمه عبور را وارد کنید'),
 });
-
-const style = {
-  errorMessageStyle: { margin: '5px 0px', color: 'red' }
-}
 
 const showErrorMessage = (message) => {
   if (message != '') {
@@ -136,9 +127,9 @@ const Login = (props) => {
                           placeholder="شماره همراه"
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values.mobile} />
-
-                        {errors.mobile && touched.mobile ? <div style={style.errorMessageStyle}>{errors.mobile}</div> : null}
+                          value={values.mobile}
+                          errorsInput={errors.mobile}
+                          touchedInput={touched.mobile} />
 
                         <InputWithIcon
                           className="mt-3"
@@ -148,9 +139,9 @@ const Login = (props) => {
                           placeholder="کلمه عبور"
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values.password} />
-
-                        {errors.password && touched.password ? <div style={style.errorMessageStyle}>{errors.password}</div> : null}
+                          value={values.password}
+                          errorsInput={errors.password}
+                          touchedInput={touched.password} />
 
                         <InputRecaptcha className="mt-3" verifyCallback={verifyCallback} expiredCallback={expiredCallback} />
 

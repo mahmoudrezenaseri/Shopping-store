@@ -21,6 +21,9 @@ module.exports = global.config = {
     server: {
         baseURL: server_localhost
     },
+    defaults: {
+        image: "/default-placeholder.png"
+    },
     google: {
         recaptcha: {
             siteKey: "6LcILlgaAAAAAGsmNA8LeKbC9xQ7kumIcIe9QJ5a"

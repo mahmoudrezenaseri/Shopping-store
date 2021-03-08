@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     CButton,
     CCard,
@@ -21,7 +21,7 @@ import { freeSet } from '@coreui/icons'
 import classes from './css/add-media.module.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-import SubmitButton from '../../components/button/submit-button.component.jsx';
+import SubmitButton from '../../components/button/submit-button.component';
 
 const AddMedia = (props) => {
     const [loadedFiles, setLoadedFiles] = useState([]);
@@ -203,7 +203,7 @@ const AddMedia = (props) => {
                     </div>
                 </CCardBody>
                 <CCardFooter>
-                    <SubmitButton onSubmit={submitHandler} loading={loading} icon={freeSet.cilCloudUpload} inputText="آپلود" />
+                    <SubmitButton onSubmit={submitHandler} loading={loading} icon={freeSet.cilCloudUpload} inputText="آپلود" disabled={false} />
                 </CCardFooter>
             </CCard>
         </div>

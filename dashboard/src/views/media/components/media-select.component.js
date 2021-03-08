@@ -14,12 +14,10 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import classes from '../css/select-media.module.css';
-import GetToken from '../../../context/auth/GetToken';
 
 import MediaList from './media-list.component'
 
 const MediaSelect = (props) => {
-    const token = GetToken();
 
     const [loading, setLoading] = useState(true);
     const [showMoreButton, setShowMoreButton] = useState(false);
@@ -41,15 +39,13 @@ const MediaSelect = (props) => {
     }, [searchText]);
 
     useEffect(() => {
-        console.log("modal shown document")
-
         fetchData(page, limit);
     }, []);
 
     const fetchData = (page, limit) => {
         axios({
             url: "/",
-            method: "post",    
+            method: "post",
             data: {
                 query: `
                     query{
@@ -101,10 +97,6 @@ const MediaSelect = (props) => {
         setPageNumber(newPageNumber);
     }
 
-    const mediaSelectHandler = (item) => {     
-
-    }
-
     const { showModal, closeModal } = props;
     return (
         <>
@@ -127,9 +119,9 @@ const MediaSelect = (props) => {
                                 </CCol> :
                                 (files.length > 0) ?
                                     <CCol xs="12">
-                                        <MediaList files={files} onClick={mediaSelectHandler} />
+                                        <MediaList files={files} onFileClick={props.onFileClick} />
                                     </CCol> :
-                                    <CCol xs="12"> 
+                                    <CCol xs="12">
                                         <CAlert color="primary" className="text-center">موردی یافت نشد!</CAlert>
                                     </CCol>
                         }

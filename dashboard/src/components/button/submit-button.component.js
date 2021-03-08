@@ -14,8 +14,8 @@ const submitButtonContent = (icon,inputText) => {
         </>)
 }
 
-const SubmitButton = ({onSubmit,loading,icon,inputText}) => (
-    <CButton type="submit" color="primary" onClick={onSubmit}>
+const SubmitButton = ({onSubmit,loading,icon,inputText,disabled}) => (
+    <CButton type="submit" color="primary" onClick={onSubmit} disabled={disabled}>
         {
             loading ? <CSpinner size="sm" /> : submitButtonContent(icon,inputText)
         }

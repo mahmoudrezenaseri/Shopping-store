@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     CButton,
     CCard,
@@ -126,7 +126,7 @@ const AllMedia = (props) => {
                                 <CCol xs="12" className="text-center"> <CSpinner size="lg" /> </CCol> :
                                 (files.length > 0) ?
                                     <CCol xs="12">
-                                        <MediaList files={files} onClick={openInfoModal} />
+                                        <MediaList files={files} onFileClick={openInfoModal} />
                                     </CCol> :
                                     <CCol xs="12">  <CAlert color="primary" className="text-center">موردی یافت نشد!</CAlert></CCol>
                         }
