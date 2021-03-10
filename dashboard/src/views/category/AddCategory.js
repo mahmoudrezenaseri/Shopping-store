@@ -61,7 +61,7 @@ const AddCategory = (props) => {
                 variables: {
                     "name": values.name,
                     "label": values.label,
-                    "parent": values.parent,
+                    "parent": values.parent !== "null" ? values.parent : null,
                     "image": file._id ? file._id : null
                 }
             }
@@ -105,17 +105,19 @@ const AddCategory = (props) => {
             method: "post",
             data: {
                 query: `
-                  query getCategory($page:Int,$limit:Int){
-                    getAllCategory(input:{page:$page,limit:$limit}){
-                      _id,
-                      name
+                  query{
+                    getAllCategoryTreeView {
+                        _id,
+                        name,
+                        children{
+                            _id,
+                            name,
+                            level,
+                            parent
+                        }
                     }
                   } 
-                `,
-                variables: {
-                    "page": 1,
-                    "limit": 10
-                }
+                `
             }
         }).then((response) => {
             if (response.data.errors) {
@@ -124,14 +126,57 @@ const AddCategory = (props) => {
                 setLoading(false);
             }
             else { // success
-                const defaultItem = [{ _id: "", name: "انتخاب کنید" }, { _id: null, name: "فاقد دسته والد" }];
-                setOptions([...defaultItem, ...response.data.data.getAllCategory])
+                const defaultItem = [{ _id: "", name: "انتخاب کنید" }, { _id: "null", name: "فاقد دسته والد" }];
+                const categories = prepareCategoryOptions(response.data.data.getAllCategoryTreeView)
+                setOptions([...defaultItem, ...categories])
                 setLoading(false);
             }
         }).catch((error) => {
             toast.error(global.config.message.error.fa);
             setLoading(false);
         });
+    }
+
+    function prepareCategoryOptions(categories) {
+        let newArray = [];
+        for (let index = 0; index < categories.length; index++) {
+            const element = categories[index];
+            newArray.push({ "_id": element._id, "name": element.name });
+
+            // console.log(element.children)
+            if (element.children.length > 0) {
+                for (let index = 0; index < element.children.length; index++) {
+
+                    let item = element.children[index];
+                    let itemChildren = element.children.filter(a => a.parent === item._id && a.level !== 0);
+
+                    if (itemChildren.length == 0) {
+                        continue
+                    }
+
+                    let indent = '';
+                    for (let index = 0; index <= item.level; index++) {
+                        indent += '-';
+                    }
+
+                    newArray.push({ "_id": item._id, "name": indent + item.name });
+
+                    // console.log(item.name)
+                    // console.log(itemChildren)
+                    for (let index = 0; index < itemChildren.length; index++) {
+                        const item = itemChildren[index];
+                        let indent = '';
+                        for (let index = 0; index <= item.level; index++) {
+                            indent += '-';
+                        }
+
+                        newArray.push({ "_id": item._id, "name": indent + item.name });
+                    }
+                }
+            }
+        }
+        // console.log(newArray)
+        return newArray
     }
 
     return (

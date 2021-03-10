@@ -2,7 +2,8 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
     extend type Query {
-        getAllCategory(input:InputGetCategory):[Category]
+        getAllCategory(input:InputGetCategory):[Category],
+        getAllCategoryTreeView:[CategoryHierarchy]
     }
     extend type Mutation {
         createCategory(input: InputCategory): ResultCategory!
@@ -12,8 +13,15 @@ const typeDefs = gql`
         _id: ID,
         name: String,
         label: String,
-        parent: CategoryParent,
-        image: Files
+        parent: ID,
+        image: Files,
+        level:Int
+    }  
+
+    type CategoryHierarchy {
+        _id: ID,
+        name: String,
+        children:[Category]
     }
 
     type ResultCategory {

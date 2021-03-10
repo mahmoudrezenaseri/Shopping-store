@@ -11,6 +11,14 @@ const resolvers = {
                 });
 
             return category.docs
+        },
+        getAllCategoryTreeView: async (param, args) => {
+            const { category } = await getAllCategoryTreeViewHandler(args)
+                .catch((error) => {
+                    handleErrors(error, error.code, error.message)
+                });
+
+            return category
         }
     },
     Mutation: {
@@ -40,6 +48,45 @@ const getAllCategoryHandler = async (args) => {
     const page = args.input.page || 1;
     const limit = args.input.limit || 10;
     const category = await Category.paginate({}, { page, limit, populate: { path: 'parent' } });
+
+    return new Promise((resolve, reject) => {
+        resolve({ category })
+    })
+}
+
+const getAllCategoryTreeViewHandler = async (args) => {
+
+    const category = await Category.aggregate([{
+        $graphLookup: {
+            from: "categories",
+            startWith: "$_id",
+            connectFromField: "_id",
+            connectToField: "parent",
+            as: "children",
+            depthField: "level"
+        }
+    },
+    { $match: { parent: null } },
+    {
+        $addFields: {
+            children: {
+                $reverseArray: {
+                    $map: {
+                        input: "$children",
+                        as: "t",
+                        in: { "_id": "$$t._id", "name": "$$t.name", "parent": "$$t.parent", "level": "$$t.level" }
+                    }
+                }
+            }
+        }
+    }
+    ], function (err, data) {
+
+        if (err)
+            throw err;
+
+        // console.log(data);
+    });
 
     return new Promise((resolve, reject) => {
         resolve({ category })
