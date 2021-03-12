@@ -14,7 +14,7 @@ import {
     CFormGroup
 } from '@coreui/react';
 import { checkType, maxSelectedFile, checkFileSize } from './funcs';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
@@ -158,7 +158,6 @@ const AddMedia = (props) => {
 
     return (
         <div className="animated fadeIn">
-            <ToastContainer rtl={true} position="top-left" toastClassName="toastify" />
             <CAlert color="warning">
                 <h4 className="alert-heading">توجه!</h4>
                 <ul>

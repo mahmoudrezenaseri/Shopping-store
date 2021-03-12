@@ -7,20 +7,19 @@ import {
     CButton,
     CRow,
     CForm,
-    CCol,
-    CFormGroup,
-    CLabel
+    CCol
 } from '@coreui/react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
-import classes from './category.module.css';
+import classes from './css/add-category.module.css';
 
 import SubmitButton from '../../components/button/submit-button.component';
 import InputWithLabel from '../../components/input/input-with-label.component';
 import Select2WithLabel from '../../components/input/select2-with-label.component';
 import MediaSelect from '../media/components/media-select.component';
+import CancelButton from '../../components/button/cancel-button.component';
 
 const createSchema = yup.object().shape({
     name: yup.string().max(50, 'عنوان باید حداکثر دارای 50 کاراکتر باشد').required('لطفا عنوان را وارد کنید'),
@@ -30,8 +29,7 @@ const createSchema = yup.object().shape({
 });
 
 const AddCategory = (props) => {
-
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [modal, setModal] = useState(false);
     const [file, setFile] = useState({})
     const [options, setOptions] = useState([]);
@@ -41,8 +39,7 @@ const AddCategory = (props) => {
         getAllCategory()
     }, []);
 
-    const handleSubmiting = (values, setSubmitting) => {
-        console.log(values.parent)
+    const handleSubmiting = (values, setSubmitting, resetForm) => {
         axios({
             url: "/",
             method: "post",
@@ -78,6 +75,8 @@ const AddCategory = (props) => {
                 toast.success(response.data.data.createCategory.message)
                 setLoading(false);
                 setSubmitting(false);
+                clearForm()
+                resetForm()
             }
         }).catch((error) => {
             toast.error(global.config.message.error.fa);
@@ -99,6 +98,11 @@ const AddCategory = (props) => {
         setFile(item)
         setModal(false);
         setFileSelected(true);
+    }
+
+    function clearForm() {
+        setFile({});
+        setFileSelected(false)
     }
 
     const getAllCategory = () => {
@@ -182,8 +186,6 @@ const AddCategory = (props) => {
 
     return (
         <div className="animated fadeIn">
-            <ToastContainer rtl={true} position="top-left" toastClassName="toastify" />
-
             <CCard>
                 <CCardHeader>
                     <CRow>
@@ -195,9 +197,9 @@ const AddCategory = (props) => {
                 <Formik
                     initialValues={{ name: '', label: '', parent: '' }}
                     validationSchema={createSchema}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         setLoading(true);
-                        handleSubmiting(values, setSubmitting);
+                        handleSubmiting(values, setSubmitting, resetForm);
                     }} >
                     {({
                         values,
@@ -207,8 +209,8 @@ const AddCategory = (props) => {
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
-                        setFieldValue
-                        /* and other goodies */
+                        setFieldValue,
+                        resetForm
                     }) => (
                         <CForm onSubmit={handleSubmit}>
                             <CCardBody>
@@ -241,12 +243,14 @@ const AddCategory = (props) => {
                                         </CCol>
                                         <CCol xs="12">
                                             <Select2WithLabel
+                                                required
                                                 name="parent"
                                                 label="دسته والد"
                                                 value={values.parent}
                                                 onChange={e => setFieldValue("parent", e.value)}
                                                 options={options}
                                                 errorsInput={errors.parent}
+                                                touchedInput={touched.parent}
                                             />
                                         </CCol>
                                     </CCol>
@@ -273,10 +277,10 @@ const AddCategory = (props) => {
                                         </CRow>
                                     </CCol>
                                 </CRow>
-
                             </CCardBody>
                             <CCardFooter>
                                 <SubmitButton loading={loading} inputText="ثبت" disabled={isSubmitting} />
+                                <CancelButton onClick={() => { resetForm(); clearForm() }} />
                             </CCardFooter>
                         </CForm>
                     )}

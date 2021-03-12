@@ -10,7 +10,12 @@ const resolvers = {
                     handleErrors(error, error.code, error.message)
                 });
 
-            return category.docs
+            return {
+                totalDocs: category.totalDocs,
+                hasNextPage: category.hasNextPage,
+                page: category.page,
+                categories: category.docs,
+            };
         },
         getAllCategoryTreeView: async (param, args) => {
             const { category } = await getAllCategoryTreeViewHandler(args)
@@ -47,7 +52,7 @@ const getAllCategoryHandler = async (args) => {
 
     const page = args.input.page || 1;
     const limit = args.input.limit || 10;
-    const category = await Category.paginate({}, { page, limit, populate: { path: 'parent' } });
+    const category = await Category.paginate({}, { page, limit, populate: [{ path: 'parent' }, { path: 'image' }] });
 
     return new Promise((resolve, reject) => {
         resolve({ category })

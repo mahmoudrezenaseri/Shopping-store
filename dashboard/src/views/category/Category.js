@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import {
     CButton,
     CCard,
@@ -8,44 +7,84 @@ import {
     CCardBody,
     CCardFooter,
     CRow,
-    CBadge,
-    CDataTable,
     CCol
 } from '@coreui/react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-
-import usersData from '../users/UsersData'
-
-const getBadge = status => {
-    switch (status) {
-        case 'Active': return 'success'
-        case 'Inactive': return 'secondary'
-        case 'Pending': return 'warning'
-        case 'Banned': return 'danger'
-        default: return 'primary'
-    }
-}
-const fields = ['name', 'registered', 'role', 'status']
+import axios from 'axios';
+import DataTable from 'react-data-table-component';
+import { columns } from './funcs';
 
 const Category = (props) => {
 
     let history = useHistory();
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
+    const [totalRows, setTotalRows] = useState(0);
+    const [perPage, setPerPage] = useState(10);
 
     useEffect(() => {
-        fetchData()
-    })
+        getAllCategory(1)
+    }, []);
 
-    function fetchData() {
+    function getAllCategory(page, limit) {
 
+        setLoading(true)
+        axios({
+            url: "/",
+            method: "post",
+            data: {
+                query: `
+                  query getCategory($page:Int,$limit:Int){
+                    getAllCategory(input:{page:$page,limit:$limit}){
+                        totalDocs,
+                        page,
+                        categories{
+                            name,
+                            parent{
+                                name
+                            },
+                            image{
+                                dir
+                            }
+                        }
+                    }
+                  } 
+                `,
+                variables: {
+                    "page": page,
+                    "limit": (typeof limit !== 'undefined') ? limit : perPage
+                }
+            }
+        }).then((response) => {
+            if (response.data.errors) {
+                const { message } = response.data.errors[0];
+                toast.error(message);
+                setLoading(false);
+            }
+            else { // success
+                setData(response.data.data.getAllCategory.categories);
+                setTotalRows(response.data.data.getAllCategory.totalDocs);
+                setLoading(false);
+            }
+        }).catch((error) => {
+            toast.error(global.config.message.error.fa);
+            setLoading(false);
+        });
     }
+
+    const handlePageChange = async (page) => {
+        getAllCategory(page)
+    };
+
+    const handlePerRowsChange = async (newPerPage, page) => {
+        getAllCategory(page, newPerPage)
+        setPerPage(newPerPage)
+    };
 
     return (
         <div className="animated fadeIn">
-            <ToastContainer rtl={true} position="top-left" toastClassName="toastify" />
-
             <CCard>
                 <CCardHeader>
                     <CRow>
@@ -62,29 +101,22 @@ const Category = (props) => {
                 </CCardHeader>
 
                 <CCardBody>
-
                     <CRow>
                         <CCol md="12" >
                             <CCard>
                                 <CCardBody>
-                                    <CDataTable
-                                        items={usersData}
-                                        fields={fields}
+                                    <DataTable
+                                        title="لیست دسته بندی ها"
+                                        columns={columns}
+                                        data={data}
                                         striped
-                                        itemsPerPage={5}
                                         pagination
-                                        scopedSlots={{
-                                            'status':
-                                                (item) => (
-                                                    <td>
-                                                        <CBadge color={getBadge(item.status)}>
-                                                            {item.status}
-                                                        </CBadge>
-                                                    </td>
-                                                )
-
-                                        }}
-                                    />
+                                        progressPending={loading}
+                                        paginationTotalRows={totalRows}
+                                        onChangePage={handlePageChange}
+                                        onChangeRowsPerPage={handlePerRowsChange}
+                                        paginationServer
+                                        direction="rtl" />
                                 </CCardBody>
                             </CCard>
                         </CCol>

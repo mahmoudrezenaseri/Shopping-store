@@ -5,13 +5,14 @@ import {
 } from '@coreui/react'
 import Select from 'react-select';
 
-const Select2WithLabel = ({ label, inputName, required, onChange, onBlur, value, options, errorsInput }) => (
+const Select2WithLabel = ({ label, inputName, required, onChange, onBlur, value, options, errorsInput, touchedInput }) => (
 
   <CFormGroup>
     <CLabel htmlFor={inputName}>
       {label}
       {(required) ? <span className="text-danger"><b>*</b></span> : null}
     </CLabel>
+
     <Select
       placeholder="جستجو"
       name={inputName}
@@ -21,7 +22,7 @@ const Select2WithLabel = ({ label, inputName, required, onChange, onBlur, value,
       onChange={onChange}
       options={options} />
 
-    {(errorsInput) ? <div className="error-message">{errorsInput}</div> : null}
+    {(errorsInput && touchedInput) ? <div className="error-message">{errorsInput}</div> : null}
   </CFormGroup>
 )
 

@@ -11,7 +11,7 @@ import {
     CCol
 } from '@coreui/react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import classes from './css/all-media.module.css';
@@ -113,7 +113,6 @@ const AllMedia = (props) => {
 
     return (
         <div className="animated fadeIn">
-            <ToastContainer rtl={true} position="top-left" toastClassName="toastify" />
             <CCard>
                 <CCardHeader>
                     <h6>کتابخانه</h6>

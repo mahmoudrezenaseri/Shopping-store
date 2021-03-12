@@ -6,6 +6,8 @@ import {
   TheHeader
 } from './index'
 import { AuthContext } from '../context/auth/AuthContext';
+import { ToastContainer } from 'react-toastify';
+import '../assets/css/main.css'
 
 const TheLayout = (props) => {
 
@@ -27,6 +29,8 @@ const TheLayout = (props) => {
       <div className="c-wrapper">
         <TheHeader onSignOut={signOut} />
         <div className="c-body">
+
+          <ToastContainer rtl={true} position="top-left" toastClassName="toastify" />
           <TheContent />
         </div>
         <TheFooter />
