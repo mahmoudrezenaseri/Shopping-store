@@ -7,18 +7,20 @@ import {
     CButton,
     CRow,
     CForm,
-    CCol
+    CCol,
+    CFormGroup,
+    CLabel
 } from '@coreui/react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
+import classes from './category.module.css';
 
 import SubmitButton from '../../components/button/submit-button.component';
 import InputWithLabel from '../../components/input/input-with-label.component';
-import SelectWithLabel from '../../components/input/select-with-label.component';
+import Select2WithLabel from '../../components/input/select2-with-label.component';
 import MediaSelect from '../media/components/media-select.component';
-import classes from './category.module.css';
 
 const createSchema = yup.object().shape({
     name: yup.string().max(50, 'عنوان باید حداکثر دارای 50 کاراکتر باشد').required('لطفا عنوان را وارد کنید'),
@@ -40,7 +42,7 @@ const AddCategory = (props) => {
     }, []);
 
     const handleSubmiting = (values, setSubmitting) => {
-
+        console.log(values.parent)
         axios({
             url: "/",
             method: "post",
@@ -126,7 +128,7 @@ const AddCategory = (props) => {
                 setLoading(false);
             }
             else { // success
-                const defaultItem = [{ _id: "", name: "انتخاب کنید" }, { _id: "null", name: "فاقد دسته والد" }];
+                const defaultItem = [{ value: "null", label: "فاقد دسته والد" }];
                 const categories = prepareCategoryOptions(response.data.data.getAllCategoryTreeView)
                 setOptions([...defaultItem, ...categories])
                 setLoading(false);
@@ -139,44 +141,43 @@ const AddCategory = (props) => {
 
     function prepareCategoryOptions(categories) {
         let newArray = [];
-        for (let index = 0; index < categories.length; index++) {
+        for (let index = 0; index < categories.length; index++) { // لوپ در دسته بندی های بدون والد
             const element = categories[index];
-            newArray.push({ "_id": element._id, "name": element.name });
+            newArray.push({ "value": element._id, "label": element.name }); // افزودن آنها به آرایه جدید
 
-            // console.log(element.children)
             if (element.children.length > 0) {
-                for (let index = 0; index < element.children.length; index++) {
-
+                for (let index = 0; index < element.children.length; index++) { // لوپ در فرزندان دسته بندی والد در صورت وجود
                     let item = element.children[index];
-                    let itemChildren = element.children.filter(a => a.parent === item._id && a.level !== 0);
+                    let itemChildren = element.children.filter(a => a.parent === item._id); // پیدا کردن فرزندان این دسته بندی در صورت وجود
 
-                    if (itemChildren.length == 0) {
+                    // اگر فرزندی وجود نداشت به این معناست که قبلا در زیر مجموعه یکی دیگر از دسته بندی ها اضافه شده و نیازی به افزودن آن نیست
+                    // همچنین سطح آن نباید صفر باشد(سطح صفر یعنی اولین سطح دسته والد)
+                    if (itemChildren.length == 0 && item.level != 0) {
                         continue
                     }
 
-                    let indent = '';
-                    for (let index = 0; index <= item.level; index++) {
-                        indent += '-';
-                    }
+                    newArray.push({ "value": item._id, "label": addIndentToCategoryChildren(item) + item.name });
 
-                    newArray.push({ "_id": item._id, "name": indent + item.name });
-
-                    // console.log(item.name)
-                    // console.log(itemChildren)
                     for (let index = 0; index < itemChildren.length; index++) {
                         const item = itemChildren[index];
-                        let indent = '';
-                        for (let index = 0; index <= item.level; index++) {
-                            indent += '-';
-                        }
 
-                        newArray.push({ "_id": item._id, "name": indent + item.name });
+                        newArray.push({ "value": item._id, "label": addIndentToCategoryChildren(item) + item.name });
                     }
                 }
             }
         }
-        // console.log(newArray)
+
         return newArray
+    }
+
+    // افزودن خط تیره به دسته بندی های فرزند برای مشخص شدن در لیست
+    function addIndentToCategoryChildren(item) {
+        let indent = '';
+        for (let index = 0; index <= item.level; index++) {
+            indent += '-';
+        }
+
+        return indent;
     }
 
     return (
@@ -206,6 +207,7 @@ const AddCategory = (props) => {
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
+                        setFieldValue
                         /* and other goodies */
                     }) => (
                         <CForm onSubmit={handleSubmit}>
@@ -238,16 +240,14 @@ const AddCategory = (props) => {
                                                 touchedInput={touched.label} />
                                         </CCol>
                                         <CCol xs="12">
-                                            <SelectWithLabel
+                                            <Select2WithLabel
+                                                name="parent"
                                                 label="دسته والد"
-                                                required={true}
-                                                inputName="parent"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
                                                 value={values.parent}
+                                                onChange={e => setFieldValue("parent", e.value)}
                                                 options={options}
                                                 errorsInput={errors.parent}
-                                                touchedInput={touched.parent} />
+                                            />
                                         </CCol>
                                     </CCol>
                                     <CCol md="6">

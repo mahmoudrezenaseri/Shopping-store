@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {
@@ -7,21 +7,40 @@ import {
     CCardHeader,
     CCardBody,
     CCardFooter,
-    CForm,
-    CInput,
     CRow,
-    CAlert,
-    CFormGroup,
+    CBadge,
+    CDataTable,
     CCol
 } from '@coreui/react';
 import { toast, ToastContainer } from 'react-toastify';
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 
+import usersData from '../users/UsersData'
+
+const getBadge = status => {
+    switch (status) {
+        case 'Active': return 'success'
+        case 'Inactive': return 'secondary'
+        case 'Pending': return 'warning'
+        case 'Banned': return 'danger'
+        default: return 'primary'
+    }
+}
+const fields = ['name', 'registered', 'role', 'status']
+
 const Category = (props) => {
 
     let history = useHistory();
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        fetchData()
+    })
+
+    function fetchData() {
+
+    }
 
     return (
         <div className="animated fadeIn">
@@ -41,7 +60,36 @@ const Category = (props) => {
                         </CCol>
                     </CRow>
                 </CCardHeader>
-                <CCardBody>hello</CCardBody>
+
+                <CCardBody>
+
+                    <CRow>
+                        <CCol md="12" >
+                            <CCard>
+                                <CCardBody>
+                                    <CDataTable
+                                        items={usersData}
+                                        fields={fields}
+                                        striped
+                                        itemsPerPage={5}
+                                        pagination
+                                        scopedSlots={{
+                                            'status':
+                                                (item) => (
+                                                    <td>
+                                                        <CBadge color={getBadge(item.status)}>
+                                                            {item.status}
+                                                        </CBadge>
+                                                    </td>
+                                                )
+
+                                        }}
+                                    />
+                                </CCardBody>
+                            </CCard>
+                        </CCol>
+                    </CRow>
+                </CCardBody>
 
             </CCard>
         </div>

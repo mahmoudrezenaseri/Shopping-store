@@ -22,7 +22,7 @@ const SelectWithLabel = ({ label, inputName, required, onChange, onBlur, value, 
       {
         options.map((item, key) => {
           return (
-            <option key={key} value={item._id}>{item.name}</option>
+            <option key={key} value={item.value}>{item.label}</option>
           )
         })
       }

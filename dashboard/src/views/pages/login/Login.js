@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { AuthContext } from '../../../context/auth/AuthContext';
@@ -10,31 +10,20 @@ import {
   CCol,
   CContainer,
   CForm,
-  CRow, CLink,
+  CRow,
   CSpinner,
-  CAlert
 } from '@coreui/react'
 import axios from 'axios';
 
 import InputWithIcon from '../../../components/input/input-with-icon.component';
 import InputRecaptcha from '../../../components/input/input-recaptcha.component';
+import ErrorMessage from './components/error-message.component';
+import LoginInfo from './components/login-info.component';
 
 const loginSchema = yup.object().shape({
   mobile: yup.string().min(11, 'شماره همراه باید دارای 11 رقم باشد').max(11, 'شماره همراه باید دارای 11 رقم باشد').required('لطفا شماره همراه را وارد کنید'),
   password: yup.string().min(6, 'کلمه عبور باید حداقل دارای 6 حرف باشد').max(30, 'کلمه عبور باید حداکثر دارای 30 حرف باشد').required('لطفا کلمه عبور را وارد کنید'),
 });
-
-const showErrorMessage = (message) => {
-  if (message != '') {
-    return (<CRow className="justify-content-center mt-4">
-      <CCol md="8">
-        <CAlert color="danger" closeButton>
-          {message}
-        </CAlert>
-      </CCol>
-    </CRow>)
-  }
-}
 
 const Login = (props) => {
   const [message, setMessage] = useState('');
@@ -143,7 +132,7 @@ const Login = (props) => {
                           errorsInput={errors.password}
                           touchedInput={touched.password} />
 
-                        <InputRecaptcha className="mt-3" verifyCallback={verifyCallback} expiredCallback={expiredCallback} />
+                        <InputRecaptcha className="mt-3" verifyCallback={verifyCallback} />
 
                         <CRow className="mt-4">
                           <CCol xs="6">
@@ -160,28 +149,17 @@ const Login = (props) => {
                   </Formik>
                 </CCardBody>
               </CCard>
+
               <CCard className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
-                  <h4>تکنولوژی ها استفاده شده : </h4>
-                  <div>
-                    <h5>ReactJs</h5>
-                    <h5>Node.js</h5>
-                    <h5>React Native</h5>
-
-                    <CLink className="c-subheader-nav-link" href="https://github.com/mahmoudrezenaseri/digikala">
-                      <CButton color="primary" className="mt-3" active tabIndex={-2}>پروژه در گیت هاب!</CButton>
-                    </CLink>
-                    <CLink className="c-subheader-nav-link" href="mahmoudreza.naseri@gmail.com">
-                      <CButton color="success" className="mt-3" active tabIndex={-2}>ارتباط با ما</CButton>
-                    </CLink>
-                  </div>
+                  <LoginInfo />
                 </CCardBody>
               </CCard>
             </CCardGroup>
           </CCol>
         </CRow>
 
-        {showErrorMessage(message)}
+        <ErrorMessage message={message} />
       </CContainer>
     </div >
   )

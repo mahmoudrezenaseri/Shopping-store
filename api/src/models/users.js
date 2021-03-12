@@ -21,6 +21,8 @@ User.statics.CreateToken = async (id, secretId, exp) => {
 
 User.statics.CheckToken = async (req, secretId) => {
   const token = req.headers['token'];
+  console.log("token")
+  console.log(token)
   if (token) {
     return await jwt.verify(token, secretId);
   } else {

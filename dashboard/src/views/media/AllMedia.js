@@ -18,8 +18,12 @@ import classes from './css/all-media.module.css';
 
 import MediaList from './components/media-list.component'
 import MediaInfo from './components/media-info.component'
+import GetToken from '../../context/auth/GetToken';
+
+const token = GetToken();
 
 const AllMedia = (props) => {
+
 
     const [loading, setLoading] = useState(true);
     const [showMoreButton, setShowMoreButton] = useState(false);

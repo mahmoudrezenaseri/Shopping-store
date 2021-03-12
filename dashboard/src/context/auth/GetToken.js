@@ -3,6 +3,6 @@ const GetToken = () => {
     if (user) {
         return user
     }
-    return ''
+    return 'sdfsf'
 };
 export default GetToken;
