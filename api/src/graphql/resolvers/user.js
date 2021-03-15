@@ -18,9 +18,9 @@ const resolvers = {
         },
         getAllUserWithPagination: async (param, args, { req, res }) => {
             // check if user has logged in and is administrator
-            // if (!await common.checkIfAdmin(req, config.secretId)) {
-            //     handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            // }
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            }
 
             const { user } = await getAllUserWithPaginationHandler(args)
                 .catch((error) => {
@@ -78,10 +78,6 @@ async function loginHandler(args) {
 }
 
 const getAllUserWithPaginationHandler = async (args) => {
-    console.log(args.input.searchText)
-    console.log(args.input.page)
-    console.log(args.input.limit)
-
     const page = args.input.page || 1;
     const limit = args.input.limit || 10;
     const user = (args.input.searchText != "") ?
