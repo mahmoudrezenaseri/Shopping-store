@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import {
-    CButton,
     CCard,
     CCardHeader,
     CCardBody,
     CCardFooter,
     CForm,
-    CInput,
-    CRow,
-    CSpinner,
     CAlert,
     CProgress,
     CFormGroup
@@ -19,7 +15,6 @@ import axios from 'axios';
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import classes from './css/add-media.module.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 import SubmitButton from '../../components/button/submit-button.component';
 
@@ -66,16 +61,16 @@ const AddMedia = (props) => {
     function getFormData(element) {
         let data = {
             query: `
-                    mutation addImage($image: Upload!){
-                        createFile(image: $image){
-                            status,
-                            message,
-                            data {
-                                name,
-                                dir
-                            }                   
-                        }
-                    } `,
+                mutation addImage($image: Upload!){
+                    createFile(image: $image){
+                        status,
+                        message,
+                        data {
+                            name,
+                            dir
+                        }                   
+                    }
+                } `,
             variables: {
                 "image": null,
             }

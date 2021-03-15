@@ -12,18 +12,12 @@ import {
 } from '@coreui/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import classes from './css/all-media.module.css';
 
 import MediaList from './components/media-list.component'
 import MediaInfo from './components/media-info.component'
-import GetToken from '../../context/auth/GetToken';
-
-const token = GetToken();
 
 const AllMedia = (props) => {
-
 
     const [loading, setLoading] = useState(true);
     const [showMoreButton, setShowMoreButton] = useState(false);
@@ -47,7 +41,6 @@ const AllMedia = (props) => {
     }, [searchText]);
 
     useEffect(() => {
-
         fetchData(page, limit);
     }, []);
 

@@ -7,6 +7,8 @@ import {
 } from './index'
 import { AuthContext } from '../context/auth/AuthContext';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import '../assets/css/main.css'
 
 const TheLayout = (props) => {

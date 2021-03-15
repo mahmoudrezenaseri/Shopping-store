@@ -9,7 +9,7 @@ import {
     CForm,
     CCol
 } from '@coreui/react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';

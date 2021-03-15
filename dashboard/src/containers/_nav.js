@@ -50,6 +50,12 @@ const _nav = [
     icon: <CIcon content={freeSet.cilCommentBubble} customClasses="c-sidebar-nav-icon" />
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'مشتریان',
+    to: '/customer',
+    icon: <CIcon content={freeSet.cilGroup} customClasses="c-sidebar-nav-icon" />
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['تنظیمات']
   },
@@ -59,6 +65,12 @@ const _nav = [
     to: '/setting',
     icon: <CIcon content={freeSet.cilSettings} customClasses="c-sidebar-nav-icon" />
   },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'کاربران',
+    to: '/user',
+    icon: <CIcon content={freeSet.cilUser} customClasses="c-sidebar-nav-icon" />
+  }
 ]
 
 export default _nav

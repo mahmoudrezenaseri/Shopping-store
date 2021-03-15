@@ -6,3 +6,7 @@
   margin: 5px 0px;
   color: red;
 }
+
+.align-self-center {
+  align-self: center;
+}
