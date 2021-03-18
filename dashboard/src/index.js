@@ -11,14 +11,12 @@ import { icons } from './assets/icons'
 
 import { Provider } from 'react-redux'
 import store from './store'
-import axios from 'axios';
 import './config';
-import GetToken from './context/auth/GetToken';
 
-const token = GetToken();
+import axios from 'axios';
+
 axios.defaults.baseURL = global.config.axios.baseURL;
 axios.defaults.headers.post['accept'] = "application/json";
-axios.defaults.headers.post['token'] = token;
 
 React.icons = icons
 
@@ -33,3 +31,4 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
+

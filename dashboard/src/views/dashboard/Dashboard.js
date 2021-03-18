@@ -1,4 +1,4 @@
-import React, { lazy, useState, useContext, useEffect } from 'react'
+import React, { lazy, useState } from 'react'
 import {
   CBadge,
   CButton,

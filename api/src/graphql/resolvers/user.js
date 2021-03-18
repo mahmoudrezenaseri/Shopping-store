@@ -70,7 +70,7 @@ async function loginHandler(args) {
     }
 
     // create token
-    const token = await User.CreateToken(user.id, config.secretId, '10h');
+    const token = await User.CreateToken(user.id, config.secretId, '150h');
 
     return new Promise((resolve, reject) => {
         resolve({ user, token });

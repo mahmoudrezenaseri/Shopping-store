@@ -21,7 +21,7 @@ import Select2WithLabel from '../../components/input/select2-with-label.componen
 import MediaSelect from '../media/components/media-select.component';
 import CancelButton from '../../components/button/cancel-button.component';
 
-const createSchema = yup.object().shape({
+const schema = yup.object().shape({
     name: yup.string().max(50, 'عنوان باید حداکثر دارای 50 کاراکتر باشد').required('لطفا عنوان را وارد کنید'),
     label: yup.string().max(50, 'عنوان باید حداکثر دارای 50 کاراکتر باشد'),
     parent: yup.string().required('لطفا دسته والد را وارد کنید')
@@ -196,7 +196,7 @@ const AddCategory = (props) => {
                 </CCardHeader>
                 <Formik
                     initialValues={{ name: '', label: '', parent: '' }}
-                    validationSchema={createSchema}
+                    validationSchema={schema}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         setLoading(true);
                         handleSubmiting(values, setSubmitting, resetForm);
@@ -232,8 +232,8 @@ const AddCategory = (props) => {
                                         <CCol xs="12">
                                             <InputWithLabel
                                                 label="توضیح"
-                                                inputType="text"
-                                                inputName="label"
+                                                type="text"
+                                                name="label"
                                                 placeholder="توضیح دسته را وارد کنید"
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}

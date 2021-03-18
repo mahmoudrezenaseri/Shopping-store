@@ -4,14 +4,34 @@ import {
     CButton,
     CCard,
     CCardBody,
+    CRow,
+    CCol,
+    CForm
 } from '@coreui/react';
 import { toast } from 'react-toastify';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 import axios from 'axios';
+import moment from 'moment-jalaali'
+
 import classes from './css/user.module.css';
+import { validateDateEntry } from './func';
 
 import CustomCard from '../../components/card/customCard/custom-card.component'
 import AddButton from '../../components/card/customCard/add-button.component'
 import DataTableServerSide from '../../components/dataTable/table-server-side.component'
+import InputWithLabel from '../../components/input/input-with-label.component';
+import SearchButton from '../../components/button/search-button.component';
+import CancelButton from '../../components/button/cancel-button.component';
+import DateWithLabel from '../../components/input/date-with-label.component';
+
+
+const schema = yup.object().shape({
+    name: yup.string().max(50, 'عنوان باید حداکثر دارای 50 کاراکتر باشد'),
+    mobile: yup.string().matches(/(0|\+98)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/, 'فرمت موبایل اشتباه است')
+        .min(11, 'عنوان باید حداقل دارای 11 کاراکتر باشد')
+        .max(11, 'عنوان باید حداکثر دارای 11 کاراکتر باشد')
+});
 
 const columns = [
     {
@@ -46,6 +66,7 @@ const User = (props) => {
 
     let history = useHistory();
 
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [totalRows, setTotalRows] = useState(0);
 
@@ -103,6 +124,48 @@ const User = (props) => {
         getAllUser(page, perPage)
     }
 
+    const handleSearch = (values, setSubmitting) => {
+        setLoading(false);
+        setSubmitting(false);
+
+        if (!validateDateEntry(values.dateFrom, values.dateTo)) {
+            return;
+        }
+
+        axios({
+            url: "/",
+            method: "post",
+            data: {
+                query: `
+                  query{
+                    getAllCategoryTreeView {
+                        _id,
+                        name,
+                        children{
+                            _id,
+                            name,
+                            level,
+                            parent
+                        }
+                    }
+                  }`
+            }
+        }).then((response) => {
+            if (response.data.errors) {
+                const { message } = response.data.errors[0];
+                toast.error(message);
+                setLoading(false);
+            }
+            else { // success              
+                // setOptions([...defaultItem, ...categories])
+                setLoading(false);
+            }
+        }).catch((error) => {
+            toast.error(global.config.message.error.fa);
+            setLoading(false);
+        });
+    }
+
     return (
         <div className="animated fadeIn">
             <CustomCard title="جستجو">
@@ -111,7 +174,79 @@ const User = (props) => {
                 </div>
 
                 <div key="card-info">
-                    <h3>hello world</h3>
+                    <Formik
+                        initialValues={{ name: '', mobile: '', dateFrom: null, dateTo: null }}
+                        validationSchema={schema}
+                        onSubmit={(values, { setSubmitting }) => {
+                            setLoading(true);
+                            handleSearch(values, setSubmitting);
+                        }} >
+                        {({
+                            values,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            isSubmitting,
+                            setFieldValue,
+                            resetForm
+                        }) => (
+                            <CForm onSubmit={handleSubmit}>
+                                <CRow>
+                                    <CCol xs="3">
+                                        <InputWithLabel
+                                            label="نام و نام خانوادگی"
+                                            type="text"
+                                            name="name"
+                                            maxlength="50"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.name}
+                                            errorsInput={errors.name}
+                                            touchedInput={touched.name} />
+                                    </CCol>
+                                    <CCol xs="3">
+                                        <InputWithLabel
+                                            label="موبایل"
+                                            type="string"
+                                            name="mobile"
+                                            maxlength="11"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.mobile}
+                                            errorsInput={errors.mobile}
+                                            touchedInput={touched.mobile} />
+                                    </CCol>
+                                    <CCol xs="3">
+                                        <DateWithLabel
+                                            label="تاریخ از"
+                                            name="dateFrom"
+                                            onChange={e => setFieldValue("dateFrom", e)}
+                                            value={values.dateFrom}
+                                            errorsInput={errors.dateFrom}
+                                            touchedInput={touched.dateFrom} />
+                                    </CCol>
+                                    <CCol xs="3">
+                                        <DateWithLabel
+                                            label="تاریخ تا"
+                                            name="dateTo"
+                                            onChange={e => setFieldValue("dateTo", e)}
+                                            value={values.dateTo}
+                                            errorsInput={errors.dateTo}
+                                            touchedInput={touched.dateTo} />
+                                    </CCol>
+                                </CRow>
+                                <CRow>
+                                    <CCol xs="12">
+                                        <SearchButton loading={loading} disabled={isSubmitting} />
+                                        <CancelButton onClick={() => { resetForm(); }} />
+                                    </CCol>
+                                </CRow>
+
+                            </CForm>
+                        )}
+                    </Formik>
                 </div>
             </CustomCard>
 

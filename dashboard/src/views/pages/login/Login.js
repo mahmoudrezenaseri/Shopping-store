@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 import { AuthContext } from '../../../context/auth/AuthContext';
 import {
   CButton,
@@ -13,7 +14,6 @@ import {
   CRow,
   CSpinner,
 } from '@coreui/react'
-import axios from 'axios';
 
 import InputWithIcon from '../../../components/input/input-with-icon.component';
 import InputRecaptcha from '../../../components/input/input-recaptcha.component';

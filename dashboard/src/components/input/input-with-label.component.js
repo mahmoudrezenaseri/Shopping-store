@@ -5,24 +5,29 @@ import {
   CInput
 } from '@coreui/react'
 
-const InputWithLabel = ({ label, inputType, inputName, required, placeholder, onChange, onBlur, value, errorsInput, touchedInput }) => (
+const InputWithLabel = (props) => {
+  // console.log(props)
+  return (
+    <CFormGroup>
+      <CLabel htmlFor={props.name}>
+        {props.label}
+        {(props.required) ? <span className="text-danger"><b>*</b></span> : null}
+      </CLabel>
+      <CInput
+        type={props.type}
+        id={props.id}
+        name={props.name}
+        placeholder={props.placeholder}
+        value={props.value}
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+        pattern={props.pattern}
+        maxLength={props.maxlength}
+      />
 
-  <CFormGroup>
-    <CLabel htmlFor={inputName}>
-      {label}
-      {(required) ? <span className="text-danger"><b>*</b></span> : null}
-    </CLabel>
-    <CInput
-      type={inputType}
-      id={inputName}
-      name={inputName}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur} />
-
-    {errorsInput && touchedInput ? <div className="error-message">{errorsInput}</div> : null}
-  </CFormGroup>
-)
+      {props.errorsInput && props.touchedInput ? <div className="error-message">{props.errorsInput}</div> : null}
+    </CFormGroup>
+  )
+}
 
 export default InputWithLabel
