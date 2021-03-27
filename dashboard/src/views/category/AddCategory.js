@@ -55,8 +55,7 @@ const AddCategory = (props) => {
                             label
                         }
                     }
-                  } 
-                `,
+                  }`,
                 variables: {
                     "name": values.name,
                     "label": values.label,

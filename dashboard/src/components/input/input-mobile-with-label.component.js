@@ -5,26 +5,26 @@ import {
   CInput
 } from '@coreui/react'
 
-const InputWithLabel = (props) => {
-  // console.log(props)
+const InputMobileWithLabel = (props) => {
+
   return (
     <CFormGroup>
       <CLabel htmlFor={props.name}>
-        {props.label}
+        موبایل
         {(props.required) ? <span className="text-danger"><b>*</b></span> : null}
       </CLabel>
       <CInput
-        type={props.type}
         id={props.id}
         name={props.name}
+        label="موبایل"
         placeholder={props.placeholder}
-        maxLength={props.maxlength}
+        type="string"
+        maxLength="11"
         value={props.value}
         onChange={props.onChange}
         onBlur={props.onBlur}
-        pattern={props.pattern}
         onKeyPress={(event) => {
-          if (!/^[^<>]*$/.test(event.key)) {
+          if (!/[0-9]/.test(event.key)) {
             event.preventDefault();
           }
         }}
@@ -35,4 +35,4 @@ const InputWithLabel = (props) => {
   )
 }
 
-export default InputWithLabel
+export default InputMobileWithLabel

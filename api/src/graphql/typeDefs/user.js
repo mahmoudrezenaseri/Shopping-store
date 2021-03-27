@@ -4,10 +4,11 @@ const typeDefs = gql`
     extend type Query {
         login(mobile:String!, password:String!): Auth!,
         refreshToken: Auth!,
-        getAllUserWithPagination(input: InputGetUser): AllUserInfo
+        getAllUserWithPagination(input: InputGetUser): AllUserInfo,
+        filterUser(input: InputFilterUser): AllUserInfo
     }
     extend type Mutation {
-        register(firstName: String!, lastName: String!, mobile: String!, password: String!): Auth!,
+        register(firstName: String!, lastName: String!, mobile: String!, email: String!, password: String!): Auth!,
     }
 
     type User {
@@ -15,10 +16,11 @@ const typeDefs = gql`
         firstName: String!,
         lastName: String!,
         mobile: String!,
+        email: String,
         password: String!,
         level: Number!,
         createdAt: Date!,
-        updatedAt: Date!
+        updatedAt: Date
     }
 
     type Auth {
@@ -31,6 +33,16 @@ const typeDefs = gql`
         page: Int,
         limit: Int,
         searchText: String
+    }
+    
+    input InputFilterUser{               
+        page: Int,
+        limit: Int,
+        name: String,
+        mobile: String,
+        email: String,
+        dateFrom: Date,
+        dateTo: Date
     }
     
     type AllUserInfo{

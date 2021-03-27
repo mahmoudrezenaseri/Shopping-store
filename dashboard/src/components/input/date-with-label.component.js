@@ -7,7 +7,7 @@ import {
 import DatePicker from 'react-datepicker2';
 
 const DateWithLabel = (props) => {
-  const { label, name, required, value, onChange } = props
+  const { label, name, required, value, onChange, onInputChange } = props
   return (
     <CFormGroup>
       <CLabel htmlFor={name}>
@@ -16,13 +16,16 @@ const DateWithLabel = (props) => {
       </CLabel>
       <DatePicker
         isGregorian={false}
+        setTodayOnBlur={false}
         name={name}
         onChange={onChange}
+        onInputChange={onInputChange}
         value={value}
         timePicker={false}
         persianDigits={false}
       />
     </CFormGroup>
+
   )
 }
 

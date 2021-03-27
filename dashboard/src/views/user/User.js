@@ -21,6 +21,7 @@ import CustomCard from '../../components/card/customCard/custom-card.component'
 import AddButton from '../../components/card/customCard/add-button.component'
 import DataTableServerSide from '../../components/dataTable/table-server-side.component'
 import InputWithLabel from '../../components/input/input-with-label.component';
+import InputMobileWithLabel from '../../components/input/input-mobile-with-label.component';
 import SearchButton from '../../components/button/search-button.component';
 import CancelButton from '../../components/button/cancel-button.component';
 import DateWithLabel from '../../components/input/date-with-label.component';
@@ -108,8 +109,9 @@ const User = (props) => {
                 toast.error(message);
             }
             else { // success
-                setData(response.data.data.getAllUserWithPagination.users);
-                setTotalRows(response.data.data.getAllUserWithPagination.totalDocs)
+                const { users, totalDocs } = response.data.data.getAllUserWithPagination;
+                setData(users);
+                setTotalRows(totalDocs)
             }
         }).catch((error) => {
             toast.error(global.config.message.error.fa);
@@ -137,18 +139,26 @@ const User = (props) => {
             method: "post",
             data: {
                 query: `
-                  query{
-                    getAllCategoryTreeView {
-                        _id,
-                        name,
-                        children{
-                            _id,
-                            name,
-                            level,
-                            parent
+                  query filter($page:Int,$limit:Int,$name:String,$mobile:String,$dateFrom:Date,$dateTo:Date){
+                    filterUser(input:{page:$page,limit:$limit,name:$name,mobile:$mobile,dateFrom:$dateFrom,dateTo:$dateTo }) {
+                        totalDocs,
+                        page,
+                        users{
+                            firstName,
+                            lastName,
+                            mobile,                        
+                            createdAt
                         }
                     }
-                  }`
+                  }`,
+                variables: {
+                    "page": 1,
+                    "limit": 10,
+                    "name": values.name,
+                    "mobile": values.mobile,
+                    "dateFrom": values.dateFrom,
+                    "dateTo": values.dateTo
+                }
             }
         }).then((response) => {
             if (response.data.errors) {
@@ -157,7 +167,10 @@ const User = (props) => {
                 setLoading(false);
             }
             else { // success              
-                // setOptions([...defaultItem, ...categories])
+                const { users, totalDocs } = response.data.data.filterUser;
+                setData(users);
+                setTotalRows(totalDocs)
+
                 setLoading(false);
             }
         }).catch((error) => {
@@ -179,6 +192,7 @@ const User = (props) => {
                         validationSchema={schema}
                         onSubmit={(values, { setSubmitting }) => {
                             setLoading(true);
+
                             handleSearch(values, setSubmitting);
                         }} >
                         {({
@@ -207,11 +221,8 @@ const User = (props) => {
                                             touchedInput={touched.name} />
                                     </CCol>
                                     <CCol xs="3">
-                                        <InputWithLabel
-                                            label="موبایل"
-                                            type="string"
+                                        <InputMobileWithLabel
                                             name="mobile"
-                                            maxlength="11"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             value={values.mobile}
@@ -223,6 +234,9 @@ const User = (props) => {
                                             label="تاریخ از"
                                             name="dateFrom"
                                             onChange={e => setFieldValue("dateFrom", e)}
+                                            onInputChange={(e) => {
+                                                if (!e.target.value) { setFieldValue("dateFrom", null) }
+                                            }}
                                             value={values.dateFrom}
                                             errorsInput={errors.dateFrom}
                                             touchedInput={touched.dateFrom} />
@@ -231,7 +245,12 @@ const User = (props) => {
                                         <DateWithLabel
                                             label="تاریخ تا"
                                             name="dateTo"
-                                            onChange={e => setFieldValue("dateTo", e)}
+                                            onChange={(e) => {
+                                                setFieldValue("dateTo", e);
+                                            }}
+                                            onInputChange={(e) => {
+                                                if (!e.target.value) { setFieldValue("dateTo", null) }
+                                            }}
                                             value={values.dateTo}
                                             errorsInput={errors.dateTo}
                                             touchedInput={touched.dateTo} />

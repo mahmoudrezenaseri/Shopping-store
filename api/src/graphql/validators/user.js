@@ -24,6 +24,16 @@ const mobile = Joi.string().min(11).max(11).required().label('موبایل').mes
     "string.max": "موبایل باید حداکثر { #limit} حرف داشته باشد",
 });
 
+const email = Joi.string().required().label('ایمیل')
+    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'ir'] } })
+    .messages({
+        "string.base": "ایمیل اشتباه وارد شده است",
+        "string.empty": "لطفا ایمیل را وارد کنید",
+        "any.required": "لطفا ایمیل را وارد کنید",
+        "string.min": "ایمیل باید حداقل { #limit} حرف داشته باشد",
+        "string.max": "ایمیل باید حداکثر { #limit} حرف داشته باشد",
+    });
+
 const password = Joi.string().min(6).required().label('کلمه عبور')
     .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/)
     .messages({
@@ -40,5 +50,5 @@ module.exports.login = Joi.object({
 });
 
 module.exports.register = Joi.object({
-    firstName, lastName, mobile, password
+    firstName, lastName, mobile, email, password
 });

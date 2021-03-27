@@ -5,26 +5,26 @@ import {
   CInput
 } from '@coreui/react'
 
-const InputWithLabel = (props) => {
-  // console.log(props)
+const InputEmailWithLabel = (props) => {
+
   return (
     <CFormGroup>
       <CLabel htmlFor={props.name}>
-        {props.label}
+        ایمیل
         {(props.required) ? <span className="text-danger"><b>*</b></span> : null}
       </CLabel>
       <CInput
-        type={props.type}
         id={props.id}
         name={props.name}
+        label="ایمیل"
+        type="string"
+        maxlength="100"
         placeholder={props.placeholder}
-        maxLength={props.maxlength}
         value={props.value}
         onChange={props.onChange}
         onBlur={props.onBlur}
-        pattern={props.pattern}
         onKeyPress={(event) => {
-          if (!/^[^<>]*$/.test(event.key)) {
+          if (!/[A-Za-z0-9@._-]/.test(event.key)) {
             event.preventDefault();
           }
         }}
@@ -35,4 +35,4 @@ const InputWithLabel = (props) => {
   )
 }
 
-export default InputWithLabel
+export default InputEmailWithLabel
