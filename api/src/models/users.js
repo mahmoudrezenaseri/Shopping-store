@@ -13,9 +13,15 @@ const User = Schema(
     level: { type: Number, required: true, default: 0, min: 0, max: 9 },
   },
   {
-    timestamps: true,
+    toObject: { virtuals: true },
+    toJson: { virtuals: true },
+    timestamps: true
   }
 );
+
+User.virtual('fullName').get(function () {
+  return this.firstName + ' ' + this.lastName
+})
 
 User.statics.CreateToken = async (id, secretId, exp) => {
   return await jwt.sign({ id }, secretId, { expiresIn: exp });

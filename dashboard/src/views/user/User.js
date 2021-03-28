@@ -28,7 +28,8 @@ import DateWithLabel from '../../components/input/date-with-label.component';
 
 
 const schema = yup.object().shape({
-    name: yup.string().max(50, 'عنوان باید حداکثر دارای 50 کاراکتر باشد'),
+    firstName: yup.string().max(50, 'نام باید حداکثر دارای 50 کاراکتر باشد'),
+    lastName: yup.string().max(50, 'نام خانوادگی باید حداکثر دارای 50 کاراکتر باشد'),
     mobile: yup.string().matches(/(0|\+98)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/, 'فرمت موبایل اشتباه است')
         .min(11, 'عنوان باید حداقل دارای 11 کاراکتر باشد')
         .max(11, 'عنوان باید حداکثر دارای 11 کاراکتر باشد')
@@ -39,7 +40,7 @@ const columns = [
         name: 'نام و نام خانوادگی',
         selector: '',
         sortable: true,
-        cell: row => row.firstName + " " + row.lastName
+        cell: row => row.fullName
     },
     {
         name: 'موبایل',
@@ -89,6 +90,7 @@ const User = (props) => {
                         totalDocs,
                         page,
                         users{
+                            fullName,
                             firstName,
                             lastName,
                             mobile,                        
@@ -139,11 +141,12 @@ const User = (props) => {
             method: "post",
             data: {
                 query: `
-                  query filter($page:Int,$limit:Int,$name:String,$mobile:String,$dateFrom:Date,$dateTo:Date){
-                    filterUser(input:{page:$page,limit:$limit,name:$name,mobile:$mobile,dateFrom:$dateFrom,dateTo:$dateTo }) {
+                  query filter($page:Int,$limit:Int,$firstName:String,$lastName:String,$mobile:String,$dateFrom:Date,$dateTo:Date){
+                    filterUser(input:{page:$page,limit:$limit,firstName:$firstName,lastName:$lastName,mobile:$mobile,dateFrom:$dateFrom,dateTo:$dateTo }) {
                         totalDocs,
                         page,
                         users{
+                            fullName,
                             firstName,
                             lastName,
                             mobile,                        
@@ -154,7 +157,8 @@ const User = (props) => {
                 variables: {
                     "page": 1,
                     "limit": 10,
-                    "name": values.name,
+                    "firstName": values.firstName,
+                    "lastName": values.lastName,
                     "mobile": values.mobile,
                     "dateFrom": values.dateFrom,
                     "dateTo": values.dateTo
@@ -188,7 +192,7 @@ const User = (props) => {
 
                 <div key="card-info">
                     <Formik
-                        initialValues={{ name: '', mobile: '', dateFrom: null, dateTo: null }}
+                        initialValues={{ firstName: '', lastName: '', mobile: '', dateFrom: null, dateTo: null }}
                         validationSchema={schema}
                         onSubmit={(values, { setSubmitting }) => {
                             setLoading(true);
@@ -208,19 +212,31 @@ const User = (props) => {
                         }) => (
                             <CForm onSubmit={handleSubmit}>
                                 <CRow>
-                                    <CCol xs="3">
+                                    <CCol xs="4">
                                         <InputWithLabel
-                                            label="نام و نام خانوادگی"
+                                            label="نام"
                                             type="text"
-                                            name="name"
+                                            name="firstName"
                                             maxlength="50"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            value={values.name}
-                                            errorsInput={errors.name}
-                                            touchedInput={touched.name} />
+                                            value={values.firstName}
+                                            errorsInput={errors.firstName}
+                                            touchedInput={touched.firstName} />
                                     </CCol>
-                                    <CCol xs="3">
+                                    <CCol xs="4">
+                                        <InputWithLabel
+                                            label="نام خانوادگی"
+                                            type="text"
+                                            name="lastName"
+                                            maxlength="50"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.lastName}
+                                            errorsInput={errors.lastName}
+                                            touchedInput={touched.lastName} />
+                                    </CCol>
+                                    <CCol xs="4">
                                         <InputMobileWithLabel
                                             name="mobile"
                                             onChange={handleChange}
@@ -229,7 +245,7 @@ const User = (props) => {
                                             errorsInput={errors.mobile}
                                             touchedInput={touched.mobile} />
                                     </CCol>
-                                    <CCol xs="3">
+                                    <CCol xs="4">
                                         <DateWithLabel
                                             label="تاریخ از"
                                             name="dateFrom"
@@ -241,7 +257,7 @@ const User = (props) => {
                                             errorsInput={errors.dateFrom}
                                             touchedInput={touched.dateFrom} />
                                     </CCol>
-                                    <CCol xs="3">
+                                    <CCol xs="4">
                                         <DateWithLabel
                                             label="تاریخ تا"
                                             name="dateTo"

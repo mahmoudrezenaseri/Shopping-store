@@ -113,22 +113,15 @@ const filterUserHandler = async (args) => {
     const page = args.input.page || 1;
     const limit = args.input.limit || 10;
 
-    if (!args.input.name && !args.input.mobile && !args.input.dateFrom && !args.input.dateTo) {
-        const user = await User.paginate({}, { page, limit })
-
-        return new Promise((resolve, reject) => {
-            resolve({ user })
-        })
-    }
-
     const dateCond = prepareDateCondition(args.input.dateFrom, args.input.dateTo)
-    const nameCond = prepareNameCondition(args.input.name)
+    const firstNameCond = prepareFirstNameCondition(args.input.firstName)
+    const lastNameCond = prepareLastNameCondition(args.input.lastName)
     const mobileCond = prepareMobileCondition(args.input.mobile)
-
 
     const user = await User.paginate({
         $and: [
-            nameCond,
+            firstNameCond,
+            lastNameCond,
             mobileCond,
             dateCond
         ]
@@ -162,10 +155,25 @@ async function registerHandler(args) {
     })
 }
 
-function prepareNameCondition(name) {
+function prepareFirstNameCondition(name) {
     let cond;
     if (name) {
-        cond = { "firstName": { "$regex": name.trim() } }
+        cond = {
+            "firstName": { "$regex": name.trim() }
+        }
+    } else {
+        cond = {}
+    }
+
+    return cond
+}
+
+function prepareLastNameCondition(name) {
+    let cond;
+    if (name) {
+        cond = {
+            "lastName": { "$regex": name.trim() }
+        }
     } else {
         cond = {}
     }

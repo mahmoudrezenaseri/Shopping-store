@@ -20,7 +20,8 @@ const typeDefs = gql`
         password: String!,
         level: Number!,
         createdAt: Date!,
-        updatedAt: Date
+        updatedAt: Date,
+        fullName: String
     }
 
     type Auth {
@@ -38,7 +39,8 @@ const typeDefs = gql`
     input InputFilterUser{               
         page: Int,
         limit: Int,
-        name: String,
+        firstName: String,
+        lastName: String,
         mobile: String,
         email: String,
         dateFrom: Date,
