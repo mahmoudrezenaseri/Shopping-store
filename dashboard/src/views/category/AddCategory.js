@@ -15,6 +15,7 @@ import * as yup from 'yup';
 import axios from 'axios';
 import classes from './css/add-category.module.css';
 
+import CustomCard from '../../components/card/customCard/custom-card.component'
 import SubmitButton from '../../components/button/submit-button.component';
 import InputWithLabel from '../../components/input/input-with-label.component';
 import Select2WithLabel from '../../components/input/select2-with-label.component';
@@ -185,41 +186,35 @@ const AddCategory = (props) => {
 
     return (
         <div className="animated fadeIn">
-            <CCard>
-                <CCardHeader>
-                    <CRow>
-                        <CCol sm="6">
-                            <h6>افزودن دسته بندی</h6>
-                        </CCol>
-                    </CRow>
-                </CCardHeader>
-                <Formik
-                    initialValues={{ name: '', label: '', parent: '' }}
-                    validationSchema={schema}
-                    onSubmit={(values, { setSubmitting, resetForm }) => {
-                        setLoading(true);
-                        handleSubmiting(values, setSubmitting, resetForm);
-                    }} >
-                    {({
-                        values,
-                        errors,
-                        touched,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        isSubmitting,
-                        setFieldValue,
-                        resetForm
-                    }) => (
-                        <CForm onSubmit={handleSubmit}>
-                            <CCardBody>
+            <CustomCard title="افزودن دسته بندی">
+                <div key="card-header-buttons"></div>
+                <div key="card-body">
+                    <Formik
+                        initialValues={{ name: '', label: '', parent: '' }}
+                        validationSchema={schema}
+                        onSubmit={(values, { setSubmitting, resetForm }) => {
+                            setLoading(true);
+                            handleSubmiting(values, setSubmitting, resetForm);
+                        }} >
+                        {({
+                            values,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            isSubmitting,
+                            setFieldValue,
+                            resetForm
+                        }) => (
+                            <CForm onSubmit={handleSubmit}>
                                 <CRow>
                                     <CCol md="6">
                                         <CCol xs="12">
                                             <InputWithLabel
                                                 label="عنوان"
-                                                inputType="text"
-                                                inputName="name"
+                                                type="text"
+                                                name="name"
                                                 required={true}
                                                 placeholder="عنوان دسته را وارد کنید"
                                                 onChange={handleChange}
@@ -227,18 +222,6 @@ const AddCategory = (props) => {
                                                 value={values.name}
                                                 errorsInput={errors.name}
                                                 touchedInput={touched.name} />
-                                        </CCol>
-                                        <CCol xs="12">
-                                            <InputWithLabel
-                                                label="توضیح"
-                                                type="text"
-                                                name="label"
-                                                placeholder="توضیح دسته را وارد کنید"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.label}
-                                                errorsInput={errors.label}
-                                                touchedInput={touched.label} />
                                         </CCol>
                                         <CCol xs="12">
                                             <Select2WithLabel
@@ -251,6 +234,19 @@ const AddCategory = (props) => {
                                                 errorsInput={errors.parent}
                                                 touchedInput={touched.parent}
                                             />
+                                        </CCol>
+
+                                        <CCol xs="12">
+                                            <InputWithLabel
+                                                label="توضیح"
+                                                type="text"
+                                                name="label"
+                                                placeholder="توضیح دسته را وارد کنید"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.label}
+                                                errorsInput={errors.label}
+                                                touchedInput={touched.label} />
                                         </CCol>
                                     </CCol>
                                     <CCol md="6">
@@ -276,15 +272,18 @@ const AddCategory = (props) => {
                                         </CRow>
                                     </CCol>
                                 </CRow>
-                            </CCardBody>
-                            <CCardFooter>
-                                <SubmitButton loading={loading} inputText="ثبت" disabled={isSubmitting} />
-                                <CancelButton onClick={() => { resetForm(); clearForm() }} />
-                            </CCardFooter>
-                        </CForm>
-                    )}
-                </Formik>
-            </CCard>
+                                <hr />
+                                <CRow>
+                                    <CCol md="12">
+                                        <SubmitButton loading={loading} inputText="ثبت" disabled={isSubmitting} />
+                                        <CancelButton onClick={() => { resetForm(); clearForm() }} />
+                                    </CCol>
+                                </CRow>
+                            </CForm>
+                        )}
+                    </Formik>
+                </div>
+            </CustomCard>
 
             {
                 (modal) ?
@@ -294,7 +293,7 @@ const AddCategory = (props) => {
                         onFileClick={fileSelectHandler} /> :
                     null
             }
-        </div >
+        </div>
     )
 }
 

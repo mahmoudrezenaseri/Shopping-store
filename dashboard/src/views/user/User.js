@@ -6,7 +6,7 @@ import {
     CCardBody,
     CRow,
     CCol,
-    CForm
+    CForm,
 } from '@coreui/react';
 import { toast } from 'react-toastify';
 import { Formik } from 'formik';
@@ -26,13 +26,12 @@ import SearchButton from '../../components/button/search-button.component';
 import CancelButton from '../../components/button/cancel-button.component';
 import DateWithLabel from '../../components/input/date-with-label.component';
 
-
 const schema = yup.object().shape({
     firstName: yup.string().max(50, 'نام باید حداکثر دارای 50 کاراکتر باشد'),
     lastName: yup.string().max(50, 'نام خانوادگی باید حداکثر دارای 50 کاراکتر باشد'),
     mobile: yup.string().matches(/(0|\+98)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/, 'فرمت موبایل اشتباه است')
-        .min(11, 'عنوان باید حداقل دارای 11 کاراکتر باشد')
-        .max(11, 'عنوان باید حداکثر دارای 11 کاراکتر باشد')
+        .min(11, 'موبایل باید حداقل دارای 11 کاراکتر باشد')
+        .max(11, 'موبایل باید حداکثر دارای 11 کاراکتر باشد')
 });
 
 const columns = [
@@ -186,11 +185,11 @@ const User = (props) => {
     return (
         <div className="animated fadeIn">
             <CustomCard title="جستجو">
-                <div className="d-inline" key="custom-button">
+                <div className="d-inline" key="card-header-buttons">
                     <AddButton onClick={() => { history.push("/user/add") }} />
                 </div>
 
-                <div key="card-info">
+                <div key="card-body">
                     <Formik
                         initialValues={{ firstName: '', lastName: '', mobile: '', dateFrom: null, dateTo: null }}
                         validationSchema={schema}
@@ -211,6 +210,7 @@ const User = (props) => {
                             resetForm
                         }) => (
                             <CForm onSubmit={handleSubmit}>
+
                                 <CRow>
                                     <CCol xs="4">
                                         <InputWithLabel
@@ -272,6 +272,7 @@ const User = (props) => {
                                             touchedInput={touched.dateTo} />
                                     </CCol>
                                 </CRow>
+                                <hr />
                                 <CRow>
                                     <CCol xs="12">
                                         <SearchButton loading={loading} disabled={isSubmitting} />
@@ -286,9 +287,9 @@ const User = (props) => {
             </CustomCard>
 
             <CustomCard title="کاربران">
-                <div key="custom-button"></div>
+                <div key="card-header-buttons"></div>
 
-                <div key="card-info">
+                <div key="card-body">
                     <CCard>
                         <CCardBody>
                             <DataTableServerSide

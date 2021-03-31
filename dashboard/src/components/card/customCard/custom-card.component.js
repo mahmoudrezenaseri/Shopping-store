@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    CButton,
+    CCardFooter,
     CCard,
     CCardHeader,
     CCardBody,
@@ -31,7 +31,7 @@ const CustomCard = (props) => {
                     </CCol>
                     <CCol sm="6" className="text-left align-self-center">
 
-                        {getComponent('custom-button')}
+                        {getComponent('card-header-buttons')}
 
                         <CLink className="card-header-action" onClick={() => setCollapsed(!collapsed)}>
                             <CIcon name={collapsed ? 'cil-chevron-bottom' : 'cil-chevron-top'} size={'lg'} />
@@ -43,7 +43,7 @@ const CustomCard = (props) => {
                 <CCardBody>
                     <CRow>
                         <CCol md="12" >
-                            {getComponent('card-info')}
+                            {getComponent('card-body')}
                         </CCol>
                     </CRow>
                 </CCardBody>

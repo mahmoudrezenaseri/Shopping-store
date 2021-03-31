@@ -7,6 +7,7 @@ const Category = React.lazy(() => import('./views/category/Category'));
 const AddCategory = React.lazy(() => import('./views/category/AddCategory'));
 const Customer = React.lazy(() => import('./views/customer/Customer'));
 const User = React.lazy(() => import('./views/user/User'));
+const AddUser = React.lazy(() => import('./views/user/AddUser'));
 
 const routes = [
   { path: '/', exact: true, name: 'صفحه اصلی' },
@@ -17,6 +18,7 @@ const routes = [
   { path: '/category/add', name: 'افزودن دسته بندی', component: AddCategory },
   { path: '/customer', name: 'مشتریان', component: Customer, exact: true },
   { path: '/user', name: 'کاربران', component: User, exact: true },
+  { path: '/user/add', name: 'افزودن کاربر', component: AddUser },
 ];
 
 export default routes;

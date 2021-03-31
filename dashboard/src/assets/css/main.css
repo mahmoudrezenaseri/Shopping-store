@@ -11,7 +11,7 @@
   align-self: center;
 }
 
-input[name="dateFrom"],input[name="dateTo"]{
+.date {
   display: block;
   width: 100%;
   height: calc(1.5em + 0.75rem + 2px);
@@ -26,4 +26,28 @@ input[name="dateFrom"],input[name="dateTo"]{
   border-color: #d8dbe0;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.list-group-accent .list-group-item-accent-primary {
+  border-right: 4px solid #321fdb;
+}
+
+.list-group-accent .list-group-item-accent-warning {
+  border-right: 4px solid #f9b115;
+}
+
+.list-group-accent .list-group-item-accent-danger {
+  border-right: 4px solid #e55353;
+}
+
+.list-group-accent .list-group-item-accent-info {
+  border-right: 4px solid #39f;
+}
+
+.list-group-accent .list-group-item-accent-dark {
+  border-right: 4px solid #636f83;
+}
+.list-group-accent .list-group-item {
+  margin-bottom: 1px;
+  border-left: 0;
 }

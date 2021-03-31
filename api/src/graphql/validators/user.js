@@ -16,13 +16,15 @@ const lastName = Joi.string().max(50).required().label('نام خانوادگی'
     "string.max": "نام خانوادگی باید حداکثر { #limit} حرف داشته باشد",
 });
 
-const mobile = Joi.string().min(11).max(11).required().label('موبایل').messages({
-    "string.base": "موبایل اشتباه وارد شده است",
-    "string.empty": "لطفا موبایل را وارد کنید",
-    "any.required": "لطفا موبایل را وارد کنید",
-    "string.min": "موبایل باید حداقل { #limit} حرف داشته باشد",
-    "string.max": "موبایل باید حداکثر { #limit} حرف داشته باشد",
-});
+const mobile = Joi.string().min(11).max(11).required().label('موبایل')
+    .regex(/^\d+$/)
+    .messages({
+        "string.base": "موبایل اشتباه وارد شده است",
+        "string.empty": "لطفا موبایل را وارد کنید",
+        "any.required": "لطفا موبایل را وارد کنید",
+        "string.min": "موبایل باید حداقل { #limit} حرف داشته باشد",
+        "string.max": "موبایل باید حداکثر { #limit} حرف داشته باشد",
+    });
 
 const email = Joi.string().required().label('ایمیل')
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'ir'] } })
@@ -33,6 +35,40 @@ const email = Joi.string().required().label('ایمیل')
         "string.min": "ایمیل باید حداقل { #limit} حرف داشته باشد",
         "string.max": "ایمیل باید حداکثر { #limit} حرف داشته باشد",
     });
+
+const nationalNumber = Joi.string().required().min(10).max(10).label('شماره ملی')
+    .messages({
+        "string.base": "شماره ملی اشتباه وارد شده است",
+        "string.empty": "لطفا شماره ملی را وارد کنید",
+        "any.required": "لطفا شماره ملی را وارد کنید",
+        "string.min": "شماره ملی باید حداقل { #limit} حرف داشته باشد",
+        "string.max": "شماره ملی باید حداکثر { #limit} حرف داشته باشد",
+    });
+
+const address = Joi.string().min(1).max(500).label('آدرس')
+    .messages({
+        "string.base": "آدرس اشتباه وارد شده است",
+        "string.empty": "لطفا آدرس را وارد کنید",
+        "any.required": "لطفا آدرس را وارد کنید",
+        "string.min": "آدرس باید حداقل { #limit} حرف داشته باشد",
+        "string.max": "آدرس باید حداکثر { #limit} حرف داشته باشد",
+    });
+
+const phone = Joi.string().min(11).max(11).label('تلفن')
+    .regex(/^\d+$/)
+    .messages({
+        "string.base": "تلفن اشتباه وارد شده است",
+        "string.empty": "لطفا تلفن را وارد کنید",
+        "any.required": "لطفا تلفن را وارد کنید",
+        "string.min": "تلفن باید حداقل { #limit} حرف داشته باشد",
+        "string.max": "تلفن باید حداکثر { #limit} حرف داشته باشد",
+    });
+
+const gender = Joi.boolean().required().label('جنسیت').messages({
+    "string.base": "اسلایدر جنسیت اشتباه وارد شده است",
+    "string.empty": "لطفا اسلایدر جنسیت را وارد کنید",
+    "any.required": "لطفا اسلایدر جنسیت را وارد کنید",
+});
 
 const password = Joi.string().min(6).required().label('کلمه عبور')
     .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/)
@@ -50,5 +86,5 @@ module.exports.login = Joi.object({
 });
 
 module.exports.register = Joi.object({
-    firstName, lastName, mobile, email, password
+    firstName, lastName, nationalNumber, mobile, phone, email, gender, address, password
 });

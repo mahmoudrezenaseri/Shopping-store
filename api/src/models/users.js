@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const jwt = require('jsonwebtoken');
+const { boolean } = require("joi");
 
 const Schema = mongoose.Schema;
 
@@ -8,9 +9,15 @@ const User = Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    mobile: { type: String, required: true },
     password: { type: String, required: true },
     level: { type: Number, required: true, default: 0, min: 0, max: 9 },
+    mobile: { type: String, required: true },
+    phone: { type: String, required: false },
+    email: { type: String, required: true },
+    nationalNumber: { type: String, required: true },
+    birthday: { type: Date, required: false },
+    gender: { type: Boolean, required: true },
+    address: { type: String, required: false },
   },
   {
     toObject: { virtuals: true },

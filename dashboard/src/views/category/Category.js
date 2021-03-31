@@ -26,7 +26,7 @@ const Category = (props) => {
     useEffect(() => {
         setTimeout(() => {
             getAllCategory()
-        }, 5000);
+        }, 1000);
     }, []);
 
     function getAllCategory() {
@@ -70,19 +70,17 @@ const Category = (props) => {
     return (
         <div className="animated fadeIn">
             <CustomCard title="دسته بندی ها">
-                <div className="d-inline" key="custom-button">
+                <div className="d-inline" key="card-header-buttons">
                     <AddButton onClick={() => { history.push("/category/add") }} />
                 </div>
-                <div key="card-info">
-                    <CCard>
-                        <CCardBody>
-                            <DataTableClientSide
-                                title="لیست دسته بندی ها"
-                                columns={columns}
-                                data={filteredItems}
-                                subHeaderComponent={subHeaderComponentMemo} />
-                        </CCardBody>
-                    </CCard>
+                <div key="card-body">
+
+                    <DataTableClientSide
+                        title="لیست دسته بندی ها"
+                        columns={columns}
+                        data={filteredItems}
+                        subHeaderComponent={subHeaderComponentMemo} />
+
                 </div>
             </CustomCard>
         </div>
