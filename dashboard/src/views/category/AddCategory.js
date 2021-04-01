@@ -30,7 +30,7 @@ const schema = yup.object().shape({
 });
 
 const AddCategory = (props) => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [modal, setModal] = useState(false);
     const [file, setFile] = useState({})
     const [options, setOptions] = useState([]);
@@ -129,17 +129,14 @@ const AddCategory = (props) => {
             if (response.data.errors) {
                 const { message } = response.data.errors[0];
                 toast.error(message);
-                setLoading(false);
             }
             else { // success
                 const defaultItem = [{ value: "null", label: "فاقد دسته والد" }];
                 const categories = prepareCategoryOptions(response.data.data.getAllCategoryTreeView)
                 setOptions([...defaultItem, ...categories])
-                setLoading(false);
             }
         }).catch((error) => {
             toast.error(global.config.message.error.fa);
-            setLoading(false);
         });
     }
 
