@@ -33,7 +33,7 @@ const CustomCard = (props) => {
 
                         {getComponent('card-header-buttons')}
 
-                        <CLink className="card-header-action" onClick={() => setCollapsed(!collapsed)}>
+                        <CLink className="card-header-action mr-2" onClick={() => setCollapsed(!collapsed)} >
                             <CIcon name={collapsed ? 'cil-chevron-bottom' : 'cil-chevron-top'} size={'lg'} />
                         </CLink>
                     </CCol>

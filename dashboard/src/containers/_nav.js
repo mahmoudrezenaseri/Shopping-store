@@ -70,6 +70,12 @@ const _nav = [
     name: 'کاربران',
     to: '/user',
     icon: <CIcon content={freeSet.cilUser} customClasses="c-sidebar-nav-icon" />
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'شهر و استان',
+    to: '/province',
+    icon: <CIcon content={freeSet.cilMap} customClasses="c-sidebar-nav-icon" />
   }
 ]
 

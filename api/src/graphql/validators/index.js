@@ -11,6 +11,8 @@ const bannerValidator = require('./banner');
 const productValidator = require('./product');
 const productAttributeValidator = require('./productAttribute');
 const productSpecDetailValueValidator = require('./productSpecDetailValue');
+const provinceValidator = require('./province');
+const cityValidator = require('./city');
 
 module.exports = {
     userValidator,
@@ -25,5 +27,7 @@ module.exports = {
     bannerValidator,
     productValidator,
     productAttributeValidator,
-    productSpecDetailValueValidator
+    productSpecDetailValueValidator,
+    provinceValidator,
+    cityValidator
 }

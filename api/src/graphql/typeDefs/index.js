@@ -12,6 +12,7 @@ const warranty = require('./warranty.js');
 const slider = require('./slider.js');
 const banner = require('./banner.js');
 const product = require('./product.js');
+const province = require('./province.js');
 
 module.exports = [
     root,
@@ -26,5 +27,6 @@ module.exports = [
     warranty,
     slider,
     banner,
-    product
+    product,
+    province
 ];

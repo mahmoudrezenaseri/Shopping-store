@@ -8,6 +8,9 @@ const AddCategory = React.lazy(() => import('./views/category/AddCategory'));
 const Customer = React.lazy(() => import('./views/customer/Customer'));
 const User = React.lazy(() => import('./views/user/User'));
 const AddUser = React.lazy(() => import('./views/user/AddUser'));
+const Province = React.lazy(() => import('./views/province/Province'));
+const AddProvince = React.lazy(() => import('./views/province/AddProvince'));
+const AddCity = React.lazy(() => import('./views/province/AddCity'));
 
 const routes = [
   { path: '/', exact: true, name: 'صفحه اصلی' },
@@ -19,6 +22,9 @@ const routes = [
   { path: '/customer', name: 'مشتریان', component: Customer, exact: true },
   { path: '/user', name: 'کاربران', component: User, exact: true },
   { path: '/user/add', name: 'افزودن کاربر', component: AddUser },
+  { path: '/province', name: 'استان و شهر', component: Province, exact: true },
+  { path: '/province/add', name: 'افزودن استان', component: AddProvince },
+  { path: '/province/city/add', name: 'افزودن شهر', component: AddCity },
 ];
 
 export default routes;

@@ -38,3 +38,13 @@ mutation {
    message
   }  
 }
+
+mutation addProvince($fname:String!,$ename:String!,$code:String,$city:[InputCity]){
+  createProvince(input:{fname:$fname,ename:$ename,code:$code,city:$city}){
+    status,
+    message,
+    data{
+      fname
+    }
+  }
+}

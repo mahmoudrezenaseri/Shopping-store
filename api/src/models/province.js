@@ -7,11 +7,12 @@ const Province = Schema(
         fname: { type: String, required: true },
         ename: { type: String, required: false },
         code: { type: String, required: false },
+        active: { type: Boolean, required: true, default: true },
         city: [{
-            provinceId: { type: Schema.Types.ObjectId, required: true },
             fname: { type: String, required: true },
             ename: { type: String, required: true },
-            code: { type: String, required: false }
+            code: { type: String, required: false },
+            active: { type: Boolean, required: true, default: true }
         }]
     },
     {
