@@ -138,7 +138,7 @@ const AddProvince = (props) => {
                         }) => (
                             <CForm onSubmit={handleSubmit}>
                                 <CRow>
-                                    <CCol xs="12">
+                                    <CCol sm="4">
                                         <InputWithLabel
                                             label="عنوان فارسی"
                                             type="text"
@@ -152,19 +152,7 @@ const AddProvince = (props) => {
                                             errorsInput={errors.fname}
                                             touchedInput={touched.fname} />
                                     </CCol>
-                                    <CCol xs="12">
-                                        <Select2WithLabel
-                                            required
-                                            name="province"
-                                            label="استان"
-                                            value={values.province}
-                                            onChange={e => setFieldValue("province", e.value)}
-                                            options={options}
-                                            errorsInput={errors.province}
-                                            touchedInput={touched.province}
-                                        />
-                                    </CCol>
-                                    <CCol xs="12">
+                                    <CCol sm="4">
                                         <InputWithLabel
                                             label="عنوان انگلیسی"
                                             type="text"
@@ -178,7 +166,19 @@ const AddProvince = (props) => {
                                             errorsInput={errors.ename}
                                             touchedInput={touched.ename} />
                                     </CCol>
-                                    <CCol xs="12">
+                                    <CCol sm="4">
+                                        <Select2WithLabel
+                                            required
+                                            name="province"
+                                            label="استان"
+                                            value={values.province}
+                                            onChange={e => setFieldValue("province", e.value)}
+                                            options={options}
+                                            errorsInput={errors.province}
+                                            touchedInput={touched.province}
+                                        />
+                                    </CCol>
+                                    <CCol sm="4">
                                         <InputWithLabel
                                             label="کد شهر"
                                             type="text"
@@ -192,7 +192,7 @@ const AddProvince = (props) => {
                                             errorsInput={errors.code}
                                             touchedInput={touched.code} />
                                     </CCol>
-                                    <CCol xs="12">
+                                    <CCol sn="4">
                                         <SwitchWithLabel
                                             name="active"
                                             onChange={handleChange}

@@ -11,11 +11,11 @@ const SwitchWithLabel = (props) => {
 
   return (
     <CFormGroup row>
-      <CCol tag="label" sm="3" md="2" xlg="1" className="col-form-label">
+      <CCol tag="label" sm="12" className="col-form-label">
         {(label) ? label : "وضعیت : "}
         {(required) ? <span className="text-danger"><b>*</b></span> : null}
       </CCol>
-      <CCol sm="9" md="10" xlg="11">
+      <CCol sm="12">
         <CSwitch
           className="mr-1"
           id={id}

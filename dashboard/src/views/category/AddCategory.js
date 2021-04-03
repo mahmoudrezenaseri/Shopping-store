@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
     CCard,
-    CCardHeader,
-    CCardBody,
-    CCardFooter,
     CButton,
     CRow,
     CForm,
@@ -32,8 +29,8 @@ const schema = yup.object().shape({
 const AddCategory = (props) => {
     const [loading, setLoading] = useState(false);
     const [modal, setModal] = useState(false);
-    const [file, setFile] = useState({})
     const [options, setOptions] = useState([]);
+    const [file, setFile] = useState({})
     const [fileSelected, setFileSelected] = useState(false)
 
     useEffect(() => {
