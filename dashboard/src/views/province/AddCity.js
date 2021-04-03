@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-    CCard,
-    CCardHeader,
-    CCardBody,
-    CCardFooter,
     CButton,
     CRow,
     CForm,
@@ -18,26 +14,22 @@ import classes from './css/add-province.module.css';
 import CustomCard from '../../components/card/customCard/custom-card.component'
 import SubmitButton from '../../components/button/submit-button.component';
 import InputWithLabel from '../../components/input/input-with-label.component';
-import Select2WithLabel from '../../components/input/select2-with-label.component';
-import MediaSelect from '../media/components/media-select.component';
 import CancelButton from '../../components/button/cancel-button.component';
+import SwitchWithLabel from '../../components/input/switch-with-label.component';
+import Select2WithLabel from '../../components/input/select2-with-label.component';
 
 const schema = yup.object().shape({
-    name: yup.string().max(50, 'عنوان باید حداکثر دارای 50 کاراکتر باشد').required('لطفا عنوان را وارد کنید'),
-    label: yup.string().max(50, 'عنوان باید حداکثر دارای 50 کاراکتر باشد'),
-    parent: yup.string().required('لطفا دسته والد را وارد کنید')
-    // .matches(/^[0-9a-fA-F]{24}$/, 'فرمت دسته والد اشتباه است')
+    fname: yup.string().max(150, 'عنوان فارسی باید حداکثر دارای 150 کاراکتر باشد').required('لطفا عنوان فارسی را وارد کنید'),
+    ename: yup.string().max(150, 'عنوان انگلیسی باید حداکثر دارای 150 کاراکتر باشد'),
+    code: yup.string().max(5, 'کد استان باید حداکثر دارای 5 کاراکتر باشد')
 });
 
-const AddCategory = (props) => {
-    const [loading, setLoading] = useState(true);
-    const [modal, setModal] = useState(false);
-    const [file, setFile] = useState({})
+const AddProvince = (props) => {
+    const [loading, setLoading] = useState(false);
     const [options, setOptions] = useState([]);
-    const [fileSelected, setFileSelected] = useState(false)
 
     useEffect(() => {
-        getAllCategory()
+        getAllProvince()
     }, []);
 
     const handleSubmiting = (values, setSubmitting, resetForm) => {
@@ -46,22 +38,20 @@ const AddCategory = (props) => {
             method: "post",
             data: {
                 query: `
-                  mutation addCategory($name:String,$label:String,$parent:ID,$image:ID){
-                    createCategory(input:{name:$name,label:$label,parent:$parent,image:$image}){
+                  mutation addCity($fname:String!,$ename:String,$code:String,$active:Boolean){
+                    createCity(input:{fname:$fname,ename:$ename,code:$code,active:$active}){
                         status,
                         message,
                         data{
-                            _id,
-                            name,
-                            label
+                            fname
                         }
                     }
                   }`,
                 variables: {
-                    "name": values.name,
-                    "label": values.label,
-                    "parent": values.parent !== "null" ? values.parent : null,
-                    "image": file._id ? file._id : null
+                    "fname": values.fname,
+                    "ename": values.ename,
+                    "code": values.code,
+                    "active": values.active,
                 }
             }
         }).then((response) => {
@@ -72,10 +62,9 @@ const AddCategory = (props) => {
                 setSubmitting(false);
             }
             else { // success
-                toast.success(response.data.data.createCategory.message)
+                toast.success(response.data.data.createProvince.message)
                 setLoading(false);
                 setSubmitting(false);
-                clearForm()
                 resetForm()
             }
         }).catch((error) => {
@@ -85,42 +74,16 @@ const AddCategory = (props) => {
         });
     }
 
-    const openMediaModal = () => {
-        setModal(true);
-    }
-
-    const removeFile = () => {
-        setFile({});
-        setFileSelected(false)
-    }
-
-    const fileSelectHandler = (item) => {
-        setFile(item)
-        setModal(false);
-        setFileSelected(true);
-    }
-
-    function clearForm() {
-        setFile({});
-        setFileSelected(false)
-    }
-
-    const getAllCategory = () => {
+    const getAllProvince = () => {
         axios({
             url: "/",
             method: "post",
             data: {
                 query: `
                   query{
-                    getAllCategoryTreeView {
+                    getAllProvince {
                         _id,
-                        name,
-                        children{
-                            _id,
-                            name,
-                            level,
-                            parent
-                        }
+                        fname
                     }
                   } 
                 `
@@ -129,68 +92,34 @@ const AddCategory = (props) => {
             if (response.data.errors) {
                 const { message } = response.data.errors[0];
                 toast.error(message);
-                setLoading(false);
             }
             else { // success
-                const defaultItem = [{ value: "null", label: "فاقد دسته والد" }];
-                const categories = prepareCategoryOptions(response.data.data.getAllCategoryTreeView)
-                setOptions([...defaultItem, ...categories])
-                setLoading(false);
+                const defaultItem = [{ value: "null", label: "انتخاب کنید" }];
+                const provinces = prepareProvinceOptions(response.data.data.getAllProvince)
+                setOptions([...defaultItem, ...provinces])
             }
         }).catch((error) => {
             toast.error(global.config.message.error.fa);
-            setLoading(false);
         });
     }
 
-    function prepareCategoryOptions(categories) {
+    function prepareProvinceOptions(provinces) {
         let newArray = [];
-        for (let index = 0; index < categories.length; index++) { // لوپ در دسته بندی های بدون والد
-            const element = categories[index];
-            newArray.push({ "value": element._id, "label": element.name }); // افزودن آنها به آرایه جدید
-
-            if (element.children.length > 0) {
-                for (let index = 0; index < element.children.length; index++) { // لوپ در فرزندان دسته بندی والد در صورت وجود
-                    let item = element.children[index];
-                    let itemChildren = element.children.filter(a => a.parent === item._id); // پیدا کردن فرزندان این دسته بندی در صورت وجود
-
-                    // اگر فرزندی وجود نداشت به این معناست که قبلا در زیر مجموعه یکی دیگر از دسته بندی ها اضافه شده و نیازی به افزودن آن نیست
-                    // همچنین سطح آن نباید صفر باشد(سطح صفر یعنی اولین سطح دسته والد)
-                    if (itemChildren.length == 0 && item.level != 0) {
-                        continue
-                    }
-
-                    newArray.push({ "value": item._id, "label": addIndentToCategoryChildren(item) + item.name });
-
-                    for (let index = 0; index < itemChildren.length; index++) {
-                        const item = itemChildren[index];
-
-                        newArray.push({ "value": item._id, "label": addIndentToCategoryChildren(item) + item.name });
-                    }
-                }
-            }
+        for (let index = 0; index < provinces.length; index++) { // لوپ در دسته بندی های بدون والد
+            const element = provinces[index];
+            newArray.push({ "value": element._id, "label": element.fname }); // افزودن آنها به آرایه جدید
         }
 
         return newArray
     }
 
-    // افزودن خط تیره به دسته بندی های فرزند برای مشخص شدن در لیست
-    function addIndentToCategoryChildren(item) {
-        let indent = '';
-        for (let index = 0; index <= item.level; index++) {
-            indent += '-';
-        }
-
-        return indent;
-    }
-
     return (
         <div className="animated fadeIn">
-            <CustomCard title="افزودن دسته بندی">
+            <CustomCard title="افزودن شهر">
                 <div key="card-header-buttons"></div>
                 <div key="card-body">
                     <Formik
-                        initialValues={{ name: '', label: '', parent: '' }}
+                        initialValues={{ fname: '', ename: '', code: '', active: true, province: '' }}
                         validationSchema={schema}
                         onSubmit={(values, { setSubmitting, resetForm }) => {
                             setLoading(true);
@@ -209,74 +138,75 @@ const AddCategory = (props) => {
                         }) => (
                             <CForm onSubmit={handleSubmit}>
                                 <CRow>
-                                    <CCol md="6">
-                                        <CCol xs="12">
-                                            <InputWithLabel
-                                                label="عنوان"
-                                                type="text"
-                                                name="name"
-                                                required={true}
-                                                placeholder="عنوان دسته را وارد کنید"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.name}
-                                                errorsInput={errors.name}
-                                                touchedInput={touched.name} />
-                                        </CCol>
-                                        <CCol xs="12">
-                                            <Select2WithLabel
-                                                required
-                                                name="parent"
-                                                label="دسته والد"
-                                                value={values.parent}
-                                                onChange={e => setFieldValue("parent", e.value)}
-                                                options={options}
-                                                errorsInput={errors.parent}
-                                                touchedInput={touched.parent}
-                                            />
-                                        </CCol>
-
-                                        <CCol xs="12">
-                                            <InputWithLabel
-                                                label="توضیح"
-                                                type="text"
-                                                name="label"
-                                                placeholder="توضیح دسته را وارد کنید"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.label}
-                                                errorsInput={errors.label}
-                                                touchedInput={touched.label} />
-                                        </CCol>
+                                    <CCol xs="12">
+                                        <InputWithLabel
+                                            label="عنوان فارسی"
+                                            type="text"
+                                            name="fname"
+                                            lang="fa"
+                                            required={true}
+                                            placeholder="عنوان فارسی را وارد کنید"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.fname}
+                                            errorsInput={errors.fname}
+                                            touchedInput={touched.fname} />
                                     </CCol>
-                                    <CCol md="6">
-                                        <CRow>
-                                            <CCol xs="12">
-                                                <div className={classes.imagePreviewWrapper}>
-                                                    <CButton type="button" color="success" onClick={openMediaModal} className={classes.imagePreviewSelect}>
-                                                        {
-                                                            (fileSelected == true) ? 'تغییر تصویر' :
-                                                                'انتخاب تصویر'
-                                                        }
-                                                    </CButton>
-                                                    {
-                                                        (fileSelected) ?
-                                                            <>
-                                                                <CButton type="button" color="danger" onClick={removeFile} className={classes.imagePreviewRemove}>حذف</CButton>
-                                                                <img src={`${global.config.server.baseURL}${file.dir}`} className={classes.imagePreview} />
-                                                            </> :
-                                                            <img src={global.config.defaults.image} className={classes.imagePreview} />
-                                                    }
-                                                </div>
-                                            </CCol>
-                                        </CRow>
+                                    <CCol xs="12">
+                                        <Select2WithLabel
+                                            required
+                                            name="province"
+                                            label="استان"
+                                            value={values.province}
+                                            onChange={e => setFieldValue("province", e.value)}
+                                            options={options}
+                                            errorsInput={errors.province}
+                                            touchedInput={touched.province}
+                                        />
+                                    </CCol>
+                                    <CCol xs="12">
+                                        <InputWithLabel
+                                            label="عنوان انگلیسی"
+                                            type="text"
+                                            name="ename"
+                                            lang="en"
+                                            required={false}
+                                            placeholder="عنوان انگلیسی را وارد کنید"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.ename}
+                                            errorsInput={errors.ename}
+                                            touchedInput={touched.ename} />
+                                    </CCol>
+                                    <CCol xs="12">
+                                        <InputWithLabel
+                                            label="کد شهر"
+                                            type="text"
+                                            name="code"
+                                            maxlength="5"
+                                            letterSize="cap"
+                                            placeholder="کد شهر را وارد کنید"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.code}
+                                            errorsInput={errors.code}
+                                            touchedInput={touched.code} />
+                                    </CCol>
+                                    <CCol xs="12">
+                                        <SwitchWithLabel
+                                            name="active"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.active}
+                                            errorsInput={errors.active}
+                                            touchedInput={touched.active} />
                                     </CCol>
                                 </CRow>
                                 <hr />
                                 <CRow>
                                     <CCol md="12">
                                         <SubmitButton loading={loading} inputText="ثبت" disabled={isSubmitting} />
-                                        <CancelButton onClick={() => { resetForm(); clearForm() }} />
+                                        <CancelButton onClick={() => { resetForm(); }} />
                                     </CCol>
                                 </CRow>
                             </CForm>
@@ -284,17 +214,8 @@ const AddCategory = (props) => {
                     </Formik>
                 </div>
             </CustomCard>
-
-            {
-                (modal) ?
-                    <MediaSelect
-                        showModal={modal}
-                        closeModal={() => { setModal(false) }}
-                        onFileClick={fileSelectHandler} /> :
-                    null
-            }
         </div>
     )
 }
 
-export default AddCategory;
+export default AddProvince;
