@@ -2,11 +2,12 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
     extend type Query {        
-        getByAllProvince: [Province],
+        getAllProvince: [Province],
         getCities(provinceId: ID): [Province],
     }
     extend type Mutation {
         createProvince(input: InputProvince): ResultProvince!
+        createCity(input: InputCity): ResultCity!
     }
 
     type Province {
@@ -19,11 +20,12 @@ const typeDefs = gql`
     }
 
     type City {
-        provinceId: ID!,
+        _id: ID,
         fname: String!,
         ename: String,
         code: String,
         active: Boolean,
+        provinceId: ID
     }
 
     type ResultProvince {
@@ -31,18 +33,27 @@ const typeDefs = gql`
         message: String,
         data: Province
     }  
+
+    type ResultCity {
+        status: Int,
+        message: String,
+        data: City
+    }  
     
     input InputProvince {
         fname: String!,
         ename: String,
         code: String,
+        active: Boolean,
         city : [InputCity]
     }
 
     input InputCity {
+        provinceId: ID!,
         fname: String!,
         ename: String,
         code: String,
+        active: Boolean,
     }
 `;
 

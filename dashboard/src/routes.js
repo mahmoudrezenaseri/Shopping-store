@@ -24,7 +24,7 @@ const routes = [
   { path: '/user/add', name: 'افزودن کاربر', component: AddUser },
   { path: '/province', name: 'استان و شهر', component: Province, exact: true },
   { path: '/province/add', name: 'افزودن استان', component: AddProvince },
-  { path: '/province/city/add', name: 'افزودن شهر', component: AddCity },
+  { path: '/city/add', name: 'افزودن شهر', component: AddCity },
 ];
 
 export default routes;

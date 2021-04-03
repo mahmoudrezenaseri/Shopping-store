@@ -15,10 +15,12 @@ import CustomCard from '../../components/card/customCard/custom-card.component'
 import SubmitButton from '../../components/button/submit-button.component';
 import InputWithLabel from '../../components/input/input-with-label.component';
 import CancelButton from '../../components/button/cancel-button.component';
+import SwitchWithLabel from '../../components/input/switch-with-label.component';
 
 const schema = yup.object().shape({
     fname: yup.string().max(150, 'عنوان فارسی باید حداکثر دارای 150 کاراکتر باشد').required('لطفا عنوان فارسی را وارد کنید'),
-    ename: yup.string().max(150, 'عنوان انگلیسی باید حداکثر دارای 150 کاراکتر باشد')
+    ename: yup.string().max(150, 'عنوان انگلیسی باید حداکثر دارای 150 کاراکتر باشد'),
+    code: yup.string().max(5, 'کد استان باید حداکثر دارای 5 کاراکتر باشد')
 });
 
 const AddProvince = (props) => {
@@ -30,8 +32,8 @@ const AddProvince = (props) => {
             method: "post",
             data: {
                 query: `
-                  mutation addProvince($fname:String,$ename:String,$code:String,$city:[InputCity]){
-                    createProvince(input:{fname:$fname,ename:$ename,code:$code,city:$city}){
+                  mutation addProvince($fname:String!,$ename:String,$code:String,$active:Boolean,$city:[InputCity]){
+                    createProvince(input:{fname:$fname,ename:$ename,code:$code,active:$active,city:$city}){
                         status,
                         message,
                         data{
@@ -43,6 +45,7 @@ const AddProvince = (props) => {
                     "fname": values.fname,
                     "ename": values.ename,
                     "code": values.code,
+                    "active": values.active,
                 }
             }
         }).then((response) => {
@@ -53,7 +56,7 @@ const AddProvince = (props) => {
                 setSubmitting(false);
             }
             else { // success
-                toast.success(response.data.data.createCategory.message)
+                toast.success(response.data.data.createProvince.message)
                 setLoading(false);
                 setSubmitting(false);
                 resetForm()
@@ -71,7 +74,7 @@ const AddProvince = (props) => {
                 <div key="card-header-buttons"></div>
                 <div key="card-body">
                     <Formik
-                        initialValues={{ fname: '', ename: '', code: '', active: false }}
+                        initialValues={{ fname: '', ename: '', code: '', active: true }}
                         validationSchema={schema}
                         onSubmit={(values, { setSubmitting, resetForm }) => {
                             setLoading(true);
@@ -90,46 +93,56 @@ const AddProvince = (props) => {
                         }) => (
                             <CForm onSubmit={handleSubmit}>
                                 <CRow>
-                                    <CCol md="12">
-                                        <CCol xs="12">
-                                            <InputWithLabel
-                                                label="عنوان فارسی"
-                                                type="text"
-                                                name="fname"
-                                                required={true}
-                                                placeholder="عنوان فارسی را وارد کنید"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.fname}
-                                                errorsInput={errors.fname}
-                                                touchedInput={touched.fname} />
-                                        </CCol>
-                                        <CCol xs="12">
-                                            <InputWithLabel
-                                                label="عنوان انگلیسی"
-                                                type="text"
-                                                name="ename"
-                                                required={false}
-                                                placeholder="عنوان انگلیسی را وارد کنید"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.ename}
-                                                errorsInput={errors.ename}
-                                                touchedInput={touched.ename} />
-                                        </CCol>
-
-                                        <CCol xs="12">
-                                            <InputWithLabel
-                                                label="کد استان"
-                                                type="text"
-                                                name="code"
-                                                placeholder="کد استان را وارد کنید"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.code}
-                                                errorsInput={errors.code}
-                                                touchedInput={touched.code} />
-                                        </CCol>
+                                    <CCol xs="12">
+                                        <InputWithLabel
+                                            label="عنوان فارسی"
+                                            type="text"
+                                            name="fname"
+                                            lang="fa"
+                                            required={true}
+                                            placeholder="عنوان فارسی را وارد کنید"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.fname}
+                                            errorsInput={errors.fname}
+                                            touchedInput={touched.fname} />
+                                    </CCol>
+                                    <CCol xs="12">
+                                        <InputWithLabel
+                                            label="عنوان انگلیسی"
+                                            type="text"
+                                            name="ename"
+                                            lang="en"
+                                            required={false}
+                                            placeholder="عنوان انگلیسی را وارد کنید"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.ename}
+                                            errorsInput={errors.ename}
+                                            touchedInput={touched.ename} />
+                                    </CCol>
+                                    <CCol xs="12">
+                                        <InputWithLabel
+                                            label="کد استان"
+                                            type="text"
+                                            name="code"
+                                            maxlength="5"
+                                            letterSize="cap"
+                                            placeholder="کد استان را وارد کنید"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.code}
+                                            errorsInput={errors.code}
+                                            touchedInput={touched.code} />
+                                    </CCol>
+                                    <CCol xs="12">
+                                        <SwitchWithLabel
+                                            name="active"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.active}
+                                            errorsInput={errors.active}
+                                            touchedInput={touched.active} />
                                     </CCol>
                                 </CRow>
                                 <hr />

@@ -5,15 +5,28 @@ const { provinceValidator, cityValidator } = require('src/graphql/validators');
 
 const resolvers = {
     Query: {
-
-    },
-    Mutation: {
-        createProvince: async (param, args, { req, res }) => {
+        getAllProvince: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
             // if (!await common.checkIfAdmin(req, config.secretId)) {
             //     handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
             // }
+
+            const { province } = await getAllProvinceHandler(args)
+                .catch((error) => {
+                    handleErrors(error, error.code, error.message)
+                });
+
+            return province
+        },
+    },
+    Mutation: {
+        createProvince: async (param, args, { req, res }) => {
+
+            // check if user has logged in and is administrator
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            }
 
             const { province } = await createProvinceHandler(args).catch(async (error) => {
                 handleErrors(error, error.code, error.message);
@@ -26,6 +39,15 @@ const resolvers = {
             };
         }
     }
+}
+
+const getAllProvinceHandler = async (args) => {
+
+    const province = await Province.find();
+
+    return new Promise((resolve, reject) => {
+        resolve({ province })
+    })
 }
 
 async function checkInputData(args) {
