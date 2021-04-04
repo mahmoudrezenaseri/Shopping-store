@@ -24,6 +24,22 @@ const code = Joi.string().min(2).max(4).optional().allow(null).allow('').label('
         "string.max": "کد شهر باید حداکثر { #limit} حرف داشته باشد",
     });
 
+const provinceId = Joi.string().required()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .label('شناسه استان')
+    .messages({
+        "string.pattern.base": "شناسه استان وارد شده اشتباه هست",
+        "string.base": "شناسه استان اشتباه وارد شده است",
+        "string.empty": "شناسه استان نباید خالی باشد  ",
+        "any.required": "شناسه استان نباید خالی باشد",
+    });
+
+const active = Joi.boolean().required().label('وضعیت').messages({
+    "string.base": "وضعیت اشتباه وارد شده است",
+    "string.empty": "لطفا وضعیت را وارد کنید",
+    "any.required": "لطفا وضعیت را وارد کنید",
+});
+
 module.exports.create = Joi.object({
-    fname, ename, code
+    fname, ename, code, provinceId, active
 });

@@ -1,5 +1,15 @@
 const Joi = require('joi');
 
+const _id = Joi.string().required()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .label('شناسه استان')
+    .messages({
+        "string.pattern.base": "شناسه استان وارد شده اشتباه هست",
+        "string.base": "شناسه استان اشتباه وارد شده است",
+        "string.empty": "شناسه استان نباید خالی باشد  ",
+        "any.required": "شناسه استان نباید خالی باشد",
+    });
+
 const fname = Joi.string().max(150).required().label('عنوان (فارسی)').messages({
     "string.base": "عنوان (فارسی) اشتباه وارد شده است",
     "string.empty": "لطفا عنوان (فارسی) را وارد کنید",
@@ -27,4 +37,8 @@ const code = Joi.string().min(2).max(4).optional().allow(null).allow('').label('
 
 module.exports.create = Joi.object({
     fname, ename, code
+});
+
+module.exports.checkId = Joi.object({
+    _id
 });

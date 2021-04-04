@@ -33,18 +33,16 @@ const AddProvince = (props) => {
     }, []);
 
     const handleSubmiting = (values, setSubmitting, resetForm) => {
+
         axios({
             url: "/",
             method: "post",
             data: {
                 query: `
-                  mutation addCity($fname:String!,$ename:String,$code:String,$active:Boolean){
-                    createCity(input:{fname:$fname,ename:$ename,code:$code,active:$active}){
+                mutation addCity($provinceId:ID!,$fname:String!,$ename:String,$code:String,$active:Boolean){
+                    createCity(input:{provinceId:$provinceId,fname:$fname,ename:$ename,code:$code,active:$active}){
                         status,
-                        message,
-                        data{
-                            fname
-                        }
+                        message
                     }
                   }`,
                 variables: {
@@ -52,6 +50,7 @@ const AddProvince = (props) => {
                     "ename": values.ename,
                     "code": values.code,
                     "active": values.active,
+                    "provinceId": values.province,
                 }
             }
         }).then((response) => {
@@ -62,7 +61,7 @@ const AddProvince = (props) => {
                 setSubmitting(false);
             }
             else { // success
-                toast.success(response.data.data.createProvince.message)
+                toast.success(response.data.data.createCity.message)
                 setLoading(false);
                 setSubmitting(false);
                 resetForm()

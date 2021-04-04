@@ -131,7 +131,7 @@ async function checkInputData(args) {
 
     // product detail validation
     for (let index = 0; index < args.input.detail.length; index++) {
-        const element = args.input.detail[index];
+        const element = args.imnput.detail[index];
         await productSpecDetailValueValidator.create.validateAsync(element, { abortEarly: false });
     }
 
