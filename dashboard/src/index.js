@@ -13,8 +13,11 @@ import { Provider } from 'react-redux'
 import store from './store'
 import './config';
 
-import axios from 'axios';
+// sweetalert2
+import 'sweetalert2/src/sweetalert2.scss'
 
+// axios 
+import axios from 'axios';
 axios.defaults.baseURL = global.config.axios.baseURL;
 axios.defaults.headers.post['accept'] = "application/json";
 

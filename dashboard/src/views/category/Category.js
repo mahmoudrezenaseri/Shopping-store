@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     CCard,
@@ -7,6 +7,7 @@ import {
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { columns } from './funcs';
+import Swal from 'sweetalert2';
 
 import CustomCard from '../../components/card/customCard/custom-card.component'
 import AddButton from '../../components/card/customCard/add-button.component'
@@ -17,16 +18,20 @@ const Category = (props) => {
 
     let history = useHistory();
 
-    const [filterText, setFilterText] = React.useState('');
+    const [filterText, setFilterText] = useState('');
     const [data, setData] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [toggleCleared, setToggleCleared] = useState(false);
+
     const filteredItems = data.filter(item => (item.name && item.name.toLowerCase().includes(filterText.toLowerCase()))
         || (item.parent?.name && item.parent?.name.toLowerCase().includes(filterText.toLowerCase()))
     );
 
     useEffect(() => {
+
         setTimeout(() => {
             getAllCategory()
-        }, 1000);
+        }, 100);
     }, []);
 
     function getAllCategory() {
@@ -63,9 +68,26 @@ const Category = (props) => {
         });
     }
 
+    const deleteRows = () => {
+        Swal.fire(global.config.swal.fa.delete).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+                setToggleCleared(!toggleCleared);
+            }
+        })
+    }
+
     const subHeaderComponentMemo = useMemo(() => {
-        return <TableSubHeader onFilter={e => setFilterText(e.target.value)} filterText={filterText} />;
-    }, [filterText]);
+        return <TableSubHeader onFilter={e => setFilterText(e.target.value)} filterText={filterText} hasSearch={true} onDelete={deleteRows} />;
+    }, [filterText, selectedRows]);
+
+    const handleRowSelected = useCallback(state => {
+        setSelectedRows(state.selectedRows);
+    }, []);
 
     return (
         <div className="animated fadeIn">
@@ -79,6 +101,8 @@ const Category = (props) => {
                         title="لیست دسته بندی ها"
                         columns={columns}
                         data={filteredItems}
+                        onSelectedRowsChange={handleRowSelected}
+                        clearSelectedRows={toggleCleared}
                         subHeaderComponent={subHeaderComponentMemo} />
 
                 </div>

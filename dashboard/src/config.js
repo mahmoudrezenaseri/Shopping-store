@@ -28,5 +28,19 @@ module.exports = global.config = {
         recaptcha: {
             siteKey: "6LcILlgaAAAAAGsmNA8LeKbC9xQ7kumIcIe9QJ5a"
         }
+    },
+    swal: {
+        fa: {
+            delete: {
+                title: 'اطمینان دارید ؟',
+                text: "اطلاعات حذف شده قابل برگشت نیستند",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله, حذف شود!',
+                cancelButtonText: "لغو"
+            }
+        }
     }
 };
