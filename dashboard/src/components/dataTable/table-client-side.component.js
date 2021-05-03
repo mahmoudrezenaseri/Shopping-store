@@ -4,8 +4,9 @@ import {
     CAlert
 } from '@coreui/react';
 import DataTable from 'react-data-table-component';
+import Progress from './progress.component'
 
-const DataTableClientSide = ({ title, columns, data, subHeaderComponent, onSelectedRowsChange }) => {
+const DataTableClientSide = ({ title, columns, data, subHeaderComponent, progressPending, onSelectedRowsChange }) => {
 
     return (
         <DataTable
@@ -24,6 +25,9 @@ const DataTableClientSide = ({ title, columns, data, subHeaderComponent, onSelec
                 <CCol xs="12"> <CAlert color="primary" className="text-center">موردی یافت نشد!</CAlert></CCol>
             }
             paginationComponentOptions={{ rowsPerPageText: 'نمایش', rangeSeparatorText: 'از' }}
+            progressPending={progressPending}
+            progressComponent={<Progress />}
+            highlightOnHover
             direction="rtl" />
     )
 }

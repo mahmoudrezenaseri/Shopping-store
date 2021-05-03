@@ -3,12 +3,12 @@ import { CButton } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { freeSet } from '@coreui/icons';
 
-export const columns = [
+export const columns = ((editHandler, deleteHandler) => [
     {
         name: 'شناسه',
         selector: '_id',
         sortable: false,
-        hide: true
+        omit: true
     },
     {
         name: 'عنوان',
@@ -28,11 +28,12 @@ export const columns = [
     {
         name: 'توضیحات',
         selector: '',
+        button: true,
         cell: row => (
             <>
-                <CButton type="button" color="primary" title="ویرایش"><CIcon content={freeSet.cilPencil} size={'sm'} /></CButton>	&nbsp;
-                <CButton type="button" color="danger" title="حذف"><CIcon content={freeSet.cilX} size={'sm'} /></CButton>
+                <CButton type="button" color="primary" title="ویرایش" row={row} onClick={editHandler}><CIcon content={freeSet.cilPencil} size={'sm'} /></CButton>	&nbsp;
+                <CButton type="button" color="danger" title="حذف" row={row} onClick={deleteHandler}><CIcon content={freeSet.cilX} size={'sm'} /></CButton>
             </>
         )
     },
-];
+]);

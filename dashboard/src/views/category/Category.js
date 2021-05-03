@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     CCard,
-    CCardBody,
+    CCardBody
 } from '@coreui/react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -22,6 +22,7 @@ const Category = (props) => {
     const [data, setData] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [toggleCleared, setToggleCleared] = useState(false);
+    const [pending, setPending] = useState(true);
 
     const filteredItems = data.filter(item => (item.name && item.name.toLowerCase().includes(filterText.toLowerCase()))
         || (item.parent?.name && item.parent?.name.toLowerCase().includes(filterText.toLowerCase()))
@@ -29,9 +30,9 @@ const Category = (props) => {
 
     useEffect(() => {
 
-        setTimeout(() => {
-            getAllCategory()
-        }, 100);
+        getAllCategory()
+        setPending(false)
+
     }, []);
 
     function getAllCategory() {
@@ -43,6 +44,7 @@ const Category = (props) => {
                 query: `
                   query {
                     getAllCategory{
+                        _id,
                         name,
                         label,
                         parent{
@@ -71,12 +73,13 @@ const Category = (props) => {
     const deleteRows = () => {
         Swal.fire(global.config.swal.fa.delete).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-                setToggleCleared(!toggleCleared);
+
+                // Swal.fire(
+                //     'خذف شد!',
+                //     '',
+                //     'موفق'
+                // )
+                // setToggleCleared(!toggleCleared);
             }
         })
     }
@@ -89,6 +92,14 @@ const Category = (props) => {
         setSelectedRows(state.selectedRows);
     }, []);
 
+    const deleteCat = row => {
+        console.log("delete category", row)
+    }
+
+    const editCat = row => {
+        console.log("edit category", row)
+    }
+
     return (
         <div className="animated fadeIn">
             <CustomCard title="دسته بندی ها">
@@ -99,15 +110,15 @@ const Category = (props) => {
 
                     <DataTableClientSide
                         title="لیست دسته بندی ها"
-                        columns={columns}
+                        columns={columns(editCat, deleteCat)}
                         data={filteredItems}
+                        progressPending={pending}
                         onSelectedRowsChange={handleRowSelected}
                         clearSelectedRows={toggleCleared}
                         subHeaderComponent={subHeaderComponentMemo} />
-
                 </div>
             </CustomCard>
-        </div>
+        </div >
     )
 }
 

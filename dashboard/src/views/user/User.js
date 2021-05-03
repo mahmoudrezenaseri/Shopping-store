@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-    CButton,
-    CCard,
-    CCardBody,
-    CRow,
-    CCol,
-    CForm,
-} from '@coreui/react';
+import { CButton, CRow, CCol, CForm } from '@coreui/react';
 import { toast } from 'react-toastify';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
 import moment from 'moment-jalaali'
+import memoize from 'memoize-one';
 
 import classes from './css/user.module.css';
-import { validateDateEntry } from './func';
+import { validateDateEntry, columns } from './func';
 
 import CustomCard from '../../components/card/customCard/custom-card.component'
 import AddButton from '../../components/card/customCard/add-button.component'
@@ -34,35 +28,6 @@ const schema = yup.object().shape({
         .max(11, 'موبایل باید حداکثر دارای 11 کاراکتر باشد')
 });
 
-const columns = [
-    {
-        name: 'نام و نام خانوادگی',
-        selector: '',
-        sortable: true,
-        cell: row => row.fullName
-    },
-    {
-        name: 'موبایل',
-        selector: 'mobile',
-        sortable: true,
-    },
-    {
-        name: 'تاریخ ثبت',
-        cell: row => <span>{new Date(row.createdAt).toLocaleDateString('fa-IR')}</span>,
-        sortable: true,
-    },
-    {
-        name: 'توضیحات',
-        selector: '',
-        cell: row => (
-            <>
-                <CButton type="button" color="primary">ویرایش</CButton>	&nbsp;
-                <CButton type="button" color="danger">حذف</CButton>
-            </>
-        )
-    },
-];
-
 const User = (props) => {
 
     let history = useHistory();
@@ -70,9 +35,14 @@ const User = (props) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [totalRows, setTotalRows] = useState(0);
+    const [pending, setPending] = useState(true);
 
     useEffect(() => {
-        getAllUser()
+        setTimeout(() => {
+
+            getAllUser()
+            setPending(false)
+        }, 2000);
     }, []);
 
     function getAllUser(page, limit) {
@@ -89,6 +59,7 @@ const User = (props) => {
                         totalDocs,
                         page,
                         users{
+                            _id,
                             fullName,
                             firstName,
                             lastName,
@@ -145,6 +116,7 @@ const User = (props) => {
                         totalDocs,
                         page,
                         users{
+                            _id,
                             fullName,
                             firstName,
                             lastName,
@@ -180,6 +152,15 @@ const User = (props) => {
             toast.error(global.config.message.error.fa);
             setLoading(false);
         });
+    }
+
+    const deleteUser = row => {
+        console.log("delete user", row)
+    }
+
+    const editUser = row => {
+        console.log("edit user", row)
+
     }
 
     return (
@@ -290,18 +271,15 @@ const User = (props) => {
                 <div key="card-header-buttons"></div>
 
                 <div key="card-body">
-                    <CCard>
-                        <CCardBody>
-                            <DataTableServerSide
-                                title="لیست کاربران"
-                                columns={columns}
-                                data={data}
-                                paginationTotalRows={totalRows}
-                                onChangePage={handlePageChange}
-                                onChangeRowsPerPage={handlePerRowsChange}
-                            />
-                        </CCardBody>
-                    </CCard>
+                    <DataTableServerSide
+                        title="لیست کاربران"
+                        columns={columns(editUser, deleteUser)}
+                        data={data}
+                        progressPending={pending}
+                        paginationTotalRows={totalRows}
+                        onChangePage={handlePageChange}
+                        onChangeRowsPerPage={handlePerRowsChange}
+                    />
                 </div>
             </CustomCard>
         </div>
