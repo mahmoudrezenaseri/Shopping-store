@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import AuthContextProvider from './context/auth/AuthContext'
+import './App.css'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -8,7 +9,7 @@ const loading = (
   </div>
 )
 
-const TheLayout = React.lazy(() => import('./containers/TheLayout'));
+const Layout = React.lazy(() => import('./containers/Layout'));
 
 class App extends Component {
 
@@ -18,7 +19,7 @@ class App extends Component {
         <React.Suspense fallback={loading}>
           <AuthContextProvider>
             <Switch>
-              <Route path="/" name="Home" render={props => <TheLayout {...props} />} />
+              <Route path="/" name="Home" render={props => <Layout {...props} />} />
             </Switch>
           </AuthContextProvider>
         </React.Suspense>

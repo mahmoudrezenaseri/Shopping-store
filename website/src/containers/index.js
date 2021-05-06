@@ -1,9 +1,11 @@
-import TheContent from './TheContent'
-import TheHeader from './TheHeader'
-import TheLayout from './TheLayout'
+import Content from './Content'
+import Header from './Header'
+import SubHeader from './SubHeader/index'
+import Layout from './Layout'
 
 export {
-    TheContent,
-    TheHeader,
-    TheLayout
+    Content,
+    Header,
+    SubHeader,
+    Layout
 }

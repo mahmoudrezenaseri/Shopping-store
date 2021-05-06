@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import { AuthContext } from '../context/auth/AuthContext';
-import { TheHeader, TheContent } from './index'
+import { Header, Content, SubHeader } from './index'
 
 import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -24,15 +24,16 @@ const theme = createMuiTheme({
     }
 })
 
-const TheLayout = (props) => {
+const Layout = (props) => {
     return (
         <ThemeProvider theme={theme}>
             <Container maxWidth="xlg" disableGutters={true}>
-                <TheHeader />
-                <TheContent />
+                <Header />
+                <SubHeader />
+                <Content />
             </Container>
         </ThemeProvider>
     )
 }
 
-export default TheLayout;
+export default Layout;

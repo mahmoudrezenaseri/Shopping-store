@@ -22,7 +22,7 @@ const loading = (
     </div>
 )
 
-export default function TheContent() {
+const Content = () => {
     const classes = useStyles();
 
     return (
@@ -51,4 +51,6 @@ export default function TheContent() {
         </div>
     );
 }
+
+export default Content;
 

@@ -68,9 +68,9 @@ const useStyles = makeStyles((theme) => ({
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-            width: '22ch',
+            width: '42ch',
             '&:focus': {
-                width: '40ch',
+                width: '52ch',
             },
         },
     },
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const TheHeader = () => {
+const Header = () => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -221,4 +221,4 @@ const TheHeader = () => {
     );
 }
 
-export default TheHeader
+export default Header
