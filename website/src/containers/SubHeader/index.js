@@ -2,9 +2,13 @@ import React, { Fragment, Suspense } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import MegaMenu from 'react-mega-menu';
 import DropDownMenu from './component/dropDownMenu.component';
 import Nav from './component/Nav.component';
 import NavItem from './component/NavItem.component';
+import Reorder from '@material-ui/icons/Reorder';
+import Kitchen from '@material-ui/icons/Kitchen';
+import LocalOffer from '@material-ui/icons/LocalOffer';
 import "./sub-header.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -61,6 +65,7 @@ const menuStyle = {
         }
     }
 }
+
 
 const SubHeader = () => {
     const classes = useStyles();
@@ -131,13 +136,13 @@ const SubHeader = () => {
 
     return (
         <Nav>
-            <NavItem link="کالای دیجیتال">
+            <NavItem link="دسته بندی کالا ها" icon={<Reorder />}>
                 <DropDownMenu />
             </NavItem>
-            <NavItem link="مد و پوشاک">
+            <NavItem link="سوپر مارکت" icon={<Kitchen />}>
 
             </NavItem>
-            <NavItem link="ورزش و سرگرمی">
+            <NavItem link="تخفیف ها و پیشنهاد ها" icon={<LocalOffer />}>
 
             </NavItem>
         </Nav>

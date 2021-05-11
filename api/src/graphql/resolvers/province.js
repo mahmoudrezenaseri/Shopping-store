@@ -40,9 +40,9 @@ const resolvers = {
         createCity: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            // if (!await common.checkIfAdmin(req, config.secretId)) {
-            //     handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            // }
+            if (!await common.checkIfAdmin(req, config.secretId)) {
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد", { first: "createCity", sec: "province" });
+            }
 
             await createCityHandler(args).catch(async (error) => {
                 handleErrors(error, error.code, error.message);
