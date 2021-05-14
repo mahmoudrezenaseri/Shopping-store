@@ -41,7 +41,7 @@ const resolvers = {
 
             // check if user has logged in and is administrator
             if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد", { first: "createCity", sec: "province" });
+                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد", { path: "/province/createCity" });
             }
 
             await createCityHandler(args).catch(async (error) => {
