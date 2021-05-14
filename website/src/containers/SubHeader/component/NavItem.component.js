@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import "../sub-header.css"
+import { CSSTransition } from 'react-transition-group';
 
 const NavItem = (props) => {
     const [open, SetOpen] = useState(false);
+
+    const duration = {
+        appear: 500,
+        enter: 300,
+        exit: 100,
+    }
 
     return (
         <li className="nav-item" onMouseEnter={() => { SetOpen(!open); }} onMouseLeave={() => { SetOpen(!open) }}>
@@ -19,10 +21,12 @@ const NavItem = (props) => {
                 startIcon={props.icon} >
                 {props.link}
             </Button>
-            <div className="menu">
-                {/* {(open) ? props.children : null} */}
-                {props.children}
-            </div>
+            <CSSTransition in={open} timeout={duration} unmountOnExit>
+                <div className="menu">
+                    {/* {(open) ? props.children : null} */}
+                    {props.children}
+                </div>
+            </CSSTransition>
         </li>
     );
 }

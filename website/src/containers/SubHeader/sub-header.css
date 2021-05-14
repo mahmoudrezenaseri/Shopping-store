@@ -96,12 +96,24 @@ a {
   padding: 0 10px;
 }
 
-.dropdown-right-item {
-  /* width: 100%;
-  text-align: right;
-  direction: rtl; */
+.dropdown-right,
+.dropdown-left {
+  background-color: #fcfcfc;
+}
+
+.dropdown-right {
+  border-left: 1px solid #f0f0f1;
 }
 
 .dropdown-right-item:hover {
   color: red;
+}
+
+.active-cat {
+  color: red;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.dropdown-right-item button {
+  /* padding: 0px !important; */
 }

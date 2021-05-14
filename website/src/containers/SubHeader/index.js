@@ -1,143 +1,105 @@
-import React, { Fragment, Suspense } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import MegaMenu from 'react-mega-menu';
+import React from 'react'
 import DropDownMenu from './component/dropDownMenu.component';
 import Nav from './component/Nav.component';
 import NavItem from './component/NavItem.component';
 import Reorder from '@material-ui/icons/Reorder';
 import Kitchen from '@material-ui/icons/Kitchen';
 import LocalOffer from '@material-ui/icons/LocalOffer';
+
+import LaptopChromebookIcon from '@material-ui/icons/LaptopChromebook';
+import SportsBasketballIcon from '@material-ui/icons/SportsBasketball';
+import WatchIcon from '@material-ui/icons/Watch';
+
 import "./sub-header.css"
 
-const useStyles = makeStyles((theme) => ({
-    grid: {
-        // height: "45px",
-        backgroundColor: theme.palette.primary.main,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
-}));
-
-const menuStyle = {
-    menuProps: {
-        style: {
-            border: "2px solid red",
-            height: "20em",
-            padding: "2px",
-            width: "20%",
-            margin: "0"
-        }
-    },
-    contentProps: {
-        style: {
-            width: "78.8%",
-            border: "2px solid yellow",
-            padding: "2px"
-        }
-    },
-    menuItemProps: {
-        style: {
-            border: "2px solid green",
-            padding: "2px",
-            height: "2em"
-        }
-    },
-    menuItemSelectedProps: {
-        style: {
-            border: "2px solid purple",
-            padding: "2px",
-            height: "2em",
-            backgroundColor: "#f5f5f5",
-            color: "red",
-            cursor: "pointer"
-        }
-    },
-    containerProps: {
-        style: {
-            border: "2px solid blue",
-            width: "90%",
-            padding: "2px"
-        }
-    }
-}
-
-
 const SubHeader = () => {
-    const classes = useStyles();
 
-    const categories = [
-        {
-            label: "کالای دیجیتال",
-            key: "Category1",
-            items:
-                <Grid container>
-                    <Grid item xs={3}>
-                        <ul>
-                            <li><h4>لوازم جانبی گوشی</h4></li>
-                            <li><h4>گوشی موبایل</h4></li>
-                            <li><h4>واقعیت مجازی</h4></li>
-                            <li><h4>دوربین</h4></li>
-                        </ul>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <ul>
-                            <li><h4>لوازم جانبی گوشی</h4></li>
-                            <li><h4>گوشی موبایل</h4></li>
-                            <li><h4>واقعیت مجازی</h4></li>
-                            <li><h4>دوربین</h4></li>
-                        </ul>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <ul>
-                            <li><h4>لوازم جانبی گوشی</h4></li>
-                            <li><h4>گوشی موبایل</h4></li>
-                            <li><h4>واقعیت مجازی</h4></li>
-                            <li><h4>دوربین</h4></li>
-                        </ul>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <ul>
-                            <li><h4>لوازم جانبی گوشی</h4></li>
-                            <li><h4>گوشی موبایل</h4></li>
-                            <li><h4>واقعیت مجازی</h4></li>
-                            <li><h4>دوربین</h4></li>
-                        </ul>
-                    </Grid>
-                </Grid>
+    const categories = [{
+        title: "کالای دیجیتال",
+        icon: <LaptopChromebookIcon />,
+        data: [{
+            title: "لوازم جانبی گوشی",
+            column: 1
         },
         {
-            label: "مد و پوشاک",
-            key: "Category2",
-            items: <div>
-                <ul>
-                    <li><h4>ورزشی</h4></li>
-                    <li><h4>زنانه</h4></li>
-                    <li><h4>مردانه</h4></li>
-                </ul>
-            </div>
+            title: "گوشی موبایل",
+            column: 2
         },
         {
-            label: "ورزش و سفر",
-            key: "Category3",
-            items: <div>
-                <ul>
-                    <li><h4>دوچرخه</h4></li>
-                    <li><h4>اسکوتر</h4></li>
-                    <li><h4>چتر</h4></li>
-                </ul>
-            </div>
-        }
-    ];
+            title: "واقعیت مجازی",
+            column: 3
+        },
+        {
+            title: "دوربین",
+            column: 4
+        }]
+    },
+    {
+        title: "مد و پوشاک",
+        icon: <WatchIcon />,
+        data: [{
+            title: "لباس مردانه",
+            column: 1
+        },
+        {
+            title: "لباس زنانه",
+            column: 3
+        },
+        {
+            title: "ساعت",
+            column: 1
+        }]
+    }, {
+        title: "ورزش و سرگرمی",
+        icon: <SportsBasketballIcon />,
+        data: [{
+            title: "کفش سالن",
+            column: 1
+        },
+        {
+            title: "توپ",
+            column: 2
+        },
+        {
+            title: "شورت ورزشی",
+            column: 3
+        }]
+    }, {
+        title: "زیبایی و سلامت",
+        icon: <SportsBasketballIcon />,
+        data: [{
+            title: "لوازم آرایشی",
+            column: 1
+        },
+        {
+            title: "لوازم بهداشتی",
+            column: 2
+        },
+        {
+            title: "لوازم شخصی برقی ",
+            column: 2
+        }]
+    }, {
+        title: "خانه و آشپزخانه",
+        icon: <SportsBasketballIcon />,
+        data: [{
+            title: "صوتی و تصویری",
+            column: 1
+        },
+        {
+            title: "آشپزخانه",
+            column: 2
+        },
+        {
+            title: "نور و روشنایی",
+            column: 1
+        }]
+    }]
 
     return (
         <Nav>
             <NavItem link="دسته بندی کالا ها" icon={<Reorder />}>
-                <DropDownMenu />
+                <DropDownMenu categories={categories} />
             </NavItem>
             <NavItem link="سوپر مارکت" icon={<Kitchen />}>
 

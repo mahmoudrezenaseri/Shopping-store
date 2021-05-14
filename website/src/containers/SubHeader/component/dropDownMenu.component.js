@@ -1,72 +1,55 @@
-import React, { Fragment, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import React, { Fragment, useState, useRef } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import LaptopChromebookIcon from '@material-ui/icons/LaptopChromebook';
-import SportsBasketballIcon from '@material-ui/icons/SportsBasketball';
-import WatchIcon from '@material-ui/icons/Watch';
-import DropDownContent from "./dropDownContent.component"
+
 import "../sub-header.css"
-var _ = require('lodash');
+var lodash = require('lodash');
 
 const DropDownMenu = (props) => {
-    const [categoryInfo, setCategoryInfo] = useState([])
-    const categories = [{
-        title: "کالای دیجیتال",
-        icon: <LaptopChromebookIcon />,
-        data: [{
-            title: "لوازم جانبی گوشی",
-            column: 1
-        },
-        {
-            title: "گوشی موبایل",
-            column: 2
-        },
-        {
-            title: "واقعیت مجازی",
-            column: 3
-        },
-        {
-            title: "دوربین",
-            column: 4
-        }]
-    },
-    {
-        title: "مد و پوشاک",
-        icon: <WatchIcon />,
-        data: [{
-            title: "لباس مردانه",
-            column: 1
-        },
-        {
-            title: "لباس زنانه",
-            column: 3
-        },
-        {
-            title: "ساعت",
-            column: 1
-        }]
-    }, {
-        title: "ورزش و سرگرمی",
-        icon: <SportsBasketballIcon />,
-        data: [{
-            title: "کفش سالن",
-            column: 1
-        },
-        {
-            title: "توپ",
-            column: 2
-        },
-        {
-            title: "شورت ورزشی",
-            column: 3
-        }]
-    }]
+    const [categoryInfo, setCategoryInfo] = useState(props.categories[0].data)
 
-    const categoryClicked = (data) => {
+    const categoryEntered = (event, data) => {
         setCategoryInfo(data)
+    }
+
+    const categoryLeaved = (event, data) => {
+        setCategoryInfo(data)
+
+        event.target.parentNode.classList.remove('active-cat');
+    }
+
+    const categoryItem = (value, index) => {
+        return (
+            (index == 0) ?
+                <Grid item className="dropdown-right-item active-cat" key={index} >
+                    <Button
+                        variant="text"
+                        color="inherit"
+                        fullWidth={true}
+                        startIcon={value.icon}
+                        disableRipple
+                        onMouseEnter={(e) => { categoryEntered(e, value.data) }}
+                        onMouseLeave={(e) => { categoryLeaved(e, value.data) }}
+                    >
+                        {value.title}
+                    </Button>
+                </Grid> :
+                <Grid item className="dropdown-right-item" key={index} >
+                    <Button
+                        variant="text"
+                        color="inherit"
+                        fullWidth={true}
+                        startIcon={value.icon}
+                        disableRipple
+                        onMouseEnter={(e) => { categoryEntered(e, value.data) }}
+                        onMouseLeave={(e) => { categoryLeaved(e, value.data) }}
+                    >
+                        {value.title}
+                    </Button>
+                </Grid>
+        )
+
     }
 
     return (
@@ -86,25 +69,16 @@ const DropDownMenu = (props) => {
                 xs={2}
             >
                 {
-                    categories.map((value, index) => {
-                        return (
-                            <Grid item className="dropdown-right-item" key={index}>
-                                <Button
-                                    variant="text"
-                                    color="inherit"
-                                    fullWidth={true}
-                                    startIcon={value.icon}
-                                    onClick={() => { categoryClicked(value.data) }}
-                                >
-                                    {value.title}
-                                </Button>
-                            </Grid>
-                        )
+                    props.categories.map((value, index) => {
+                        return categoryItem(value, index)
                     })
                 }
-
             </Grid>
-            <Grid container xs={10} className="dropdown-left">
+            <Grid
+                container
+                xs={10}
+                className="dropdown-left"
+            >
                 {
                     categoryInfoContent(categoryInfo)
                 }
@@ -114,10 +88,10 @@ const DropDownMenu = (props) => {
 }
 
 const categoryInfoContent = (data) => {
-    const firstCol = _.filter(data, { column: 1 })
-    const secCol = _.filter(data, { column: 2 })
-    const thidCol = _.filter(data, { column: 3 })
-    const fourthCol = _.filter(data, { column: 4 })
+    const firstCol = lodash.filter(data, { column: 1 })
+    const secCol = lodash.filter(data, { column: 2 })
+    const thidCol = lodash.filter(data, { column: 3 })
+    const fourthCol = lodash.filter(data, { column: 4 })
 
     return (
         <Fragment>
@@ -144,7 +118,7 @@ const categoryInfoCol = (data) => {
                 {
                     data.map((value, index) => {
                         return (
-                            <li><h4>{value.title}</h4></li>
+                            <li key={index}><h4>{value.title}</h4></li>
                         )
                     })
                 }
