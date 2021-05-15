@@ -11,7 +11,7 @@ const resolvers = {
 
             const { survey } = await getByCategoryHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return survey;
@@ -21,14 +21,14 @@ const resolvers = {
         createSurvey: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
                 return;
             }
 
             const { serveyLst } = await createSurveyHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return {
@@ -49,7 +49,7 @@ async function getByCategoryHandler(args) {
     let survey = [];
 
     if (category == null) {
-        handleErrors(null, 403, "برای دسته بندی معیار امتیازدهی ثبت نشده است");
+        funcs.error.errorHandler(null, 403, "برای دسته بندی معیار امتیازدهی ثبت نشده است");
     } else if (category.parent != null && category.parent.parent == null) {
         survey = await Survey.find({ category: args.category }).populate("category").exec();
     }

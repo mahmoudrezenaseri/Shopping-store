@@ -7,13 +7,13 @@ const resolvers = {
         getAllProvince: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { province } = await getAllProvinceHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return province
@@ -23,12 +23,12 @@ const resolvers = {
         createProvince: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { province } = await createProvinceHandler(args).catch(async (error) => {
-                handleErrors(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message);
             });
 
             return {
@@ -40,12 +40,12 @@ const resolvers = {
         createCity: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد", { path: "/province/createCity" });
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد", { path: "/province/createCity" });
             }
 
             await createCityHandler(args).catch(async (error) => {
-                handleErrors(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message);
             });
 
             return {

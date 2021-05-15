@@ -7,13 +7,13 @@ const resolvers = {
         getAllCategoryWithPagination: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { category } = await getAllCategoryWithPaginationHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return {
@@ -26,13 +26,13 @@ const resolvers = {
         getAllCategory: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { category } = await getAllCategoryHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return category
@@ -40,13 +40,13 @@ const resolvers = {
         getAllCategoryTreeView: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { category } = await getAllCategoryTreeViewHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return category
@@ -56,13 +56,13 @@ const resolvers = {
         createCategory: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { category } = await createCategoryHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return {

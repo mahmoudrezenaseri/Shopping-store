@@ -20,13 +20,13 @@ const resolvers = {
         createBanner: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { banner } = await createBannerHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return {
@@ -55,11 +55,11 @@ async function createBannerHandler(args) {
     const category = await Category.findById(args.category);
 
     // دسته بندی سطح اول نباید باشد
-    if(category == null || category.parent == null){
+    if (category == null || category.parent == null) {
         throw Error("دسته بندی انتخاب شده صحیح نیست")
     }
 
-    if(!await FileManager.findById(args.image)){        
+    if (!await FileManager.findById(args.image)) {
         throw Error("چنین تصویری در سیستم موجود نیست");
     }
 

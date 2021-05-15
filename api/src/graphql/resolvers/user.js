@@ -7,7 +7,7 @@ const resolvers = {
         login: async (param, args) => {
             const { user, token } = await loginHandler(args)
                 .catch((errors) => {
-                    handleErrors(errors, errors.code, errors.message)
+                    funcs.error.errorHandler(errors, errors.code, errors.message)
                 });
 
             return {
@@ -18,13 +18,13 @@ const resolvers = {
         },
         getAllUserWithPagination: async (param, args, { req, res }) => {
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { user } = await getAllUserWithPaginationHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return {
@@ -37,13 +37,13 @@ const resolvers = {
         filterUser: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { user } = await filterUserHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message)
                 });
 
             return {
@@ -58,7 +58,7 @@ const resolvers = {
         register: async (param, args) => {
             const { user, token } = await registerHandler(args)
                 .catch((errors) => {
-                    handleErrors(errors, errors.code, errors.message)
+                    funcs.error.errorHandler(errors, errors.code, errors.message)
                 })
 
             return {

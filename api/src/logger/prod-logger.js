@@ -4,7 +4,7 @@ const {
     transports
 } = require("winston");
 
-const { splat, combine, timestamp, label, json, errors } = format;
+const { metadata, combine, timestamp, label, json, errors } = format;
 
 require('winston-mongodb').MongoDB;
 
@@ -21,11 +21,10 @@ function buildProdLogger() {
                 },
                 collection: 'logs',
                 format: combine(
-                    label({ label: 'CUSTOM' }),
                     timestamp(),
                     errors({ stack: true }),
+                    metadata(),
                     json()),
-                // defaultMeta: { service: 'user-service' }
             })
         ]
     });

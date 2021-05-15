@@ -11,12 +11,12 @@ const resolvers = {
         getByProductId: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { product } = await getByProductIdHandler(args).catch(async (error) => {
-                handleErrors(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message);
             });
 
             return {
@@ -27,12 +27,12 @@ const resolvers = {
         getByProductId: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { product } = await getByCategoryIdHandler(args).catch(async (error) => {
-                handleErrors(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message);
             });
 
             return {
@@ -45,12 +45,12 @@ const resolvers = {
         createProduct: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             const { product } = await createProductHandler(args).catch(async (error) => {
-                handleErrors(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message);
             });
 
             return {
@@ -62,12 +62,12 @@ const resolvers = {
         updateProductAttribute: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             await updateProductAttributeHandler(args).catch(async (error) => {
-                handleErrors(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message);
             });
 
             return {
@@ -78,12 +78,12 @@ const resolvers = {
         addProductAttribute: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             await addProductAttributeHandler(args).catch(async (error) => {
-                handleErrors(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message);
             });
 
             return {
@@ -94,12 +94,12 @@ const resolvers = {
         updateProductGallery: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await common.checkIfAdmin(req, config.secretId)) {
-                handleErrors(null, 403, "امکان استفاده از این بخش وجود ندارد");
+            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
+                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
             }
 
             await updateProductGalleryHandler(args).catch(async (error) => {
-                handleErrors(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message);
             });
 
             return {
