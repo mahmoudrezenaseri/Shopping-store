@@ -1,6 +1,7 @@
 const User = require("src/models/users");
+const config = require("src/config/index");
 
-async function checkIfAdmin(req, secretId) {
+async function checkToken(req, secretId) {
 
     const check = await User.CheckToken(req, secretId)
     if (check) {
@@ -10,5 +11,12 @@ async function checkIfAdmin(req, secretId) {
 
     return false;
 }
+
+async function checkIfAdmin(req, secretId, metaData) {
+    if (!await checkToken(req, secretId)) {
+        funcs.error.errorHandler(null, 403, config.message.error.forbidden, metaData);
+    }
+}
+
 
 module.exports = { checkIfAdmin }

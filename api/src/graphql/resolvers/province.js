@@ -7,13 +7,11 @@ const resolvers = {
         getAllProvince: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/province/getAllProvince" });
 
             const { province } = await getAllProvinceHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/province/getAllProvince" })
                 });
 
             return province
@@ -23,34 +21,30 @@ const resolvers = {
         createProvince: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/province/createProvince" });
 
             const { province } = await createProvinceHandler(args).catch(async (error) => {
-                funcs.error.errorHandler(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message, { path: "/province/createProvince" });
             });
 
             return {
                 status: 200,
-                message: "اطلاعات با موفقیت ثبت شد",
+                message: config.message.success.main,
                 data: province
             };
         },
         createCity: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد", { path: "/province/createCity" });
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/province/createCity" });
 
             await createCityHandler(args).catch(async (error) => {
-                funcs.error.errorHandler(error, error.code, error.message);
+                funcs.error.errorHandler(error, error.code, error.message, { path: "/province/createCity" });
             });
 
             return {
                 status: 200,
-                message: "اطلاعات با موفقیت ثبت شد",
+                message: config.message.success.main,
             };
         }
     }
