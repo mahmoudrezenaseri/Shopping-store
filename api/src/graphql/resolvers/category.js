@@ -7,13 +7,11 @@ const resolvers = {
         getAllCategoryWithPagination: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/category/getAllCategoryWithPagination" });
 
             const { category } = await getAllCategoryWithPaginationHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/category/getAllCategoryWithPagination" })
                 });
 
             return {
@@ -26,13 +24,11 @@ const resolvers = {
         getAllCategory: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/category/getAllCategory" });
 
             const { category } = await getAllCategoryHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/category/getAllCategory" })
                 });
 
             return category
@@ -40,13 +36,11 @@ const resolvers = {
         getAllCategoryTreeView: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/category/getAllCategoryTreeView" });
 
             const { category } = await getAllCategoryTreeViewHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/category/getAllCategoryTreeView" })
                 });
 
             return category
@@ -56,13 +50,11 @@ const resolvers = {
         createCategory: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/category/createCategory" });
 
             const { category } = await createCategoryHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/category/createCategory" })
                 });
 
             return {

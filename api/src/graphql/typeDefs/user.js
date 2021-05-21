@@ -8,7 +8,7 @@ const typeDefs = gql`
         filterUser(input: InputFilterUser): AllUserInfo
     }
     extend type Mutation {
-        register(firstName: String!, lastName: String!, mobile: String!, email: String!, password: String!): Auth!,
+        register(input: InputUser): Auth!,
     }
 
     type User {
@@ -22,6 +22,19 @@ const typeDefs = gql`
         createdAt: Date!,
         updatedAt: Date,
         fullName: String
+    }
+
+    input InputUser {
+        firstName: String!,
+        lastName: String!,
+        mobile: String!,
+        email: String,
+        nationalNumber: String,
+        password: String!,
+        level: Number!,
+        phone : String,
+        gender:Boolean!,
+        address:String
     }
 
     type Auth {

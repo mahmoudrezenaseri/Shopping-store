@@ -8,9 +8,12 @@ const resolvers = {
     Query: {
         getPSpecDetailsByPSpec: async (param, args, { req, res }) => {
 
+            // check if user has logged in and is administrator          
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/productSpecDetails/getPSpecDetailsByPSpec" });
+
             const { specDetails } = await getByProductSpecsHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/productSpecDetails/getPSpecDetailsByPSpec" })
                 });
 
             return specDetails;
@@ -19,14 +22,12 @@ const resolvers = {
     Mutation: {
         createProductSpecDetails: async (param, args, { req, res }) => {
 
-            // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            // check if user has logged in and is administrator          
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/productSpecDetails/createProductSpecDetails" });
 
             const { pSpecDetails } = await createProductSpecDetailsHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/productSpecDetails/createProductSpecDetails" })
                 });
 
             return {
@@ -43,7 +44,7 @@ async function getByProductSpecsHandler(args) {
     // validate user data
     await productSpecDetailsValidator.getBySpec.validateAsync(args.input, { abortEarly: false })
 
-    specDetails = await ProductSpecDetails.find({ specs: args.specs }).populate("specs").exec();    
+    specDetails = await ProductSpecDetails.find({ specs: args.specs }).populate("specs").exec();
 
     return new Promise((resolve, reject) => {
         resolve({ specDetails })

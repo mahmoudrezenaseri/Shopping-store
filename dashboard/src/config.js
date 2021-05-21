@@ -1,8 +1,8 @@
-const server_localhost = "http://localhost:4000"
-const server_liara = "https://myshop.iran.liara.run"
+// const server_address = "http://localhost:4000"
+const server_address = "https://myshop.iran.liara.run"
 
-const graphql_liara = "https://myshop.iran.liara.run/graphql"
-const graphql_localhost = "http://localhost:4000/graphql"
+// const graphql_address = "http://localhost:4000/graphql"
+const graphql_address = "https://myshop.iran.liara.run/graphql"
 
 module.exports = global.config = {
     message: {
@@ -16,10 +16,10 @@ module.exports = global.config = {
         }
     },
     axios: {
-        baseURL: graphql_liara
+        baseURL: graphql_address
     },
     server: {
-        baseURL: server_liara
+        baseURL: server_address
     },
     defaults: {
         image: "/default-placeholder.png"

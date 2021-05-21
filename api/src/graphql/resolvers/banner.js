@@ -10,7 +10,7 @@ const resolvers = {
 
             const { banner } = await getAllBannerHandler(args)
                 .catch((error) => {
-                    handleErrors(error, error.code, error.message)
+                    handleErrors(error, error.code, error.message, { path: "/banner/getAllBanner" })
                 })
 
             return banner;
@@ -20,13 +20,11 @@ const resolvers = {
         createBanner: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/banner/createBanner" });
 
             const { banner } = await createBannerHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/banner/createBanner" })
                 });
 
             return {

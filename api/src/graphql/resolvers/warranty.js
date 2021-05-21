@@ -7,7 +7,7 @@ const resolvers = {
 
             const { warranty } = await getAllWarrantyHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/warranty/getAllWarranty" })
                 })
 
             return warranty;
@@ -16,15 +16,12 @@ const resolvers = {
     Mutation: {
         createWarranty: async (param, args, { req, res }) => {
 
-            // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-                return;
-            }
+            // check if user has logged in and is administrator          
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/warranty/createWarranty" });
 
             const { warranty } = await createWarrantyHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/warranty/createWarranty" })
                 });
 
             return {

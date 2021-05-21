@@ -7,7 +7,7 @@ const resolvers = {
         login: async (param, args) => {
             const { user, token } = await loginHandler(args)
                 .catch((errors) => {
-                    funcs.error.errorHandler(errors, errors.code, errors.message)
+                    funcs.error.errorHandler(errors, errors.code, errors.message, { path: "/user/login" })
                 });
 
             return {
@@ -17,14 +17,13 @@ const resolvers = {
             }
         },
         getAllUserWithPagination: async (param, args, { req, res }) => {
-            // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+
+            // check if user has logged in and is administrator          
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/user/getAllUserWithPagination" });
 
             const { user } = await getAllUserWithPaginationHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/user/getAllUserWithPagination" })
                 });
 
             return {
@@ -36,14 +35,12 @@ const resolvers = {
         },
         filterUser: async (param, args, { req, res }) => {
 
-            // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-            }
+            // check if user has logged in and is administrator          
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/user/filterUser" });
 
             const { user } = await filterUserHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/user/filterUser" })
                 });
 
             return {
@@ -56,9 +53,9 @@ const resolvers = {
     },
     Mutation: {
         register: async (param, args) => {
-            const { user, token } = await registerHandler(args)
+            const { user, token } = await registerHandler(args.input)
                 .catch((errors) => {
-                    funcs.error.errorHandler(errors, errors.code, errors.message)
+                    funcs.error.errorHandler(errors, errors.code, errors.message, { path: "/user/register" })
                 })
 
             return {

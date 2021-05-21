@@ -65,9 +65,17 @@ const phone = Joi.string().min(11).max(11).label('تلفن')
     });
 
 const gender = Joi.boolean().required().label('جنسیت').messages({
-    "string.base": "اسلایدر جنسیت اشتباه وارد شده است",
-    "string.empty": "لطفا اسلایدر جنسیت را وارد کنید",
-    "any.required": "لطفا اسلایدر جنسیت را وارد کنید",
+    "string.base": " جنسیت اشتباه وارد شده است",
+    "string.empty": "لطفا جنسیت را وارد کنید",
+    "any.required": "لطفا جنسیت را وارد کنید",
+});
+
+const level = Joi.number().required().min(0).max(9).label('سطح کاربری').messages({
+    "number.base": " سطح کاربری اشتباه وارد شده است",
+    "number.empty": "لطفا سطح کاربری را وارد کنید",
+    "number.min": "سطح کاربری باید حداقل { #limit} حرف داشته باشد",
+    "number.max": "سطح کاربری باید حداکثر { #limit} حرف داشته باشد",
+    "any.required": "لطفا سطح را وارد کنید",
 });
 
 const password = Joi.string().min(6).required().label('کلمه عبور')
@@ -86,5 +94,5 @@ module.exports.login = Joi.object({
 });
 
 module.exports.register = Joi.object({
-    firstName, lastName, nationalNumber, mobile, phone, email, gender, address, password
+    firstName, lastName, nationalNumber, mobile, phone, email, level, gender, address, password
 });

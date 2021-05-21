@@ -1,5 +1,7 @@
 {
     "port": 4000,
+    "platform": "node",
+    "app": "myshop",
     "disks": [
       {
         "name": "my-disk",

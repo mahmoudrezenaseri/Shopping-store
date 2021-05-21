@@ -8,7 +8,7 @@ const resolvers = {
 
             const { brand } = await getAllBrandHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/brand/getAllBrand" })
                 })
 
             return brand.docs;
@@ -18,14 +18,11 @@ const resolvers = {
         createBrand: async (param, args, { req, res }) => {
 
             // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-                return;
-            }
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/brand/createBrand" });
 
             const { brand } = await createBrandHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/brand/createBrand" })
                 });
 
             return {

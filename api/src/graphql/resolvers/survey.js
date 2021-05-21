@@ -11,7 +11,7 @@ const resolvers = {
 
             const { survey } = await getByCategoryHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/survey/getSurveyByCategory" })
                 });
 
             return survey;
@@ -20,15 +20,12 @@ const resolvers = {
     Mutation: {
         createSurvey: async (param, args, { req, res }) => {
 
-            // check if user has logged in and is administrator
-            if (!await funcs.common.checkIfAdmin(req, config.secretId)) {
-                funcs.error.errorHandler(null, 403, "امکان استفاده از این بخش وجود ندارد");
-                return;
-            }
+            // check if user has logged in and is administrator          
+            funcs.common.checkIfAdmin(req, config.secretId, { path: "/survey/createSurvey" });
 
             const { serveyLst } = await createSurveyHandler(args)
                 .catch((error) => {
-                    funcs.error.errorHandler(error, error.code, error.message)
+                    funcs.error.errorHandler(error, error.code, error.message, { path: "/survey/createSurvey" })
                 });
 
             return {
