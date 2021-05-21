@@ -22,9 +22,9 @@ APP<!-- TABLE OF CONTENTS -->
 
 ## About The Project
 
-|                         Main                          |                         Category                          |                         Cart                          |                         Login                          |
-| :---------------------------------------------------: | :-------------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------: |
-| ![](https://nanashop.ir/digikala_files/main-page.gif) | ![](https://nanashop.ir/digikala_files/category-page.gif) | ![](https://nanashop.ir/digikala_files/cart-page.gif) | ![](https://nanashop.ir/digikala_files/login-page.gif) |
+|               Main                |                         Category                          |                         Cart                          |                         Login                          |
+| :-------------------------------: | :-------------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------: |
+| ![](src/assets/gif/main-page.gif) | ![](https://nanashop.ir/digikala_files/category-page.gif) | ![](https://nanashop.ir/digikala_files/cart-page.gif) | ![](https://nanashop.ir/digikala_files/login-page.gif) |
 
 It is written in JavaScript ES6.
 
