@@ -33,6 +33,9 @@ This is Admin Panel.
 
 Project Demo: [https://mysite.iran.liara.run/](https://mysite.iran.liara.run/)
 
+UserName : 09214235323
+Password : test123
+
 <!-- GETTING STARTED -->
 
 ## Getting Started
